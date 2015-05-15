@@ -1,0 +1,12 @@
+[groups]
+
+GRUPO =
+NERDS = usuario, tirano,
+JOGADORES = usuario, fulano,
+
+[c:/]
+@JOGADORES = r
+tirano = rw
+
+[c:/Temp]
+@NERDS = r
