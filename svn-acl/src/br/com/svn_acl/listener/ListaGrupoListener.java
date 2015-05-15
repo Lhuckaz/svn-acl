@@ -30,6 +30,4 @@ public class ListaGrupoListener implements ListSelectionListener {
 		svnAclGUI.atualizaUsuarios();
 	}
 
-	
-
 }

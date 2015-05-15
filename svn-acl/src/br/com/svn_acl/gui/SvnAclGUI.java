@@ -53,6 +53,7 @@ public class SvnAclGUI {
 		frame.add(jPanelPrincipal);
 
 		// TODO frame.setPreferredSize(new Dimension(750, 500));
+		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.pack();
 		frame.setLocationRelativeTo(null);
 		frame.setVisible(true);
