@@ -8,6 +8,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class GerenciadorDePermissoes {
 	public static final String LEITURA = "r";
@@ -349,7 +350,7 @@ public class GerenciadorDePermissoes {
 		}
 	}
 
-	private HashMap<String, String> listaQuaisDiretoriosUmGrupoTemAcessoEQuaisPermissoes(String grupo) {
+	private Map<String, String> listaQuaisDiretoriosUmGrupoTemAcessoEQuaisPermissoes(String grupo) {
 		HashMap<String, String> diretoriosEPermissoes = new HashMap<>();
 		for (String diretorio : listaDiretorios()) {
 			if (verificaSeGrupoOuUserExisteNoDiretorio(diretorio, grupo)) {

@@ -46,14 +46,13 @@ public class SvnAclGUI {
 	private ListaGrupoListener listaGrupoListener;
 	private ListaDiretoriosListener listaDiretoriosListener;
 
-	private String grupoSelecionado;
-	private String diretorioSelecionado;
+	private String grupoSelecionado = "";
+	private String diretorioSelecionado = "";
 
 	private GerenciadorDeGrupos gerenciadorDeGrupos;
 	private GerenciadorDePermissoes gerenciadorDePermissoes;
 	private List<String> listaUsuariosGrupo;
 	private List<String> listaPermissaoDiretorio;
-	
 
 	public SvnAclGUI() {
 		prepareGUI();
@@ -61,12 +60,11 @@ public class SvnAclGUI {
 
 	private void prepareGUI() {
 		frame = new JFrame("Lista de Controle de Acesso do Subversion");
-		
+
 		gerenciadorDeGrupos = new GerenciadorDeGrupos("svn.acl");
 		gerenciadorDePermissoes = new GerenciadorDePermissoes("svn.acl");
 		dimensao = new Dimension(300, 250);
-		
-		
+
 		tabPainel = new JTabbedPane();
 		jPanelPrincipalGrupos = new JPanel(new BorderLayout());
 		jPanelPrincipalPermissoes = new JPanel(new BorderLayout());
@@ -93,7 +91,7 @@ public class SvnAclGUI {
 		adicionarDiretorios();
 
 		adicionarListaDePermissoesEmDiretorios();
-		
+
 		adicionaComboBoxEmPermissoes();
 
 		adicionaPainelsATabPainel();
@@ -144,6 +142,19 @@ public class SvnAclGUI {
 		painelBotoesGrupos.setLayout(new FlowLayout(FlowLayout.RIGHT));
 		JButton botaoRemover = new JButton("Remover");
 		JButton botaoAdicionar = new JButton("Adicionar");
+		botaoAdicionar.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// TODO Implementar um unico dialog de adiconar
+				if (getGrupoSelecionado().equals("")) {
+					JOptionPane.showMessageDialog(null, "Selecione um grupo", "Adicionar", JOptionPane.ERROR_MESSAGE);
+				} else {
+					// TODO
+				}
+
+			}
+		});
 		painelBotoesGrupos.add(botaoAdicionar);
 		painelBotoesGrupos.add(botaoRemover);
 		jPanelPrincipalGrupos.add(painelBotoesGrupos, BorderLayout.SOUTH);
@@ -184,16 +195,54 @@ public class SvnAclGUI {
 	private void adicionaComboBoxEmPermissoes() {
 		JPanel painelComboBoxPermissoes = new JPanel();
 		painelComboBoxPermissoes.setLayout(new FlowLayout(FlowLayout.RIGHT));
-		String[] permissoes = {"(r) LEITURA", "(rw) LEITURA\\ESCRITA", "(w) ESCRITA"};
-		JComboBox<String> comboPermissoes = new JComboBox<>(permissoes);
-		JButton botaoOk = new JButton("OK");
-		JButton botaoAdicionar = new JButton("Adicionar");
+		JButton botaoAdicionarUsuario = new JButton("Adicionar Usuario");
+		botaoAdicionarUsuario.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// TODO Implementar um unico dialog de adiconar
+				if (getDiretorioSelecionado().equals("")) {
+					JOptionPane.showMessageDialog(null, "Selecione um diretório", "Adicionar",
+							JOptionPane.ERROR_MESSAGE);
+				} else {
+					AdicionarUsuarioEmDiretorio dialog = new AdicionarUsuarioEmDiretorio(SvnAclGUI.this,
+							gerenciadorDeGrupos);
+					dialog.setModal(true);
+					dialog.setVisible(true);
+				}
+
+			}
+		});
+		JButton botaoAdicionarGrupo = new JButton("Adicionar Grupo");
+		botaoAdicionarGrupo.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				AdicionarGrupoEmDiretorio dialog = new AdicionarGrupoEmDiretorio(SvnAclGUI.this, gerenciadorDeGrupos);
+				dialog.setModal(true);
+				dialog.setVisible(true);
+
+			}
+		});
+		JButton botaoAlterar = new JButton("Alterar Permissões");
+		botaoAlterar.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				if (getDiretorioSelecionado().equals("")) {
+					JOptionPane.showMessageDialog(null, "Selecione um diretorio", "Adicionar",
+							JOptionPane.ERROR_MESSAGE);
+				} else {
+					AlteraPermissoes dialog = new AlteraPermissoes(SvnAclGUI.this, gerenciadorDeGrupos);
+					dialog.setModal(true);
+					dialog.setVisible(true);
+				}
+			}
+		});
 		JButton botaoExcluir = new JButton("Excluir");
-		JLabel labelPermissoes = new JLabel("Alterar Permissões:");
-		painelComboBoxPermissoes.add(labelPermissoes );	
-		painelComboBoxPermissoes.add(comboPermissoes);		
-		painelComboBoxPermissoes.add(botaoOk);
-		painelComboBoxPermissoes.add(botaoAdicionar);
+		painelComboBoxPermissoes.add(botaoAdicionarUsuario);
+		painelComboBoxPermissoes.add(botaoAdicionarGrupo);
+		painelComboBoxPermissoes.add(botaoAlterar);
 		painelComboBoxPermissoes.add(botaoExcluir);
 		jPanelPrincipalPermissoes.add(painelComboBoxPermissoes, BorderLayout.SOUTH);
 	}
@@ -203,6 +252,18 @@ public class SvnAclGUI {
 		tabPainel.addTab("Grupos", jPanelPrincipalGrupos);
 		jPanelPrincipalPermissoes.add(jPanelPrincipalListPermissoes);
 		tabPainel.addTab("Permissões", jPanelPrincipalPermissoes);
+	}
+
+	public JFrame getFrame() {
+		return frame;
+	}
+
+	public String getGrupoSelecionado() {
+		return grupoSelecionado;
+	}
+
+	public String getDiretorioSelecionado() {
+		return diretorioSelecionado;
 	}
 
 	public GerenciadorDeGrupos getGerenciadorDeGrupos() {

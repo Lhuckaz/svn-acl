@@ -401,7 +401,6 @@ public class GerenciadorDeGrupos {
 			return "";
 		}
 		String[] split;
-		// TODO \w{1,}\s{0,}=\s{0,}[[r]|[rw]]
 		// Regex identicar se linha e de permissoes
 		if (line.matches("\\w{1,}\\s{0,}=\\s{0,}w$") || line.matches("\\w{1,}\\s{0,}=\\s{0,}rw$")
 				|| line.matches("\\w{1,}\\s{0,}=\\s{0,}w$")) {
