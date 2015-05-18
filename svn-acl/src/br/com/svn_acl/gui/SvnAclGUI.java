@@ -15,10 +15,10 @@ public class SvnAclGUI {
 
 	private JFrame frame;
 	private JTabbedPane tabPainel;
+	private Dimension dimensao;
 
 	private JPanel jPanelPrincipalGrupos;
 	private JPanel jPanelPrincipalListGrupos;
-	private JPanel jPanelPrincipalPermissoes;
 
 	private JList<String> listaGrupos;
 	private DefaultListModel<String> modeloGrupos;
@@ -30,6 +30,7 @@ public class SvnAclGUI {
 	private JScrollPane jScrollUsuarios;
 	private JPanel jPanelUsuarios;
 
+	private JPanel jPanelPrincipalPermissoes;
 	private JPanel jPanelPrincipalListPermissoes;
 
 	private JList<String> listaDiretorios;
@@ -52,15 +53,20 @@ public class SvnAclGUI {
 	private GerenciadorDePermissoes gerenciadorDePermissoes;
 	private List<String> listaUsuariosGrupo;
 	private List<String> listaPermissaoDiretorio;
+	
 
 	public SvnAclGUI() {
-		gerenciadorDeGrupos = new GerenciadorDeGrupos("svn.acl");
-		gerenciadorDePermissoes = new GerenciadorDePermissoes("svn.acl");
 		prepareGUI();
 	}
 
 	private void prepareGUI() {
 		frame = new JFrame("Lista de Controle de Acesso do Subversion");
+		
+		gerenciadorDeGrupos = new GerenciadorDeGrupos("svn.acl");
+		gerenciadorDePermissoes = new GerenciadorDePermissoes("svn.acl");
+		dimensao = new Dimension(300, 250);
+		
+		
 		tabPainel = new JTabbedPane();
 		jPanelPrincipalGrupos = new JPanel(new BorderLayout());
 		jPanelPrincipalPermissoes = new JPanel(new BorderLayout());
@@ -87,6 +93,8 @@ public class SvnAclGUI {
 		adicionarDiretorios();
 
 		adicionarListaDePermissoesEmDiretorios();
+		
+		adicionaComboBoxEmPermissoes();
 
 		adicionaPainelsATabPainel();
 
@@ -99,11 +107,36 @@ public class SvnAclGUI {
 		frame.setVisible(true);
 	}
 
-	private void adicionaPainelsATabPainel() {
-		jPanelPrincipalGrupos.add(jPanelPrincipalListGrupos);
-		tabPainel.addTab("Grupos", jPanelPrincipalGrupos);
-		jPanelPrincipalPermissoes.add(jPanelPrincipalListPermissoes);
-		tabPainel.addTab("Permissões", jPanelPrincipalPermissoes);
+	private void adicionarListaDeGrupos() {
+		jPanelGrupos = new JPanel(new FlowLayout(FlowLayout.RIGHT));
+		modeloGrupos = new DefaultListModel<>();
+		listaGrupos = new JList<>(modeloGrupos);
+		listaGrupos.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+		listaGrupos.addListSelectionListener(listaGrupoListener);
+		jScrollGrupos = new JScrollPane(listaGrupos);
+		// Definir tamanho to JScrollPane
+		jScrollGrupos.setPreferredSize(dimensao);
+		jPanelGrupos.add(jScrollGrupos);
+		jPanelPrincipalListGrupos.add(jPanelGrupos);
+	}
+
+	private void adicionarListaDeUsuariosEmGrupos() {
+		jPanelUsuarios = new JPanel(new FlowLayout(FlowLayout.LEFT));
+		modeloUsuarios = new DefaultListModel<>();
+		listaUsuarios = new JList<>(modeloUsuarios);
+		listaUsuarios.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+		jScrollUsuarios = new JScrollPane(listaUsuarios);
+		// Definir tamanho to JScrollPane
+		jScrollUsuarios.setPreferredSize(dimensao);
+		jPanelUsuarios.add(jScrollUsuarios);
+		jPanelPrincipalListGrupos.add(jPanelUsuarios);
+	}
+
+	private void adicionarGrupos() {
+		List<String> listarGrupos = gerenciadorDeGrupos.listarGrupos();
+		for (String usuarios : listarGrupos) {
+			((DefaultListModel<String>) listaGrupos.getModel()).addElement(usuarios);
+		}
 	}
 
 	private void adicionaBotoesEmGrupos() {
@@ -116,38 +149,6 @@ public class SvnAclGUI {
 		jPanelPrincipalGrupos.add(painelBotoesGrupos, BorderLayout.SOUTH);
 	}
 
-	private void adicionarListaDeGrupos() {
-		jPanelGrupos = new JPanel(new FlowLayout(FlowLayout.RIGHT));
-		modeloGrupos = new DefaultListModel<>();
-		listaGrupos = new JList<>(modeloGrupos);
-		listaGrupos.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-		listaGrupos.addListSelectionListener(listaGrupoListener);
-		jScrollGrupos = new JScrollPane(listaGrupos);
-		// Definir tamanho to JScrollPane
-		jScrollGrupos.setPreferredSize(new Dimension(250, 250));
-		jPanelGrupos.add(jScrollGrupos);
-		jPanelPrincipalListGrupos.add(jPanelGrupos);
-	}
-
-	private void adicionarListaDeUsuariosEmGrupos() {
-		jPanelUsuarios = new JPanel(new FlowLayout(FlowLayout.LEFT));
-		modeloUsuarios = new DefaultListModel<>();
-		listaUsuarios = new JList<>(modeloUsuarios);
-		listaUsuarios.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-		jScrollUsuarios = new JScrollPane(listaUsuarios);
-		// Definir tamanho to JScrollPane
-		jScrollUsuarios.setPreferredSize(new Dimension(250, 250));
-		jPanelUsuarios.add(jScrollUsuarios);
-		jPanelPrincipalListGrupos.add(jPanelUsuarios);
-	}
-
-	private void adicionarGrupos() {
-		List<String> listarGrupos = gerenciadorDeGrupos.listarGrupos();
-		for (String usuarios : listarGrupos) {
-			((DefaultListModel<String>) listaGrupos.getModel()).addElement(usuarios);
-		}
-	}
-
 	private void adicionarListaDeDiretorios() {
 		jPanelDiretorios = new JPanel(new FlowLayout(FlowLayout.RIGHT));
 		modeloDiretorios = new DefaultListModel<>();
@@ -156,7 +157,7 @@ public class SvnAclGUI {
 		listaDiretorios.addListSelectionListener(listaDiretoriosListener);
 		jScrollDiretorios = new JScrollPane(listaDiretorios);
 		// Definir tamanho to JScrollPane
-		jScrollDiretorios.setPreferredSize(new Dimension(250, 250));
+		jScrollDiretorios.setPreferredSize(dimensao);
 		jPanelDiretorios.add(jScrollDiretorios);
 		jPanelPrincipalListPermissoes.add(jPanelDiretorios);
 	}
@@ -168,7 +169,7 @@ public class SvnAclGUI {
 		listaPermissoes.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		jScrollPermissoes = new JScrollPane(listaPermissoes);
 		// Definir tamanho to JScrollPane
-		jScrollPermissoes.setPreferredSize(new Dimension(250, 250));
+		jScrollPermissoes.setPreferredSize(dimensao);
 		jPanelPermissoes.add(jScrollPermissoes);
 		jPanelPrincipalListPermissoes.add(jPanelPermissoes);
 	}
@@ -178,6 +179,30 @@ public class SvnAclGUI {
 		for (String diretorios : listarDiretorios) {
 			((DefaultListModel<String>) listaDiretorios.getModel()).addElement(diretorios);
 		}
+	}
+
+	private void adicionaComboBoxEmPermissoes() {
+		JPanel painelComboBoxPermissoes = new JPanel();
+		painelComboBoxPermissoes.setLayout(new FlowLayout(FlowLayout.RIGHT));
+		String[] permissoes = {"(r) LEITURA", "(rw) LEITURA\\ESCRITA", "(w) ESCRITA"};
+		JComboBox<String> comboPermissoes = new JComboBox<>(permissoes);
+		JButton botaoOk = new JButton("OK");
+		JButton botaoAdicionar = new JButton("Adicionar");
+		JButton botaoExcluir = new JButton("Excluir");
+		JLabel labelPermissoes = new JLabel("Alterar Permissões:");
+		painelComboBoxPermissoes.add(labelPermissoes );	
+		painelComboBoxPermissoes.add(comboPermissoes);		
+		painelComboBoxPermissoes.add(botaoOk);
+		painelComboBoxPermissoes.add(botaoAdicionar);
+		painelComboBoxPermissoes.add(botaoExcluir);
+		jPanelPrincipalPermissoes.add(painelComboBoxPermissoes, BorderLayout.SOUTH);
+	}
+
+	private void adicionaPainelsATabPainel() {
+		jPanelPrincipalGrupos.add(jPanelPrincipalListGrupos);
+		tabPainel.addTab("Grupos", jPanelPrincipalGrupos);
+		jPanelPrincipalPermissoes.add(jPanelPrincipalListPermissoes);
+		tabPainel.addTab("Permissões", jPanelPrincipalPermissoes);
 	}
 
 	public GerenciadorDeGrupos getGerenciadorDeGrupos() {
