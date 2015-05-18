@@ -1,12 +1,18 @@
 [groups]
 
-GRUPO =
-NERDS = usuario, tirano,
+GRUPO = fulano,
+PROGRAMADORES = hulk, tirano,
+ANALISTAS = mario, luidi, yoshi, browser, zelda,
+ALONE =
 JOGADORES = usuario, fulano,
 
 [c:/]
+@GRUPO = r
+@PROGRAMADORES = rw
 @JOGADORES = r
+@ANALISTAS = rw
 tirano = rw
 
 [c:/Temp]
 @NERDS = r
+@ANALISTAS = rw

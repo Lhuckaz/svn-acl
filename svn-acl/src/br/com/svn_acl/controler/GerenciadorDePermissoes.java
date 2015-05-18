@@ -27,7 +27,7 @@ public class GerenciadorDePermissoes {
 		this.file = file;
 	}
 
-	private List<String> listaDiretorios() {
+	public List<String> listaDiretorios() {
 		List<String> diretorios = new ArrayList<>();
 		try {
 			fileReader = new FileReader(file);
@@ -52,7 +52,7 @@ public class GerenciadorDePermissoes {
 		return diretorios;
 	}
 
-	private List<String> listaGruposEUserESuasPermissoesDeUmDiretorio(String diretorio) {
+	public List<String> listaGruposEUserESuasPermissoesDeUmDiretorio(String diretorio) {
 		List<String> grupos = new ArrayList<>();
 		try {
 			fileReader = new FileReader(file);
