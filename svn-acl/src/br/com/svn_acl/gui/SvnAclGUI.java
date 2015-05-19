@@ -2,7 +2,6 @@ package br.com.svn_acl.gui;
 
 import java.awt.*;
 import java.awt.event.*;
-import java.util.Collections;
 import java.util.List;
 
 import javax.swing.*;

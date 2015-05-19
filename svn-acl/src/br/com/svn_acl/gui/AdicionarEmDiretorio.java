@@ -82,7 +82,7 @@ public class AdicionarEmDiretorio extends JDialog implements ActionListener {
 		painelCheckUsuario.add(jCheckBoxUsuario);
 		painelOpcoes.add(grupo);
 		painelOpcoes.add(comboGrupos);
-		painelOpcoes.add(new JLabel("Permissões"));
+		painelOpcoes.add(jLabelPermissoes);
 		painelOpcoes.add(comboPermissoes);
 		painelOpcoes.add(botaoAdiciona);
 		painelAdiciona.add(painelCheckUsuario);
