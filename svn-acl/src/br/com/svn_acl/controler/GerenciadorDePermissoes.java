@@ -53,6 +53,30 @@ public class GerenciadorDePermissoes {
 		return diretorios;
 	}
 
+	private List<String> listaGruposDeUmDiretorio(String diretorio) {
+		List<String> grupos = new ArrayList<>(listaGruposEUserESuasPermissoesDeUmDiretorio(diretorio));
+		List<String> gruposRetorno = new ArrayList<>();
+		for (String grupo : grupos) {
+			String[] split = grupo.trim().replaceAll(" ", "").split("=");
+			if(split[0].startsWith("@")) {
+				gruposRetorno.add(split[0]);
+			}
+		}
+		return gruposRetorno;
+	}
+	
+	private List<String> listaUsuariosDeUmDiretorio(String diretorio) {
+		List<String> grupos = new ArrayList<>(listaGruposEUserESuasPermissoesDeUmDiretorio(diretorio));
+		List<String> gruposRetorno = new ArrayList<>();
+		for (String grupo : grupos) {
+			String[] split = grupo.trim().replaceAll(" ", "").split("=");
+			if(!split[0].startsWith("@")) {
+				gruposRetorno.add(split[0]);
+			}
+		}
+		return gruposRetorno;
+	}
+	
 	public List<String> listaGruposEUserESuasPermissoesDeUmDiretorio(String diretorio) {
 		List<String> grupos = new ArrayList<>();
 		try {
