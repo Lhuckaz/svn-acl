@@ -8,6 +8,7 @@ import javax.swing.*;
 
 import br.com.svn_acl.controler.GerenciadorDeGrupos;
 import br.com.svn_acl.controler.GerenciadorDePermissoes;
+import br.com.svn_acl.listener.MenuItemMenuListener;
 import br.com.svn_acl.listener.ListaDiretoriosListener;
 import br.com.svn_acl.listener.ListaGrupoListener;
 import br.com.svn_acl.listener.ListaPermissoesListener;
@@ -18,6 +19,11 @@ public class SvnAclGUI {
 	private JFrame frame;
 	private JTabbedPane tabPainel;
 	private Dimension dimensao;
+
+	private JMenuBar jMenuBar;
+	private JMenu jMenuArquivos;
+	private JMenuItem jMenuItemAbrir;
+	private JMenuItem jMenuItemSalvar;
 
 	private JPanel jPanelPrincipalGrupos;
 	private JPanel jPanelPrincipalListGrupos;
@@ -57,6 +63,8 @@ public class SvnAclGUI {
 
 	private GerenciadorDeGrupos gerenciadorDeGrupos;
 	private GerenciadorDePermissoes gerenciadorDePermissoes;
+	private List<String> listarGrupos;
+	private List<String> listarDiretorios;
 	private List<String> listaUsuariosGrupo;
 	private List<String> listaPermissaoDiretorio;
 
@@ -67,8 +75,8 @@ public class SvnAclGUI {
 	private void prepareGUI() {
 		frame = new JFrame("Lista de Controle de Acesso do Subversion");
 
-		gerenciadorDeGrupos = new GerenciadorDeGrupos("svn.acl");
-		gerenciadorDePermissoes = new GerenciadorDePermissoes("svn.acl");
+		adicionaMenu();
+
 		dimensao = new Dimension(300, 250);
 
 		tabPainel = new JTabbedPane();
@@ -88,15 +96,11 @@ public class SvnAclGUI {
 
 		adicionarListaDeGrupos();
 
-		adicionarGrupos();
-
 		adicionarListaDeUsuariosEmGrupos();
 
 		adicionaBotoesEmGrupos();
 
 		adicionarListaDeDiretorios();
-
-		adicionarDiretorios();
 
 		adicionarListaDePermissoesEmDiretorios();
 
@@ -111,6 +115,31 @@ public class SvnAclGUI {
 		frame.pack();
 		frame.setLocationRelativeTo(null);
 		frame.setVisible(true);
+	}
+
+	public void carregaArquivo(String arquivo) {
+		gerenciadorDeGrupos = new GerenciadorDeGrupos(arquivo);
+		gerenciadorDePermissoes = new GerenciadorDePermissoes(arquivo);
+		adicionarGrupos();
+		adicionarDiretorios();
+	}
+
+	private void adicionaMenu() {
+		MenuItemMenuListener menuItemMenuListener = new MenuItemMenuListener(this);
+
+		jMenuBar = new JMenuBar();
+		jMenuArquivos = new JMenu("Arquivo");
+		jMenuItemAbrir = new JMenuItem("Abrir");
+		jMenuItemAbrir.addActionListener(menuItemMenuListener);
+		jMenuItemSalvar = new JMenuItem("Salvar");
+		jMenuItemSalvar.addActionListener(menuItemMenuListener);
+
+		jMenuArquivos.add(jMenuItemAbrir);
+		jMenuArquivos.add(jMenuItemSalvar);
+
+		jMenuBar.add(jMenuArquivos);
+
+		frame.setJMenuBar(jMenuBar);
 	}
 
 	private void adicionarListaDeGrupos() {
@@ -140,9 +169,9 @@ public class SvnAclGUI {
 	}
 
 	private void adicionarGrupos() {
-		List<String> listarGrupos = gerenciadorDeGrupos.listarGrupos();
-		for (String usuarios : listarGrupos) {
-			((DefaultListModel<String>) listaGrupos.getModel()).addElement(usuarios);
+		listarGrupos = gerenciadorDeGrupos.listarGrupos();
+		for (String grupos : listarGrupos) {
+			((DefaultListModel<String>) listaGrupos.getModel()).addElement(grupos);
 		}
 	}
 
@@ -157,7 +186,8 @@ public class SvnAclGUI {
 				if (getGrupoSelecionado().equals("")) {
 					JOptionPane.showMessageDialog(null, "Selecione um grupo", "Adicionar", JOptionPane.ERROR_MESSAGE);
 				} else {
-					//gerenciadorDeGrupos.adicionaUsuarioNoGrupo(getGrupoSelecionado(), getUsuarioSelecionado());
+					// gerenciadorDeGrupos.adicionaUsuarioNoGrupo(getGrupoSelecionado(),
+					// getUsuarioSelecionado());
 					atualizaUsuarios();
 				}
 
@@ -211,7 +241,7 @@ public class SvnAclGUI {
 	}
 
 	private void adicionarDiretorios() {
-		List<String> listarDiretorios = gerenciadorDePermissoes.listaDiretorios();
+		listarDiretorios = gerenciadorDePermissoes.listaDiretorios();
 		for (String diretorios : listarDiretorios) {
 			((DefaultListModel<String>) listaDiretorios.getModel()).addElement(diretorios);
 		}
@@ -286,6 +316,14 @@ public class SvnAclGUI {
 		return frame;
 	}
 
+	public JMenuItem getJMenuItemAbrir() {
+		return jMenuItemAbrir;
+	}
+
+	public JMenuItem getJMenuItemSalvar() {
+		return jMenuItemSalvar;
+	}
+
 	public String getGrupoSelecionado() {
 		return grupoSelecionado;
 	}
@@ -304,6 +342,14 @@ public class SvnAclGUI {
 
 	public void setUsuarioSelecionado(String usuarioSelecionado) {
 		this.usuarioSelecionado = usuarioSelecionado;
+	}
+
+	public List<String> getListarGrupos() {
+		return listarGrupos;
+	}
+
+	public List<String> getListarDiretorios() {
+		return listarDiretorios;
 	}
 
 	public GerenciadorDeGrupos getGerenciadorDeGrupos() {
@@ -346,6 +392,31 @@ public class SvnAclGUI {
 		for (String usuarios : listaPermissaoDiretorio) {
 			((DefaultListModel<String>) listaPermissoes.getModel()).addElement(usuarios);
 		}
+	}
+
+	public void atualizaGrupos() {
+		((DefaultListModel<String>) listaGrupos.getModel()).removeAllElements();
+		List<String> listarGrupos = getListarGrupos();
+		for (String usuarios : listarGrupos) {
+			((DefaultListModel<String>) listaGrupos.getModel()).addElement(usuarios);
+		}
+
+	}
+
+	public void atualizaDiretorios() {
+		((DefaultListModel<String>) listaDiretorios.getModel()).removeAllElements();
+		List<String> listarDiretorios = getListarDiretorios();
+		for (String diretorios : listarDiretorios) {
+			((DefaultListModel<String>) listaDiretorios.getModel()).addElement(diretorios);
+		}
+	}
+
+	public void atulizaListaGrupos() {
+		listarGrupos = gerenciadorDeGrupos.listarGrupos();
+	}
+	
+	public void atulizaListaDiretorios() {
+		listarDiretorios = gerenciadorDePermissoes.listaDiretorios();
 	}
 
 }

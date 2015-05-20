@@ -28,6 +28,10 @@ public class ListaGrupoListener implements ListSelectionListener {
 		List<String> listaUsuariosGrupo = svnAclGUI.getGerenciadorDeGrupos().listaUsuariosGrupo(grupoSelecionado);
 		svnAclGUI.setUsuariosDoGrupo(listaUsuariosGrupo);
 		svnAclGUI.atualizaUsuarios();
+		if(!svnAclGUI.getGerenciadorDeGrupos().listarGrupos().equals(svnAclGUI.getListarGrupos())) {
+			svnAclGUI.atulizaListaGrupos();
+			svnAclGUI.atualizaGrupos();
+		}
 	}
 
 }
