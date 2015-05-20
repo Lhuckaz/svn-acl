@@ -139,6 +139,7 @@ public class Gerenciador {
 				e.printStackTrace();
 			}
 		}
+		setHidden(caminhoArquivoOculto);
 	}
 
 	public static void main(String[] args) {
