@@ -53,7 +53,7 @@ public class GerenciadorDePermissoes {
 		return diretorios;
 	}
 
-	private List<String> listaGruposDeUmDiretorio(String diretorio) {
+	public List<String> listaGruposDeUmDiretorio(String diretorio) {
 		List<String> grupos = new ArrayList<>(listaGruposEUserESuasPermissoesDeUmDiretorio(diretorio));
 		List<String> gruposRetorno = new ArrayList<>();
 		for (String grupo : grupos) {
@@ -65,7 +65,7 @@ public class GerenciadorDePermissoes {
 		return gruposRetorno;
 	}
 	
-	private List<String> listaUsuariosDeUmDiretorio(String diretorio) {
+	public List<String> listaUsuariosDeUmDiretorio(String diretorio) {
 		List<String> grupos = new ArrayList<>(listaGruposEUserESuasPermissoesDeUmDiretorio(diretorio));
 		List<String> gruposRetorno = new ArrayList<>();
 		for (String grupo : grupos) {
@@ -107,7 +107,7 @@ public class GerenciadorDePermissoes {
 		return grupos;
 	}
 
-	private boolean alteraPermissoesDoGrupoDoDir(String diretorio, String grupo, String permissao) {
+	public boolean alteraPermissoesDoGrupoDoDir(String diretorio, String grupo, String permissao) {
 		if (!verificaSeDiretorioExiste(diretorio)) {
 			System.out.println("Diretorio \"" + diretorio + "\" nao existe");
 			return false;
@@ -200,7 +200,7 @@ public class GerenciadorDePermissoes {
 		return false;
 	}
 
-	private boolean adicionaGrupoEPermissoesNoDiretorio(String diretorio, String grupo, String permissao) {
+	public boolean adicionaGrupoEPermissoesNoDiretorio(String diretorio, String grupo, String permissao) {
 		GerenciadorDeGrupos gerenciadorDeGrupos = new GerenciadorDeGrupos(file);
 		if (!gerenciadorDeGrupos.grupoExiste(grupo)) {
 			gerenciadorDeGrupos = null;
@@ -245,7 +245,7 @@ public class GerenciadorDePermissoes {
 		}
 	}
 
-	private boolean adicionaUserEPermissoesNoDiretorio(String diretorio, String usuario, String permissao) {
+	public boolean adicionaUserEPermissoesNoDiretorio(String diretorio, String usuario, String permissao) {
 		GerenciadorDeGrupos gerenciadorDeGrupos = new GerenciadorDeGrupos(file);
 		if (!gerenciadorDeGrupos.usuarioExiste(usuario)) {
 			gerenciadorDeGrupos = null;
@@ -290,7 +290,7 @@ public class GerenciadorDePermissoes {
 		}
 	}
 
-	private boolean removeGrupoOuUserDoDir(String diretorio, String grupo) {
+	public boolean removeGrupoOuUserDoDir(String diretorio, String grupo) {
 		if (!verificaSeDiretorioExiste(diretorio)) {
 			System.out.println("Diretorio \"" + diretorio + "\" nao existe");
 			return false;
@@ -374,7 +374,7 @@ public class GerenciadorDePermissoes {
 		}
 	}
 
-	private Map<String, String> listaQuaisDiretoriosUmGrupoTemAcessoEQuaisPermissoes(String grupo) {
+	public Map<String, String> listaQuaisDiretoriosUmGrupoTemAcessoEQuaisPermissoes(String grupo) {
 		HashMap<String, String> diretoriosEPermissoes = new HashMap<>();
 		for (String diretorio : listaDiretorios()) {
 			if (verificaSeGrupoOuUserExisteNoDiretorio(diretorio, grupo)) {

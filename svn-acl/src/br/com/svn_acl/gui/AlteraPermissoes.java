@@ -12,6 +12,11 @@ import javax.swing.JPanel;
 
 public class AlteraPermissoes extends JDialog implements ActionListener {
 
+	/**
+	 * Serial Version
+	 */
+	private static final long serialVersionUID = 1L;
+
 	public AlteraPermissoes(SvnAclGUI owner) {
 		super(owner.getFrame(), "Altera Permissoes", true);
 		JPanel painelAlteraPermissoes = new JPanel(new FlowLayout());

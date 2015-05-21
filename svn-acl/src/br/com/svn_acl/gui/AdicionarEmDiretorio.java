@@ -16,6 +16,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 public class AdicionarEmDiretorio extends JDialog implements ActionListener {
+
 	/**
 	 * Serial Version
 	 */
@@ -34,23 +35,27 @@ public class AdicionarEmDiretorio extends JDialog implements ActionListener {
 		final JLabel usuario = new JLabel("Usuario");
 		Vector<String> listaUsuarios = new Vector<String>(owner.getGerenciadorDeGrupos().listarUsuarios());
 		final JComboBox<String> comboUsuarios = new JComboBox<>(listaUsuarios);
-		
+
 		String[] permissoes = { "LEITURA", "LEITURA\\ESCRITA", "ESCRITA" };
 		final JComboBox<String> comboPermissoes = new JComboBox<>(permissoes);
-		
+
 		final JButton botaoAdiciona = new JButton("Adicionar");
 		botaoAdiciona.addActionListener(this);
-		
+
 		final JLabel jLabelPermissoes = new JLabel("Permissões");
-		
+
 		JCheckBox jCheckBoxUsuario = new JCheckBox("Adicionar Usuario");
 		jCheckBoxUsuario.addItemListener(new ItemListener() {
-			
+
 			@Override
 			public void itemStateChanged(ItemEvent e) {
-				int x = e.getStateChange() == ItemEvent.SELECTED ? adicionaUsuario() : adicionaGrupo();
+				if (e.getStateChange() == ItemEvent.SELECTED) {
+					adicionaUsuario();
+				} else {
+					adicionaGrupo();
+				}
 			}
-			
+
 			private int adicionaUsuario() {
 				painelOpcoes.setVisible(false);
 				painelOpcoes.removeAll();
