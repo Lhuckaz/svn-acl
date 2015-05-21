@@ -117,11 +117,20 @@ public class SvnAclGUI {
 		frame.setVisible(true);
 	}
 
+	// TODO ERROR carrega duas vezes o mesmo arquivo
+	boolean teste = true;
 	public void carregaArquivo(String arquivo) {
 		gerenciadorDeGrupos = new GerenciadorDeGrupos(arquivo);
 		gerenciadorDePermissoes = new GerenciadorDePermissoes(arquivo);
-		adicionarGrupos();
-		adicionarDiretorios();
+		
+		if(teste) {
+			adicionarGrupos();
+			adicionarDiretorios();
+			teste = false;
+		} else {
+			atualizaGrupos();
+			atualizaDiretorios();
+		}
 	}
 
 	private void adicionaMenu() {

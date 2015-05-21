@@ -16,6 +16,8 @@ public class ListaPermissoesListener implements ListSelectionListener {
 
 	@Override
 	public void valueChanged(ListSelectionEvent e) {
+		if (e.getValueIsAdjusting())
+			return;
 		JList<?> lista = (JList<?>) e.getSource();
 		String permissoesSelecionado = (String) lista.getSelectedValue();
 		if (permissoesSelecionado != null) {

@@ -18,17 +18,22 @@ public class ListaDiretoriosListener implements ListSelectionListener {
 
 	@Override
 	public void valueChanged(ListSelectionEvent e) {
+		if (e.getValueIsAdjusting())
+			return;
 		JList<?> lista = (JList<?>) e.getSource();
 		String diretorioSelecionado = (String) lista.getSelectedValue();
-		svnAclGUI.setDiretorioSelecionado(diretorioSelecionado);
-		atualizaPermissoes(diretorioSelecionado);
+		if (diretorioSelecionado != null) {
+			svnAclGUI.setDiretorioSelecionado(diretorioSelecionado);
+			atualizaPermissoes(diretorioSelecionado);
+		}
 	}
 
 	private void atualizaPermissoes(String diretorioSelecionado) {
-		List<String> listaPermissoesDiretorio = svnAclGUI.getGerenciadorDePermissoes().listaGruposEUserESuasPermissoesDeUmDiretorio(diretorioSelecionado);
+		List<String> listaPermissoesDiretorio = svnAclGUI.getGerenciadorDePermissoes()
+				.listaGruposEUserESuasPermissoesDeUmDiretorio(diretorioSelecionado);
 		svnAclGUI.setPermissoesDoDiretorio(listaPermissoesDiretorio);
 		svnAclGUI.atualizaPermissoes();
-		if(!svnAclGUI.getGerenciadorDePermissoes().listaDiretorios().equals(svnAclGUI.getListarDiretorios())) {
+		if (!svnAclGUI.getGerenciadorDePermissoes().listaDiretorios().equals(svnAclGUI.getListarDiretorios())) {
 			svnAclGUI.atulizaListaDiretorios();
 			svnAclGUI.atualizaDiretorios();
 		}

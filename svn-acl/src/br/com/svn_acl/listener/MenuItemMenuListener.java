@@ -49,6 +49,7 @@ public class MenuItemMenuListener implements ActionListener {
 			if (code == JFileChooser.APPROVE_OPTION) {
 				File selectedFile = chooser.getSelectedFile();
 				svnAclGUI.carregaArquivo(selectedFile.getAbsolutePath());
+				atualizaListas();
 				Diretorios.setDiretorioCorrente(chooser.getSelectedFile().getParent());
 			}
 		} catch (Exception e) {
@@ -93,6 +94,17 @@ public class MenuItemMenuListener implements ActionListener {
 			Diretorios.setDiretorioCorrente(selectedFile.getAbsolutePath());
 		} catch (Exception e) {
 		}
+	}
+
+	/**
+	 * Para atualizar lista depois de abrir um arquivo, verificar ordem que e
+	 * chamado os métodos pois influenciam
+	 */
+	private void atualizaListas() {
+		svnAclGUI.atulizaListaGrupos();
+		svnAclGUI.atualizaGrupos();
+		svnAclGUI.atulizaListaDiretorios();
+		svnAclGUI.atualizaDiretorios();
 	}
 
 }

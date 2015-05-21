@@ -18,17 +18,21 @@ public class ListaGrupoListener implements ListSelectionListener {
 
 	@Override
 	public void valueChanged(ListSelectionEvent e) {
+		if (e.getValueIsAdjusting())
+			return;
 		JList<?> lista = (JList<?>) e.getSource();
-		String grupoSelecionado = (String) lista.getSelectedValue();
-		svnAclGUI.setGrupoSelecionado(grupoSelecionado);
-		atualizaUsuarios(grupoSelecionado);
+		if ((String) lista.getSelectedValue() != null) {
+			String grupoSelecionado = (String) lista.getSelectedValue();
+			svnAclGUI.setGrupoSelecionado(grupoSelecionado);
+			atualizaUsuarios(grupoSelecionado);
+		}
 	}
 
 	private void atualizaUsuarios(String grupoSelecionado) {
 		List<String> listaUsuariosGrupo = svnAclGUI.getGerenciadorDeGrupos().listaUsuariosGrupo(grupoSelecionado);
 		svnAclGUI.setUsuariosDoGrupo(listaUsuariosGrupo);
 		svnAclGUI.atualizaUsuarios();
-		if(!svnAclGUI.getGerenciadorDeGrupos().listarGrupos().equals(svnAclGUI.getListarGrupos())) {
+		if (!svnAclGUI.getGerenciadorDeGrupos().listarGrupos().equals(svnAclGUI.getListarGrupos())) {
 			svnAclGUI.atulizaListaGrupos();
 			svnAclGUI.atualizaGrupos();
 		}
