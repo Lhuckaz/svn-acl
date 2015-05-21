@@ -126,7 +126,7 @@ public class SvnAclGUI {
 		adicionaPainelsATabPainel();
 
 		frame.add(tabPainel);
-		
+
 		adicionarEventoFinal();
 
 		// TODO frame.setPreferredSize(new Dimension(750, 500));
@@ -138,10 +138,11 @@ public class SvnAclGUI {
 
 	// TODO ERROR carrega duas vezes o mesmo arquivo (consertado!)
 	boolean teste = true;
+
 	public void carregaArquivo(String arquivo) {
 		gerenciador = new Gerenciador(arquivo);
-		
-		if(teste) {
+
+		if (teste) {
 			adicionarGrupos();
 			adicionarDiretorios();
 			teste = false;
@@ -230,7 +231,7 @@ public class SvnAclGUI {
 				} else if (getUsuarioSelecionado().equals("")) {
 					JOptionPane.showMessageDialog(null, "Selecione um usuário", "Remover", JOptionPane.ERROR_MESSAGE);
 				} else {
-					
+
 					getGerenciadorDeGrupos().removeUsuarioDoGrupo(getGrupoSelecionado(), getUsuarioSelecionado());
 					gerenciador.atualizaArquivo();
 					atualizaUsuarios();
@@ -443,7 +444,7 @@ public class SvnAclGUI {
 	public void atulizaListaGrupos() {
 		listarGrupos = getGerenciadorDeGrupos().listarGrupos();
 	}
-	
+
 	public void atulizaListaDiretorios() {
 		listarDiretorios = getGerenciadorDePermissoes().listaDiretorios();
 	}
@@ -452,8 +453,11 @@ public class SvnAclGUI {
 		frame.addWindowListener(new WindowAdapter() {
 			@Override
 			public void windowClosing(WindowEvent windowEvent) {
+				// Adicionado if para fechar programa mesmo quando nenhum
+				// arquivo for aberto
+				if (gerenciador != null)
 					gerenciador.apagaArquivosDeGerenciamento();
-					System.exit(0);
+				System.exit(0);
 			}
 		});
 	}
