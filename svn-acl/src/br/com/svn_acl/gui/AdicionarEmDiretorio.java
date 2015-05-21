@@ -15,27 +15,24 @@ import javax.swing.JDialog;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
-import br.com.svn_acl.controler.GerenciadorDeGrupos;
-import br.com.svn_acl.controler.GerenciadorDePermissoes;
-
 public class AdicionarEmDiretorio extends JDialog implements ActionListener {
 	/**
 	 * Serial Version
 	 */
 	private static final long serialVersionUID = 1L;
 
-	public AdicionarEmDiretorio(SvnAclGUI owner, GerenciadorDeGrupos gerenciadorDeGrupos) {
+	public AdicionarEmDiretorio(SvnAclGUI owner) {
 		super(owner.getFrame(), "Adicionar em Diretorio", true);
 		JPanel painelAdiciona = new JPanel(new GridLayout(2, 1));
 		JPanel painelCheckUsuario = new JPanel(new FlowLayout(FlowLayout.LEFT));
 		final JPanel painelOpcoes = new JPanel(new FlowLayout());
 
 		final JLabel grupo = new JLabel("Grupo");
-		Vector<String> listarGrupos = new Vector<String>(gerenciadorDeGrupos.listarGrupos());
+		Vector<String> listarGrupos = new Vector<String>(owner.getGerenciadorDeGrupos().listarGrupos());
 		final JComboBox<String> comboGrupos = new JComboBox<>(listarGrupos);
 
 		final JLabel usuario = new JLabel("Usuario");
-		Vector<String> listaUsuarios = new Vector<String>(gerenciadorDeGrupos.listarUsuarios());
+		Vector<String> listaUsuarios = new Vector<String>(owner.getGerenciadorDeGrupos().listarUsuarios());
 		final JComboBox<String> comboUsuarios = new JComboBox<>(listaUsuarios);
 		
 		String[] permissoes = { "LEITURA", "LEITURA\\ESCRITA", "ESCRITA" };

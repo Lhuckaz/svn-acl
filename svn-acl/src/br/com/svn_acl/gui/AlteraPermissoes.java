@@ -10,11 +10,9 @@ import javax.swing.JDialog;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
-import br.com.svn_acl.controler.GerenciadorDeGrupos;
-
 public class AlteraPermissoes extends JDialog implements ActionListener {
 
-	public AlteraPermissoes(SvnAclGUI owner, GerenciadorDeGrupos gerenciadorDeGrupos) {
+	public AlteraPermissoes(SvnAclGUI owner) {
 		super(owner.getFrame(), "Altera Permissoes", true);
 		JPanel painelAlteraPermissoes = new JPanel(new FlowLayout());
 

@@ -178,7 +178,7 @@ public class GerenciadorDeGrupos {
 		if (!procuraSeUsuarioPartDoGrupo(grupo, usuario)) {
 			try {
 				fileReader = new FileReader(file);
-				fileWriter = new FileWriter(new File("svn2.acl"));
+				fileWriter = new FileWriter(new File(Gerenciador.getCaminhoSaidaOculto()));
 				leitor = new BufferedReader(fileReader);
 				String line = "";
 				while ((line = leitor.readLine()) != null) {
@@ -227,7 +227,7 @@ public class GerenciadorDeGrupos {
 		if (procuraSeUsuarioPartDoGrupo(grupo, usuario)) {
 			try {
 				fileReader = new FileReader(file);
-				fileWriter = new FileWriter(new File("svn2.acl"));
+				fileWriter = new FileWriter(new File(Gerenciador.getCaminhoSaidaOculto()));
 				leitor = new BufferedReader(fileReader);
 				String line = "";
 				while ((line = leitor.readLine()) != null) {
@@ -347,7 +347,7 @@ public class GerenciadorDeGrupos {
 		List<String> listaGruposDoUsuario = listaGruposDoUsuario(usuario);
 		try {
 			fileReader = new FileReader(file);
-			fileWriter = new FileWriter(new File("svn2.acl"));
+			fileWriter = new FileWriter(new File(Gerenciador.getCaminhoSaidaOculto()));
 			leitor = new BufferedReader(fileReader);
 			String line = "";
 			while ((line = leitor.readLine()) != null) {
@@ -436,7 +436,7 @@ public class GerenciadorDeGrupos {
 		}
 		try {
 			fileReader = new FileReader(file);
-			fileWriter = new FileWriter(new File("svn2.acl"));
+			fileWriter = new FileWriter(new File(Gerenciador.getCaminhoSaidaOculto()));
 			leitor = new BufferedReader(fileReader);
 			String line = "";
 			while ((line = leitor.readLine()) != null) {
@@ -463,7 +463,7 @@ public class GerenciadorDeGrupos {
 	public void removeGrupoEPermissoes(String grupo) {
 		try {
 			fileReader = new FileReader(file);
-			fileWriter = new FileWriter(new File("svn2.acl"));
+			fileWriter = new FileWriter(new File(Gerenciador.getCaminhoSaidaOculto()));
 			leitor = new BufferedReader(fileReader);
 			String line = "";
 			while ((line = leitor.readLine()) != null) {

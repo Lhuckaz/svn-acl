@@ -1,18 +1,36 @@
 package br.com.svn_acl.gui;
 
-import java.awt.*;
-import java.awt.event.*;
+import java.awt.BorderLayout;
+import java.awt.Dimension;
+import java.awt.FlowLayout;
+import java.awt.GridLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.util.List;
 
-import javax.swing.*;
+import javax.swing.DefaultListModel;
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JList;
+import javax.swing.JMenu;
+import javax.swing.JMenuBar;
+import javax.swing.JMenuItem;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JTabbedPane;
+import javax.swing.ListSelectionModel;
 
+import br.com.svn_acl.controler.Gerenciador;
 import br.com.svn_acl.controler.GerenciadorDeGrupos;
 import br.com.svn_acl.controler.GerenciadorDePermissoes;
-import br.com.svn_acl.listener.MenuItemMenuListener;
 import br.com.svn_acl.listener.ListaDiretoriosListener;
 import br.com.svn_acl.listener.ListaGrupoListener;
 import br.com.svn_acl.listener.ListaPermissoesListener;
 import br.com.svn_acl.listener.ListaUsuariosListener;
+import br.com.svn_acl.listener.MenuItemMenuListener;
 
 public class SvnAclGUI {
 
@@ -61,8 +79,7 @@ public class SvnAclGUI {
 	private String diretorioSelecionado = "";
 	private String permissoesSelecionada = "";
 
-	private GerenciadorDeGrupos gerenciadorDeGrupos;
-	private GerenciadorDePermissoes gerenciadorDePermissoes;
+	private Gerenciador gerenciador;
 	private List<String> listarGrupos;
 	private List<String> listarDiretorios;
 	private List<String> listaUsuariosGrupo;
@@ -109,19 +126,20 @@ public class SvnAclGUI {
 		adicionaPainelsATabPainel();
 
 		frame.add(tabPainel);
+		
+		adicionarEventoFinal();
 
 		// TODO frame.setPreferredSize(new Dimension(750, 500));
-		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		frame.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 		frame.pack();
 		frame.setLocationRelativeTo(null);
 		frame.setVisible(true);
 	}
 
-	// TODO ERROR carrega duas vezes o mesmo arquivo
+	// TODO ERROR carrega duas vezes o mesmo arquivo (consertado!)
 	boolean teste = true;
 	public void carregaArquivo(String arquivo) {
-		gerenciadorDeGrupos = new GerenciadorDeGrupos(arquivo);
-		gerenciadorDePermissoes = new GerenciadorDePermissoes(arquivo);
+		gerenciador = new Gerenciador(arquivo);
 		
 		if(teste) {
 			adicionarGrupos();
@@ -178,7 +196,7 @@ public class SvnAclGUI {
 	}
 
 	private void adicionarGrupos() {
-		listarGrupos = gerenciadorDeGrupos.listarGrupos();
+		listarGrupos = getGerenciadorDeGrupos().listarGrupos();
 		for (String grupos : listarGrupos) {
 			((DefaultListModel<String>) listaGrupos.getModel()).addElement(grupos);
 		}
@@ -195,7 +213,7 @@ public class SvnAclGUI {
 				if (getGrupoSelecionado().equals("")) {
 					JOptionPane.showMessageDialog(null, "Selecione um grupo", "Adicionar", JOptionPane.ERROR_MESSAGE);
 				} else {
-					// gerenciadorDeGrupos.adicionaUsuarioNoGrupo(getGrupoSelecionado(),
+					// getGerenciadorDeGrupos().adicionaUsuarioNoGrupo(getGrupoSelecionado(),
 					// getUsuarioSelecionado());
 					atualizaUsuarios();
 				}
@@ -212,7 +230,9 @@ public class SvnAclGUI {
 				} else if (getUsuarioSelecionado().equals("")) {
 					JOptionPane.showMessageDialog(null, "Selecione um usuário", "Remover", JOptionPane.ERROR_MESSAGE);
 				} else {
-					gerenciadorDeGrupos.removeUsuarioDoGrupo(getGrupoSelecionado(), getUsuarioSelecionado());
+					
+					getGerenciadorDeGrupos().removeUsuarioDoGrupo(getGrupoSelecionado(), getUsuarioSelecionado());
+					gerenciador.atualizaArquivo();
 					atualizaUsuarios();
 				}
 
@@ -250,7 +270,7 @@ public class SvnAclGUI {
 	}
 
 	private void adicionarDiretorios() {
-		listarDiretorios = gerenciadorDePermissoes.listaDiretorios();
+		listarDiretorios = getGerenciadorDePermissoes().listaDiretorios();
 		for (String diretorios : listarDiretorios) {
 			((DefaultListModel<String>) listaDiretorios.getModel()).addElement(diretorios);
 		}
@@ -268,7 +288,7 @@ public class SvnAclGUI {
 					JOptionPane.showMessageDialog(null, "Selecione um diretório", "Adicionar",
 							JOptionPane.ERROR_MESSAGE);
 				} else {
-					AdicionarEmDiretorio dialog = new AdicionarEmDiretorio(SvnAclGUI.this, gerenciadorDeGrupos);
+					AdicionarEmDiretorio dialog = new AdicionarEmDiretorio(SvnAclGUI.this);
 					dialog.setModal(true);
 					dialog.setVisible(true);
 				}
@@ -287,7 +307,7 @@ public class SvnAclGUI {
 					JOptionPane.showMessageDialog(null, "Selecione um grupo ou usuário", "Adicionar",
 							JOptionPane.ERROR_MESSAGE);
 				} else {
-					AlteraPermissoes dialog = new AlteraPermissoes(SvnAclGUI.this, gerenciadorDeGrupos);
+					AlteraPermissoes dialog = new AlteraPermissoes(SvnAclGUI.this);
 					dialog.setModal(true);
 					dialog.setVisible(true);
 				}
@@ -362,7 +382,7 @@ public class SvnAclGUI {
 	}
 
 	public GerenciadorDeGrupos getGerenciadorDeGrupos() {
-		return gerenciadorDeGrupos;
+		return gerenciador.getGerenciadorDeGrupos();
 	}
 
 	public void setGrupoSelecionado(String grupoSelecionado) {
@@ -381,7 +401,7 @@ public class SvnAclGUI {
 	}
 
 	public GerenciadorDePermissoes getGerenciadorDePermissoes() {
-		return gerenciadorDePermissoes;
+		return gerenciador.getGerenciadorDePermissoes();
 	}
 
 	public void setDiretorioSelecionado(String diretorioSelecionado) {
@@ -421,11 +441,21 @@ public class SvnAclGUI {
 	}
 
 	public void atulizaListaGrupos() {
-		listarGrupos = gerenciadorDeGrupos.listarGrupos();
+		listarGrupos = getGerenciadorDeGrupos().listarGrupos();
 	}
 	
 	public void atulizaListaDiretorios() {
-		listarDiretorios = gerenciadorDePermissoes.listaDiretorios();
+		listarDiretorios = getGerenciadorDePermissoes().listaDiretorios();
+	}
+
+	private void adicionarEventoFinal() {
+		frame.addWindowListener(new WindowAdapter() {
+			@Override
+			public void windowClosing(WindowEvent windowEvent) {
+					gerenciador.apagaArquivosDeGerenciamento();
+					System.exit(0);
+			}
+		});
 	}
 
 }
