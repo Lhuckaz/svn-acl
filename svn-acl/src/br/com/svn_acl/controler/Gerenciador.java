@@ -26,6 +26,7 @@ public class Gerenciador {
 	private BufferedReader leitor;
 
 	public Gerenciador(String arquivo) {
+		apagaArquivosDeGerenciamento();
 		String adicionaArquivoParaSincronizar = adicionaArquivoParaSincronizar(arquivo);
 		gerenciadorDeGrupos = new GerenciadorDeGrupos(adicionaArquivoParaSincronizar);
 		gerenciadorDePermissoes = new GerenciadorDePermissoes(adicionaArquivoParaSincronizar);
@@ -158,9 +159,11 @@ public class Gerenciador {
 	}
 
 	public void apagaArquivosDeGerenciamento() {
-		String caminhoArquivo = arquivo.getAbsolutePath();
-		apagaArquivoSincronizacao(caminhoArquivo);
-		apagaArquivoSaida(caminhoArquivo);
+		if (arquivo != null) {
+			String caminhoArquivo = arquivo.getAbsolutePath();
+			apagaArquivoSincronizacao(caminhoArquivo);
+			apagaArquivoSaida(caminhoArquivo);
+		}
 	}
 
 }

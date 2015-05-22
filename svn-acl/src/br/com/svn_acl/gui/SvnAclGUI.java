@@ -430,7 +430,8 @@ public class SvnAclGUI {
 		for (String usuarios : listarGrupos) {
 			((DefaultListModel<String>) listaGrupos.getModel()).addElement(usuarios);
 		}
-
+		//atualiza lista de usuarios se caso mudar de arquivo
+		listaGrupoListener.atualizaUsuarios(listarGrupos.get(0));
 	}
 
 	public void atualizaDiretorios() {
@@ -439,6 +440,8 @@ public class SvnAclGUI {
 		for (String diretorios : listarDiretorios) {
 			((DefaultListModel<String>) listaDiretorios.getModel()).addElement(diretorios);
 		}
+		//atualiza lista de permissoes se caso mudar de arquivo
+		listaDiretoriosListener.atualizaPermissoes(listarDiretorios.get(0));
 	}
 
 	public void atulizaListaGrupos() {

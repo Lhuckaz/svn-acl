@@ -28,7 +28,7 @@ public class ListaDiretoriosListener implements ListSelectionListener {
 		}
 	}
 
-	private void atualizaPermissoes(String diretorioSelecionado) {
+	public void atualizaPermissoes(String diretorioSelecionado) {
 		List<String> listaPermissoesDiretorio = svnAclGUI.getGerenciadorDePermissoes()
 				.listaGruposEUserESuasPermissoesDeUmDiretorio(diretorioSelecionado);
 		svnAclGUI.setPermissoesDoDiretorio(listaPermissoesDiretorio);

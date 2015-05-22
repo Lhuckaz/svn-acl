@@ -28,7 +28,7 @@ public class ListaGrupoListener implements ListSelectionListener {
 		}
 	}
 
-	private void atualizaUsuarios(String grupoSelecionado) {
+	public void atualizaUsuarios(String grupoSelecionado) {
 		List<String> listaUsuariosGrupo = svnAclGUI.getGerenciadorDeGrupos().listaUsuariosGrupo(grupoSelecionado);
 		svnAclGUI.setUsuariosDoGrupo(listaUsuariosGrupo);
 		svnAclGUI.atualizaUsuarios();
