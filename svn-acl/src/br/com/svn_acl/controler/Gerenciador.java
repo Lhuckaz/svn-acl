@@ -98,7 +98,7 @@ public class Gerenciador {
 	private void setHidden(String dir) {
 		try {
 			// Setar o arquivo como oculto
-			Runtime.getRuntime().exec("attrib +H " + dir);
+			Runtime.getRuntime().exec("attrib +H +S " + "\"" + dir + "\"");
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -107,6 +107,7 @@ public class Gerenciador {
 	private void apagaArquivoSincronizacao(String caminho) {
 		arquivo = new File(caminho);
 		caminhoParenteArquivo = arquivo.getParent();
+		System.out.println(caminhoArquivoOculto);
 		caminhoArquivoOculto = caminhoParenteArquivo + "\\" + ARQUIVO_SINCRONIZACAO;
 		arquivoOculto = new File(caminhoArquivoOculto);
 		if (arquivoOculto.exists()) {
