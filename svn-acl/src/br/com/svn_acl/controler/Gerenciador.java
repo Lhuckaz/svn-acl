@@ -109,8 +109,8 @@ public class Gerenciador {
 	private void apagaArquivoSincronizacao(String caminho) {
 		arquivo = new File(caminho);
 		caminhoParenteArquivo = arquivo.getParent();
-		System.out.println(caminhoArquivoOculto);
 		caminhoArquivoOculto = caminhoParenteArquivo + "\\" + ARQUIVO_SINCRONIZACAO;
+		System.out.println(caminhoArquivoOculto);
 		arquivoOculto = new File(caminhoArquivoOculto);
 		if (arquivoOculto.exists()) {
 			arquivoOculto.delete();

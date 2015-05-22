@@ -35,7 +35,7 @@ public class MenuItemMenuListener implements ActionListener {
 		chooser.setMultiSelectionEnabled(false);
 
 		// Filtro de extensoes para selecionar somente arquivos acl
-		FileNameExtensionFilter filter = new FileNameExtensionFilter("ACL Files", "acl");
+		FileNameExtensionFilter filter = new FileNameExtensionFilter("ACL Files (*.acl)", "acl");
 		chooser.setFileFilter(filter);
 
 		Object open = e.getSource();
