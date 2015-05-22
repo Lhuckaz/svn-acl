@@ -4,8 +4,10 @@ import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.GridLayout;
+import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.util.List;
@@ -21,6 +23,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTabbedPane;
+import javax.swing.KeyStroke;
 import javax.swing.ListSelectionModel;
 
 import br.com.svn_acl.controler.Gerenciador;
@@ -159,9 +162,12 @@ public class SvnAclGUI {
 		jMenuArquivos = new JMenu("Arquivo");
 		jMenuItemAbrir = new JMenuItem("Abrir");
 		jMenuItemAbrir.addActionListener(menuItemMenuListener);
+		jMenuItemAbrir.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_O, Toolkit.getDefaultToolkit()
+				.getMenuShortcutKeyMask()));
 		jMenuItemSalvar = new JMenuItem("Salvar");
 		jMenuItemSalvar.addActionListener(menuItemMenuListener);
-
+		jMenuItemSalvar.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_S, Toolkit.getDefaultToolkit()
+				.getMenuShortcutKeyMask()));
 		jMenuArquivos.add(jMenuItemAbrir);
 		jMenuArquivos.add(jMenuItemSalvar);
 
@@ -212,7 +218,8 @@ public class SvnAclGUI {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				if (getGrupoSelecionado().equals("")) {
-					JOptionPane.showMessageDialog(null, "Selecione um grupo", "Adicionar", JOptionPane.ERROR_MESSAGE);
+					JOptionPane.showMessageDialog(getFrame(), "Selecione um grupo", "Adicionar",
+							JOptionPane.ERROR_MESSAGE);
 				} else {
 					// getGerenciadorDeGrupos().adicionaUsuarioNoGrupo(getGrupoSelecionado(),
 					// getUsuarioSelecionado());
@@ -227,9 +234,11 @@ public class SvnAclGUI {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				if (getGrupoSelecionado().equals("")) {
-					JOptionPane.showMessageDialog(null, "Selecione um grupo", "Remover", JOptionPane.ERROR_MESSAGE);
+					JOptionPane.showMessageDialog(getFrame(), "Selecione um grupo", "Remover",
+							JOptionPane.ERROR_MESSAGE);
 				} else if (getUsuarioSelecionado().equals("")) {
-					JOptionPane.showMessageDialog(null, "Selecione um usuário", "Remover", JOptionPane.ERROR_MESSAGE);
+					JOptionPane.showMessageDialog(getFrame(), "Selecione um usuário", "Remover",
+							JOptionPane.ERROR_MESSAGE);
 				} else {
 					getGerenciadorDeGrupos().removeUsuarioDoGrupo(getGrupoSelecionado(), getUsuarioSelecionado());
 					gerenciador.atualizaArquivo();
@@ -285,7 +294,7 @@ public class SvnAclGUI {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				if (getDiretorioSelecionado().equals("")) {
-					JOptionPane.showMessageDialog(null, "Selecione um diretório", "Adicionar",
+					JOptionPane.showMessageDialog(getFrame(), "Selecione um diretório", "Adicionar",
 							JOptionPane.ERROR_MESSAGE);
 				} else {
 					AdicionarEmDiretorio dialog = new AdicionarEmDiretorio(SvnAclGUI.this);
@@ -301,10 +310,10 @@ public class SvnAclGUI {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				if (getDiretorioSelecionado().equals("")) {
-					JOptionPane.showMessageDialog(null, "Selecione um diretorio", "Adicionar",
+					JOptionPane.showMessageDialog(getFrame(), "Selecione um diretorio", "Adicionar",
 							JOptionPane.ERROR_MESSAGE);
 				} else if (getPermissoesSelecionada().equals("")) {
-					JOptionPane.showMessageDialog(null, "Selecione um grupo ou usuário", "Adicionar",
+					JOptionPane.showMessageDialog(getFrame(), "Selecione um grupo ou usuário", "Adicionar",
 							JOptionPane.ERROR_MESSAGE);
 				} else {
 					AlteraPermissoes dialog = new AlteraPermissoes(SvnAclGUI.this);
@@ -319,9 +328,10 @@ public class SvnAclGUI {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				if (getDiretorioSelecionado().equals("")) {
-					JOptionPane.showMessageDialog(null, "Selecione um diretorio", "Remover", JOptionPane.ERROR_MESSAGE);
+					JOptionPane.showMessageDialog(getFrame(), "Selecione um diretorio", "Remover",
+							JOptionPane.ERROR_MESSAGE);
 				} else if (getPermissoesSelecionada().equals("")) {
-					JOptionPane.showMessageDialog(null, "Selecione um grupo ou usuário", "Remover",
+					JOptionPane.showMessageDialog(getFrame(), "Selecione um grupo ou usuário", "Remover",
 							JOptionPane.ERROR_MESSAGE);
 				} else {
 					// TODO Excluir um grupo ou diretorio

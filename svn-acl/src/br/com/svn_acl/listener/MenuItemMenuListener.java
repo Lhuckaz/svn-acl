@@ -77,8 +77,8 @@ public class MenuItemMenuListener implements ActionListener {
 
 	private void verficaSeExisteESalva(File selectedFile) {
 		if (selectedFile.exists()) {
-			int confirmar = JOptionPane.showConfirmDialog(null, "Arquivo já existe\nDeseja sobrescrever ?", "Salvar",
-					JOptionPane.YES_NO_OPTION);
+			int confirmar = JOptionPane.showConfirmDialog(svnAclGUI.getFrame(),
+					"Arquivo já existe\nDeseja sobrescrever ?", "Salvar", JOptionPane.YES_NO_OPTION);
 			desejaSobrescrever(confirmar, selectedFile);
 
 		} else {
@@ -99,7 +99,11 @@ public class MenuItemMenuListener implements ActionListener {
 		FileReader fileReader = null;
 		FileWriter fileWriter = null;
 		BufferedReader leitor = null;
-
+		if (Gerenciador.getCaminhoSaidaOculto(true) == null) {
+			JOptionPane.showMessageDialog(svnAclGUI.getFrame(), "Não foi possível salvar!", "Nenhum arquivo selecionado",
+					JOptionPane.ERROR_MESSAGE);
+			return;
+		}
 		try {
 			fileReader = new FileReader(Gerenciador.getCaminhoSaidaOculto(true));
 			fileWriter = new FileWriter(selectedFile);
