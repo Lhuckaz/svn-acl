@@ -10,6 +10,7 @@ import java.io.IOException;
 
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
+import javax.swing.filechooser.FileNameExtensionFilter;
 
 import br.com.svn_acl.controler.Gerenciador;
 import br.com.svn_acl.gui.SvnAclGUI;
@@ -32,6 +33,10 @@ public class MenuItemMenuListener implements ActionListener {
 		chooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
 		// Para selecionar apenas um diretorio ou arquivo
 		chooser.setMultiSelectionEnabled(false);
+
+		// Filtro de extensoes para selecionar somente arquivos acl
+		FileNameExtensionFilter filter = new FileNameExtensionFilter("ACL Files", "acl");
+		chooser.setFileFilter(filter);
 
 		Object open = e.getSource();
 		// MenuItem abrir
@@ -90,7 +95,7 @@ public class MenuItemMenuListener implements ActionListener {
 	}
 
 	private void salvarArquivo(File selectedFile) {
-		
+
 		FileReader fileReader = null;
 		FileWriter fileWriter = null;
 		BufferedReader leitor = null;
