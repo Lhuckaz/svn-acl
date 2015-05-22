@@ -178,7 +178,7 @@ public class GerenciadorDeGrupos {
 		if (!procuraSeUsuarioPartDoGrupo(grupo, usuario)) {
 			try {
 				fileReader = new FileReader(file);
-				fileWriter = new FileWriter(new File(Gerenciador.getCaminhoSaidaOculto()));
+				fileWriter = new FileWriter(new File(Gerenciador.getCaminhoSaidaOculto(false)));
 				leitor = new BufferedReader(fileReader);
 				String line = "";
 				while ((line = leitor.readLine()) != null) {
@@ -195,6 +195,7 @@ public class GerenciadorDeGrupos {
 				try {
 					fileWriter.close();
 					fileReader.close();
+					leitor.close();
 				} catch (IOException e) {
 					e.printStackTrace();
 				}
@@ -227,7 +228,7 @@ public class GerenciadorDeGrupos {
 		if (procuraSeUsuarioPartDoGrupo(grupo, usuario)) {
 			try {
 				fileReader = new FileReader(file);
-				fileWriter = new FileWriter(new File(Gerenciador.getCaminhoSaidaOculto()));
+				fileWriter = new FileWriter(new File(Gerenciador.getCaminhoSaidaOculto(false)));
 				leitor = new BufferedReader(fileReader);
 				String line = "";
 				while ((line = leitor.readLine()) != null) {
@@ -249,6 +250,7 @@ public class GerenciadorDeGrupos {
 				try {
 					fileWriter.close();
 					fileReader.close();
+					leitor.close();
 				} catch (IOException e) {
 					e.printStackTrace();
 				}
@@ -347,7 +349,7 @@ public class GerenciadorDeGrupos {
 		List<String> listaGruposDoUsuario = listaGruposDoUsuario(usuario);
 		try {
 			fileReader = new FileReader(file);
-			fileWriter = new FileWriter(new File(Gerenciador.getCaminhoSaidaOculto()));
+			fileWriter = new FileWriter(new File(Gerenciador.getCaminhoSaidaOculto(false)));
 			leitor = new BufferedReader(fileReader);
 			String line = "";
 			while ((line = leitor.readLine()) != null) {
@@ -376,6 +378,7 @@ public class GerenciadorDeGrupos {
 			try {
 				fileWriter.close();
 				fileReader.close();
+				leitor.close();
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
@@ -436,7 +439,7 @@ public class GerenciadorDeGrupos {
 		}
 		try {
 			fileReader = new FileReader(file);
-			fileWriter = new FileWriter(new File(Gerenciador.getCaminhoSaidaOculto()));
+			fileWriter = new FileWriter(new File(Gerenciador.getCaminhoSaidaOculto(false)));
 			leitor = new BufferedReader(fileReader);
 			String line = "";
 			while ((line = leitor.readLine()) != null) {
@@ -454,6 +457,7 @@ public class GerenciadorDeGrupos {
 			try {
 				fileWriter.close();
 				fileReader.close();
+				leitor.close();
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
@@ -463,7 +467,7 @@ public class GerenciadorDeGrupos {
 	public void removeGrupoEPermissoes(String grupo) {
 		try {
 			fileReader = new FileReader(file);
-			fileWriter = new FileWriter(new File(Gerenciador.getCaminhoSaidaOculto()));
+			fileWriter = new FileWriter(new File(Gerenciador.getCaminhoSaidaOculto(false)));
 			leitor = new BufferedReader(fileReader);
 			String line = "";
 			while ((line = leitor.readLine()) != null) {
@@ -479,6 +483,7 @@ public class GerenciadorDeGrupos {
 			try {
 				fileWriter.close();
 				fileReader.close();
+				leitor.close();
 			} catch (IOException e) {
 				e.printStackTrace();
 			}

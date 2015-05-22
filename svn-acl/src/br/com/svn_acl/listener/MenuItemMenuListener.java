@@ -2,14 +2,19 @@ package br.com.svn_acl.listener;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileOutputStream;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.nio.charset.Charset;
 
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 
+import br.com.svn_acl.controler.Gerenciador;
 import br.com.svn_acl.gui.SvnAclGUI;
 import br.com.svn_acl.util.Diretorios;
 
@@ -88,12 +93,35 @@ public class MenuItemMenuListener implements ActionListener {
 	}
 
 	private void salvarArquivo(File selectedFile) {
-		try (FileOutputStream fos = new FileOutputStream(selectedFile);
-				OutputStreamWriter out = new OutputStreamWriter(fos, Charset.forName("UTF-8"))) {
-			out.write(/* TODO arquivo de saisa */"");
-			Diretorios.setDiretorioCorrente(selectedFile.getAbsolutePath());
-		} catch (Exception e) {
+		
+		FileReader fileReader = null;
+		FileWriter fileWriter = null;
+		BufferedReader leitor = null;
+
+		try {
+			fileReader = new FileReader(Gerenciador.getCaminhoSaidaOculto(true));
+			fileWriter = new FileWriter(selectedFile);
+			leitor = new BufferedReader(fileReader);
+			String line = "";
+			while ((line = leitor.readLine()) != null) {
+				fileWriter.write(line + "\r\n");
+			}
+
+		} catch (IOException e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				fileWriter.close();
+				fileReader.close();
+				leitor.close();
+				fileWriter = null;
+				fileReader = null;
+				leitor = null;
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
 		}
+
 	}
 
 	/**

@@ -118,7 +118,7 @@ public class GerenciadorDePermissoes {
 			try {
 				fileReader = new FileReader(file);
 				leitor = new BufferedReader(fileReader);
-				fileWriter = new FileWriter(new File("svn2.acl"));
+				fileWriter = new FileWriter(new File(Gerenciador.getCaminhoSaidaOculto(false)));
 				String line = "";
 				while ((line = leitor.readLine()) != null) {
 					if (line.matches("^.*.+:.*") && line.startsWith("[") && line.equals("[" + diretorio + "]")) {
@@ -215,7 +215,7 @@ public class GerenciadorDePermissoes {
 			try {
 				fileReader = new FileReader(file);
 				leitor = new BufferedReader(fileReader);
-				fileWriter = new FileWriter(new File("svn2.acl"));
+				fileWriter = new FileWriter(new File(Gerenciador.getCaminhoSaidaOculto(false)));
 				String line = "";
 				while ((line = leitor.readLine()) != null) {
 					if (line.equals("[" + diretorio + "]")) {
@@ -260,7 +260,7 @@ public class GerenciadorDePermissoes {
 			try {
 				fileReader = new FileReader(file);
 				leitor = new BufferedReader(fileReader);
-				fileWriter = new FileWriter(new File("svn2.acl"));
+				fileWriter = new FileWriter(new File(Gerenciador.getCaminhoSaidaOculto(false)));
 				String line = "";
 				while ((line = leitor.readLine()) != null) {
 					if (line.equals("[" + diretorio + "]")) {
@@ -301,7 +301,7 @@ public class GerenciadorDePermissoes {
 			try {
 				fileReader = new FileReader(file);
 				leitor = new BufferedReader(fileReader);
-				fileWriter = new FileWriter(new File("svn2.acl"));
+				fileWriter = new FileWriter(new File(Gerenciador.getCaminhoSaidaOculto(false)));
 				String line = "";
 				while ((line = leitor.readLine()) != null) {
 					if (line.matches("^.*.+:.*") && line.startsWith("[") && line.equals("[" + diretorio + "]")) {

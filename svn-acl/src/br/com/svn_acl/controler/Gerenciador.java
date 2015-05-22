@@ -40,9 +40,10 @@ public class Gerenciador {
 	public GerenciadorDePermissoes getGerenciadorDePermissoes() {
 		return gerenciadorDePermissoes;
 	}
-
-	public static String getCaminhoSaidaOculto() {
-		apagaArquivoSaida(arquivo.getAbsolutePath());
+	
+	public static String getCaminhoSaidaOculto(boolean saida) {
+		if(saida == false)
+			apagaArquivoSaida(arquivo.getAbsolutePath());
 		return caminhoSaidaOculto;
 	}
 

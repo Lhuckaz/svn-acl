@@ -137,7 +137,7 @@ public class SvnAclGUI {
 	}
 
 	// TODO ERROR carrega duas vezes o mesmo arquivo (consertado!)
-	boolean teste = true;
+	private boolean teste = true;
 
 	public void carregaArquivo(String arquivo) {
 		gerenciador = new Gerenciador(arquivo);
@@ -231,10 +231,9 @@ public class SvnAclGUI {
 				} else if (getUsuarioSelecionado().equals("")) {
 					JOptionPane.showMessageDialog(null, "Selecione um usuário", "Remover", JOptionPane.ERROR_MESSAGE);
 				} else {
-
 					getGerenciadorDeGrupos().removeUsuarioDoGrupo(getGrupoSelecionado(), getUsuarioSelecionado());
 					gerenciador.atualizaArquivo();
-					atualizaUsuarios();
+					listaGrupoListener.atualizaUsuarios(grupoSelecionado);
 				}
 
 			}
