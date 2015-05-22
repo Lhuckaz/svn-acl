@@ -216,7 +216,7 @@ public class SvnAclGUI {
 				} else {
 					// getGerenciadorDeGrupos().adicionaUsuarioNoGrupo(getGrupoSelecionado(),
 					// getUsuarioSelecionado());
-					atualizaUsuarios();
+					// atualizaUsuarios();
 				}
 
 			}
@@ -357,12 +357,24 @@ public class SvnAclGUI {
 		return grupoSelecionado;
 	}
 
+	public void setGrupoSelecionado(String grupoSelecionado) {
+		this.grupoSelecionado = grupoSelecionado;
+	}
+
 	public String getDiretorioSelecionado() {
 		return diretorioSelecionado;
 	}
 
+	public void setDiretorioSelecionado(String diretorioSelecionado) {
+		this.diretorioSelecionado = diretorioSelecionado;
+	}
+
 	public String getPermissoesSelecionada() {
 		return permissoesSelecionada;
+	}
+
+	public void setPermissoesSelecionada(String permissoesSelecionada) {
+		this.permissoesSelecionada = permissoesSelecionada;
 	}
 
 	public String getUsuarioSelecionado() {
@@ -385,12 +397,44 @@ public class SvnAclGUI {
 		return gerenciador.getGerenciadorDeGrupos();
 	}
 
-	public void setGrupoSelecionado(String grupoSelecionado) {
-		this.grupoSelecionado = grupoSelecionado;
+	public GerenciadorDePermissoes getGerenciadorDePermissoes() {
+		return gerenciador.getGerenciadorDePermissoes();
 	}
 
 	public void setUsuariosDoGrupo(List<String> listaUsuariosGrupo) {
 		this.listaUsuariosGrupo = listaUsuariosGrupo;
+	}
+
+	public void setPermissoesDoDiretorio(List<String> listaPermissaoDiretorio) {
+		this.listaPermissaoDiretorio = listaPermissaoDiretorio;
+	}
+
+	public void atualizaGrupos() {
+		((DefaultListModel<String>) listaGrupos.getModel()).removeAllElements();
+		List<String> listarGrupos = getListarGrupos();
+		for (String usuarios : listarGrupos) {
+			((DefaultListModel<String>) listaGrupos.getModel()).addElement(usuarios);
+		}
+		// atualiza lista de usuarios se caso mudar de arquivo
+		listaGrupoListener.atualizaUsuarios(listarGrupos.get(0));
+	}
+
+	public void atulizaListaGrupos() {
+		listarGrupos = getGerenciadorDeGrupos().listarGrupos();
+	}
+
+	public void atualizaDiretorios() {
+		((DefaultListModel<String>) listaDiretorios.getModel()).removeAllElements();
+		List<String> listarDiretorios = getListarDiretorios();
+		for (String diretorios : listarDiretorios) {
+			((DefaultListModel<String>) listaDiretorios.getModel()).addElement(diretorios);
+		}
+		// atualiza lista de permissoes se caso mudar de arquivo
+		listaDiretoriosListener.atualizaPermissoes(listarDiretorios.get(0));
+	}
+
+	public void atulizaListaDiretorios() {
+		listarDiretorios = getGerenciadorDePermissoes().listaDiretorios();
 	}
 
 	public void atualizaUsuarios() {
@@ -400,55 +444,11 @@ public class SvnAclGUI {
 		}
 	}
 
-	public GerenciadorDePermissoes getGerenciadorDePermissoes() {
-		return gerenciador.getGerenciadorDePermissoes();
-	}
-
-	public void setDiretorioSelecionado(String diretorioSelecionado) {
-		this.diretorioSelecionado = diretorioSelecionado;
-	}
-
-	public void setPermissoesDoDiretorio(List<String> listaPermissaoDiretorio) {
-		this.listaPermissaoDiretorio = listaPermissaoDiretorio;
-	}
-
-	public void setPermissoesSelecionada(String permissoesSelecionada) {
-		this.permissoesSelecionada = permissoesSelecionada;
-	}
-
 	public void atualizaPermissoes() {
 		((DefaultListModel<String>) listaPermissoes.getModel()).removeAllElements();
 		for (String usuarios : listaPermissaoDiretorio) {
 			((DefaultListModel<String>) listaPermissoes.getModel()).addElement(usuarios);
 		}
-	}
-
-	public void atualizaGrupos() {
-		((DefaultListModel<String>) listaGrupos.getModel()).removeAllElements();
-		List<String> listarGrupos = getListarGrupos();
-		for (String usuarios : listarGrupos) {
-			((DefaultListModel<String>) listaGrupos.getModel()).addElement(usuarios);
-		}
-		//atualiza lista de usuarios se caso mudar de arquivo
-		listaGrupoListener.atualizaUsuarios(listarGrupos.get(0));
-	}
-
-	public void atualizaDiretorios() {
-		((DefaultListModel<String>) listaDiretorios.getModel()).removeAllElements();
-		List<String> listarDiretorios = getListarDiretorios();
-		for (String diretorios : listarDiretorios) {
-			((DefaultListModel<String>) listaDiretorios.getModel()).addElement(diretorios);
-		}
-		//atualiza lista de permissoes se caso mudar de arquivo
-		listaDiretoriosListener.atualizaPermissoes(listarDiretorios.get(0));
-	}
-
-	public void atulizaListaGrupos() {
-		listarGrupos = getGerenciadorDeGrupos().listarGrupos();
-	}
-
-	public void atulizaListaDiretorios() {
-		listarDiretorios = getGerenciadorDePermissoes().listaDiretorios();
 	}
 
 	private void adicionarEventoFinal() {
