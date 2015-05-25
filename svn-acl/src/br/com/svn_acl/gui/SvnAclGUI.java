@@ -23,6 +23,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTabbedPane;
+import javax.swing.JTextField;
 import javax.swing.KeyStroke;
 import javax.swing.ListSelectionModel;
 
@@ -34,6 +35,8 @@ import br.com.svn_acl.listener.ListaGrupoListener;
 import br.com.svn_acl.listener.ListaPermissoesListener;
 import br.com.svn_acl.listener.ListaUsuariosListener;
 import br.com.svn_acl.listener.MenuItemMenuListener;
+import br.com.svn_acl.util.DefineTamanhoJTextField;
+import br.com.svn_acl.util.Util;
 
 public class SvnAclGUI {
 
@@ -81,6 +84,8 @@ public class SvnAclGUI {
 	private String usuarioSelecionado = "";
 	private String diretorioSelecionado = "";
 	private String permissoesSelecionada = "";
+
+	private JTextField usuarioParaAdicionar;
 
 	private Gerenciador gerenciador;
 	private List<String> listarGrupos;
@@ -212,6 +217,8 @@ public class SvnAclGUI {
 	private void adicionaBotoesEmGrupos() {
 		JPanel painelBotoesGrupos = new JPanel();
 		painelBotoesGrupos.setLayout(new FlowLayout(FlowLayout.RIGHT));
+		usuarioParaAdicionar = new JTextField(15);
+		usuarioParaAdicionar.setDocument(new DefineTamanhoJTextField(25));
 		JButton botaoAdicionar = new JButton("Adicionar");
 		botaoAdicionar.addActionListener(new ActionListener() {
 
@@ -220,12 +227,36 @@ public class SvnAclGUI {
 				if (getGrupoSelecionado().equals("")) {
 					JOptionPane.showMessageDialog(getFrame(), "Selecione um grupo", "Adicionar",
 							JOptionPane.ERROR_MESSAGE);
+				} else if (usuarioParaAdicionar.getText().trim().replaceAll(" ", "").equals("")) {
+					// JOptionPane.showMessageDialog(getFrame(), "Escreve o nome do usuário", "Adicionar", JOptionPane.ERROR_MESSAGE);
 				} else {
-					// getGerenciadorDeGrupos().adicionaUsuarioNoGrupo(getGrupoSelecionado(),
-					// getUsuarioSelecionado());
-					// atualizaUsuarios();
+					boolean usuarioExiste = getGerenciadorDeGrupos().usuarioExiste(usuarioParaAdicionar.getText());
+					if (!usuarioExiste) {
+						int confirmar = JOptionPane.showConfirmDialog(getFrame(),
+								"Usuário \"" + usuarioParaAdicionar.getText()
+										+ "\" ainda nao existe\nDeseja adicionar assim mesmo ?", "Adicionar",
+								JOptionPane.YES_NO_OPTION);
+						if (confirmar == 0)
+							adicionaUsuario();
+					} else {
+						adicionaUsuario();
+					}
 				}
 
+			}
+
+			private void adicionaUsuario() {
+				boolean adicionou = getGerenciadorDeGrupos().adicionaUsuarioNoGrupo(getGrupoSelecionado(),
+						usuarioParaAdicionar.getText());
+				if (adicionou) {
+					// JOptionPane.showMessageDialog(getFrame(), "Adicionado " + usuarioParaAdicionar.getText() + " ao grupo " + getGrupoSelecionado(), "Adicionar", JOptionPane.INFORMATION_MESSAGE);
+				} else {
+					JOptionPane.showMessageDialog(getFrame(),
+							"Não foi possivel adicionar\nVerifique se o usuário já participa do grupo", "Adicionar",
+							JOptionPane.ERROR_MESSAGE);
+				}
+				gerenciador.atualizaArquivo();
+				listaGrupoListener.atualizaUsuarios(getGrupoSelecionado());
 			}
 		});
 		JButton botaoRemover = new JButton("Remover");
@@ -242,11 +273,12 @@ public class SvnAclGUI {
 				} else {
 					getGerenciadorDeGrupos().removeUsuarioDoGrupo(getGrupoSelecionado(), getUsuarioSelecionado());
 					gerenciador.atualizaArquivo();
-					listaGrupoListener.atualizaUsuarios(grupoSelecionado);
+					listaGrupoListener.atualizaUsuarios(getGrupoSelecionado());
 				}
 
 			}
 		});
+		painelBotoesGrupos.add(usuarioParaAdicionar);
 		painelBotoesGrupos.add(botaoAdicionar);
 		painelBotoesGrupos.add(botaoRemover);
 		jPanelPrincipalGrupos.add(painelBotoesGrupos, BorderLayout.SOUTH);
@@ -316,9 +348,12 @@ public class SvnAclGUI {
 					JOptionPane.showMessageDialog(getFrame(), "Selecione um grupo ou usuário", "Adicionar",
 							JOptionPane.ERROR_MESSAGE);
 				} else {
-					AlteraPermissoes dialog = new AlteraPermissoes(SvnAclGUI.this);
-					dialog.setModal(true);
+					String grupoOuUser = Util.getGrupoOuUser(getPermissoesSelecionada());
+					AlteraPermissoes dialog = new AlteraPermissoes(SvnAclGUI.this, getDiretorioSelecionado(), grupoOuUser);
 					dialog.setVisible(true);
+					gerenciador.atualizaArquivo();
+					listaDiretoriosListener.atualizaPermissoes(getDiretorioSelecionado());
+					//dialog = null;
 				}
 			}
 		});
@@ -334,7 +369,10 @@ public class SvnAclGUI {
 					JOptionPane.showMessageDialog(getFrame(), "Selecione um grupo ou usuário", "Remover",
 							JOptionPane.ERROR_MESSAGE);
 				} else {
-					// TODO Excluir um grupo ou diretorio
+					String grupoOuUser = Util.getGrupoOuUser(getPermissoesSelecionada());
+					getGerenciadorDePermissoes().removeGrupoOuUserDoDir(getDiretorioSelecionado(), grupoOuUser);
+					gerenciador.atualizaArquivo();
+					listaDiretoriosListener.atualizaPermissoes(getDiretorioSelecionado());
 				}
 			}
 		});

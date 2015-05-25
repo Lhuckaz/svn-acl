@@ -58,25 +58,25 @@ public class GerenciadorDePermissoes {
 		List<String> gruposRetorno = new ArrayList<>();
 		for (String grupo : grupos) {
 			String[] split = grupo.trim().replaceAll(" ", "").split("=");
-			if(split[0].startsWith("@")) {
+			if (split[0].startsWith("@")) {
 				gruposRetorno.add(split[0]);
 			}
 		}
 		return gruposRetorno;
 	}
-	
+
 	public List<String> listaUsuariosDeUmDiretorio(String diretorio) {
 		List<String> grupos = new ArrayList<>(listaGruposEUserESuasPermissoesDeUmDiretorio(diretorio));
 		List<String> gruposRetorno = new ArrayList<>();
 		for (String grupo : grupos) {
 			String[] split = grupo.trim().replaceAll(" ", "").split("=");
-			if(!split[0].startsWith("@")) {
+			if (!split[0].startsWith("@")) {
 				gruposRetorno.add(split[0]);
 			}
 		}
 		return gruposRetorno;
 	}
-	
+
 	public List<String> listaGruposEUserESuasPermissoesDeUmDiretorio(String diretorio) {
 		List<String> grupos = new ArrayList<>();
 		try {
@@ -128,10 +128,13 @@ public class GerenciadorDePermissoes {
 							if (line.contains(grupo + " ")) {
 								String[] linha = line.trim().replace(" ", "").split("=");
 								fileWriter.write(linha[0] + " = " + permissao + "\r\n");
+							} else {
+								fileWriter.write(line + "\r\n");
 							}
 						}
 					}
-					fileWriter.write(line + "\r\n");
+					if (!(line == null))
+						fileWriter.write(line + "\r\n");
 				}
 			} catch (IOException e) {
 				e.printStackTrace();
@@ -225,9 +228,11 @@ public class GerenciadorDePermissoes {
 								fileWriter.write(line + "\r\n");
 							}
 						}
-						fileWriter.write("@" + grupo + " = " + permissao + "\r\n\r\n");
+						if (!(line == null))
+							fileWriter.write("@" + grupo + " = " + permissao + "\r\n\r\n");
 					} else {
-						fileWriter.write(line + "\r\n");
+						if (!(line == null))
+							fileWriter.write(line + "\r\n");
 					}
 				}
 			} catch (IOException e) {
@@ -270,9 +275,11 @@ public class GerenciadorDePermissoes {
 								fileWriter.write(line + "\r\n");
 							}
 						}
-						fileWriter.write(usuario + " = " + permissao + "\r\n\r\n");
+						if (!(line == null))
+							fileWriter.write(usuario + " = " + permissao + "\r\n\r\n");
 					} else {
-						fileWriter.write(line + "\r\n");
+						if (!(line == null))
+							fileWriter.write(line + "\r\n");
 					}
 				}
 			} catch (IOException e) {
@@ -309,14 +316,15 @@ public class GerenciadorDePermissoes {
 						while ((line = leitor.readLine()) != null && !line.startsWith("[") && !line.startsWith("#")
 								&& !line.trim().equals("")) {
 							if (line.contains(grupo + " ")) {
-								// nao escreve o grupo
+								// nao escreve o grupo/user
 							} else {
 								fileWriter.write(line + "\r\n");
 							}
 
 						}
 					}
-					fileWriter.write(line + "\r\n");
+					if (!(line == null))
+						fileWriter.write(line + "\r\n");
 				}
 			} catch (IOException e) {
 				e.printStackTrace();

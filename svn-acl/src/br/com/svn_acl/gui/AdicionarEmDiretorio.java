@@ -36,7 +36,7 @@ public class AdicionarEmDiretorio extends JDialog implements ActionListener {
 		Vector<String> listaUsuarios = new Vector<String>(owner.getGerenciadorDeGrupos().listarUsuarios());
 		final JComboBox<String> comboUsuarios = new JComboBox<>(listaUsuarios);
 
-		String[] permissoes = { "LEITURA", "LEITURA\\ESCRITA", "ESCRITA" };
+		String[] permissoes = { "LEITURA", "LEITURA/ESCRITA", "ESCRITA" };
 		final JComboBox<String> comboPermissoes = new JComboBox<>(permissoes);
 
 		final JButton botaoAdiciona = new JButton("Adicionar");

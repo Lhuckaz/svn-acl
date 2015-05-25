@@ -10,19 +10,29 @@ import javax.swing.JDialog;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
+import br.com.svn_acl.util.Util;
+
 public class AlteraPermissoes extends JDialog implements ActionListener {
 
 	/**
 	 * Serial Version
 	 */
 	private static final long serialVersionUID = 1L;
+	private JComboBox<String> comboPermissoes;
+	private String permissoes;
+	private String diretorioSelecionado;
+	private String grupoOuUser;
+	private SvnAclGUI owner;
 
-	public AlteraPermissoes(SvnAclGUI owner) {
+	public AlteraPermissoes(SvnAclGUI owner, String diretorioSelecionado, String grupoOuUser) {
 		super(owner.getFrame(), "Altera Permissoes", true);
+		this.owner = owner;
+		this.diretorioSelecionado = diretorioSelecionado;
+		this.grupoOuUser = grupoOuUser;
 		JPanel painelAlteraPermissoes = new JPanel(new FlowLayout());
 
-		String[] permissoes = { "LEITURA", "LEITURA\\ESCRITA", "ESCRITA" };
-		JComboBox<String> comboPermissoes = new JComboBox<>(permissoes);
+		String[] permissoes = { "LEITURA", "LEITURA/ESCRITA", "ESCRITA" };
+		comboPermissoes = new JComboBox<>(permissoes);
 
 		JButton botaoOk = new JButton("OK");
 		botaoOk.addActionListener(this);
@@ -33,12 +43,19 @@ public class AlteraPermissoes extends JDialog implements ActionListener {
 		getContentPane().add(painelAlteraPermissoes);
 		pack();
 		setLocationRelativeTo(owner.getFrame());
+		setModal(true);
 	}
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		// TODO Auto-generated method stub
+		permissoes = (String) comboPermissoes.getSelectedItem();
+		altera(diretorioSelecionado, grupoOuUser);
 		setVisible(false);
+	}
+
+	public void altera(String diretorioSelecionado, String grupoOuUser) {
+		String permissao = Util.getPermissao(permissoes);
+		owner.getGerenciadorDePermissoes().alteraPermissoesDoGrupoDoDir(diretorioSelecionado, grupoOuUser, permissao);
 	}
 
 }

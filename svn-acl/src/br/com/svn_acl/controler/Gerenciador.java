@@ -12,7 +12,7 @@ public class Gerenciador {
 	private static final String ARQUIVO_SAIDA = "~svn-saida.acl";
 
 	private static File arquivo;
-	private static String caminhoParenteArquivo;
+	// private static String caminhoParenteArquivo;
 
 	private File arquivoOculto;
 	private String caminhoArquivoOculto;
@@ -40,9 +40,9 @@ public class Gerenciador {
 	public GerenciadorDePermissoes getGerenciadorDePermissoes() {
 		return gerenciadorDePermissoes;
 	}
-	
+
 	public static String getCaminhoSaidaOculto(boolean saida) {
-		if(saida == false)
+		if (saida == false)
 			apagaArquivoSaida(arquivo.getAbsolutePath());
 		return caminhoSaidaOculto;
 	}
@@ -107,10 +107,13 @@ public class Gerenciador {
 	}
 
 	private void apagaArquivoSincronizacao(String caminho) {
+		// Arquivo criado no diretorio em que esta o arquivo ao qual foi aberto,
+		// nao e mais usado
 		arquivo = new File(caminho);
-		caminhoParenteArquivo = arquivo.getParent();
-		caminhoArquivoOculto = caminhoParenteArquivo + "\\" + ARQUIVO_SINCRONIZACAO;
-		System.out.println(caminhoArquivoOculto);
+		// caminhoParenteArquivo = arquivo.getParent();
+		// caminhoArquivoOculto = caminhoParenteArquivo + "\\" +
+		// ARQUIVO_SINCRONIZACAO;
+		caminhoArquivoOculto = ARQUIVO_SINCRONIZACAO;
 		arquivoOculto = new File(caminhoArquivoOculto);
 		if (arquivoOculto.exists()) {
 			arquivoOculto.delete();
@@ -118,9 +121,12 @@ public class Gerenciador {
 	}
 
 	private static void apagaArquivoSaida(String caminho) {
+		// Arquivo criado no diretorio em que esta o arquivo ao qual foi aberto,
+		// nao e mais usado
 		arquivo = new File(caminho);
-		caminhoParenteArquivo = arquivo.getParent();
-		caminhoSaidaOculto = caminhoParenteArquivo + "\\" + ARQUIVO_SAIDA;
+		// caminhoParenteArquivo = arquivo.getParent();
+		// caminhoSaidaOculto = caminhoParenteArquivo + "\\" + ARQUIVO_SAIDA;
+		caminhoSaidaOculto = ARQUIVO_SAIDA;
 		File paraApagar = new File(caminhoSaidaOculto);
 		if (paraApagar.exists()) {
 			paraApagar.delete();
