@@ -245,7 +245,6 @@ public class SvnAclGUI {
 						@Override
 						public void focusGained(FocusEvent e) {
 							Border border = BorderFactory.createLineBorder(Color.LIGHT_GRAY);
-							;
 							usuarioParaAdicionar.setBorder(border);
 						}
 					});
