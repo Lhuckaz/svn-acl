@@ -49,13 +49,8 @@ public class AlteraPermissoes extends JDialog implements ActionListener {
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		permissoes = (String) comboPermissoes.getSelectedItem();
-		altera(diretorioSelecionado, grupoOuUser);
-		setVisible(false);
-	}
-
-	public void altera(String diretorioSelecionado, String grupoOuUser) {
 		String permissao = Util.getPermissao(permissoes);
 		owner.getGerenciadorDePermissoes().alteraPermissoesDoGrupoDoDir(diretorioSelecionado, grupoOuUser, permissao);
+		setVisible(false);
 	}
-
 }

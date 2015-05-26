@@ -13,7 +13,10 @@ import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
 import javax.swing.JDialog;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+
+import br.com.svn_acl.util.Util;
 
 public class AdicionarEmDiretorio extends JDialog implements ActionListener {
 
@@ -21,30 +24,39 @@ public class AdicionarEmDiretorio extends JDialog implements ActionListener {
 	 * Serial Version
 	 */
 	private static final long serialVersionUID = 1L;
+	private SvnAclGUI owner;
+	private JCheckBox jCheckBoxUsuario;
+	private JComboBox<String> comboGrupos;
+	private JComboBox<String> comboUsuarios;
+	private JComboBox<String> comboPermissoes;
+	private String permissoes;
+	private String diretorio;
 
-	public AdicionarEmDiretorio(SvnAclGUI owner) {
+	public AdicionarEmDiretorio(SvnAclGUI owner, String diretorio) {
 		super(owner.getFrame(), "Adicionar em Diretorio", true);
+		this.owner = owner;
+		this.diretorio = diretorio;
 		JPanel painelAdiciona = new JPanel(new GridLayout(2, 1));
 		JPanel painelCheckUsuario = new JPanel(new FlowLayout(FlowLayout.LEFT));
 		final JPanel painelOpcoes = new JPanel(new FlowLayout());
 
 		final JLabel grupo = new JLabel("Grupo");
 		Vector<String> listarGrupos = new Vector<String>(owner.getGerenciadorDeGrupos().listarGrupos());
-		final JComboBox<String> comboGrupos = new JComboBox<>(listarGrupos);
+		comboGrupos = new JComboBox<>(listarGrupos);
 
 		final JLabel usuario = new JLabel("Usuario");
 		Vector<String> listaUsuarios = new Vector<String>(owner.getGerenciadorDeGrupos().listarUsuarios());
-		final JComboBox<String> comboUsuarios = new JComboBox<>(listaUsuarios);
+		comboUsuarios = new JComboBox<>(listaUsuarios);
 
 		String[] permissoes = { "LEITURA", "LEITURA/ESCRITA", "ESCRITA" };
-		final JComboBox<String> comboPermissoes = new JComboBox<>(permissoes);
+		comboPermissoes = new JComboBox<>(permissoes);
 
 		final JButton botaoAdiciona = new JButton("Adicionar");
 		botaoAdiciona.addActionListener(this);
 
 		final JLabel jLabelPermissoes = new JLabel("Permissões");
 
-		JCheckBox jCheckBoxUsuario = new JCheckBox("Adicionar Usuario");
+		jCheckBoxUsuario = new JCheckBox("Adicionar Usuario");
 		jCheckBoxUsuario.addItemListener(new ItemListener() {
 
 			@Override
@@ -92,11 +104,23 @@ public class AdicionarEmDiretorio extends JDialog implements ActionListener {
 		getContentPane().add(painelAdiciona);
 		pack();
 		setLocationRelativeTo(owner.getFrame());
+		setModal(true);
 	}
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		// TODO Auto-generated method stub
+		permissoes = (String) comboPermissoes.getSelectedItem();
+		String permissao = Util.getPermissao(permissoes);
+		boolean adicionou = true;
+		if(!jCheckBoxUsuario.isSelected()) {
+			String grupoSelecionado = (String) comboGrupos.getSelectedItem();
+			adicionou = owner.getGerenciadorDePermissoes().adicionaGrupoEPermissoesNoDiretorio(diretorio, grupoSelecionado, permissao);
+		} else {
+			String usuarioSelecionado = (String) comboUsuarios.getSelectedItem();
+			adicionou = owner.getGerenciadorDePermissoes().adicionaUserEPermissoesNoDiretorio(diretorio, usuarioSelecionado, permissao);
+		}
+		if(!adicionou)
+			JOptionPane.showMessageDialog(owner.getFrame(), "Não foi possivel adicionar\nVerifique se o grupo/usuário já tem permissões no diretório", "Adicionar", JOptionPane.ERROR_MESSAGE);
 		setVisible(false);
 	}
 

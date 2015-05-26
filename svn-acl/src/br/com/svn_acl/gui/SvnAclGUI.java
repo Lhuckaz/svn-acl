@@ -1,17 +1,21 @@
 package br.com.svn_acl.gui;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.GridLayout;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.FocusEvent;
+import java.awt.event.FocusListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.util.List;
 
+import javax.swing.BorderFactory;
 import javax.swing.DefaultListModel;
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -26,6 +30,7 @@ import javax.swing.JTabbedPane;
 import javax.swing.JTextField;
 import javax.swing.KeyStroke;
 import javax.swing.ListSelectionModel;
+import javax.swing.border.Border;
 
 import br.com.svn_acl.controler.Gerenciador;
 import br.com.svn_acl.controler.GerenciadorDeGrupos;
@@ -219,6 +224,7 @@ public class SvnAclGUI {
 		painelBotoesGrupos.setLayout(new FlowLayout(FlowLayout.RIGHT));
 		usuarioParaAdicionar = new JTextField(15);
 		usuarioParaAdicionar.setDocument(new DefineTamanhoJTextField(25));
+		usuarioParaAdicionar.setPreferredSize(new Dimension(0, 20));
 		JButton botaoAdicionar = new JButton("Adicionar");
 		botaoAdicionar.addActionListener(new ActionListener() {
 
@@ -228,7 +234,23 @@ public class SvnAclGUI {
 					JOptionPane.showMessageDialog(getFrame(), "Selecione um grupo", "Adicionar",
 							JOptionPane.ERROR_MESSAGE);
 				} else if (usuarioParaAdicionar.getText().trim().replaceAll(" ", "").equals("")) {
-					// JOptionPane.showMessageDialog(getFrame(), "Escreve o nome do usuário", "Adicionar", JOptionPane.ERROR_MESSAGE);
+					// Evento para deixar a borda vermelha ao usuario nao
+					// digitar nenhum valor para adicionar
+					Border border = BorderFactory.createLineBorder(Color.RED);
+					usuarioParaAdicionar.setBorder(border);
+					usuarioParaAdicionar.addFocusListener(new FocusListener() {
+
+						@Override
+						public void focusLost(FocusEvent e) {
+						}
+
+						@Override
+						public void focusGained(FocusEvent e) {
+							Border border = BorderFactory.createLineBorder(Color.LIGHT_GRAY);
+							;
+							usuarioParaAdicionar.setBorder(border);
+						}
+					});
 				} else {
 					boolean usuarioExiste = getGerenciadorDeGrupos().usuarioExiste(usuarioParaAdicionar.getText());
 					if (!usuarioExiste) {
@@ -249,7 +271,10 @@ public class SvnAclGUI {
 				boolean adicionou = getGerenciadorDeGrupos().adicionaUsuarioNoGrupo(getGrupoSelecionado(),
 						usuarioParaAdicionar.getText());
 				if (adicionou) {
-					// JOptionPane.showMessageDialog(getFrame(), "Adicionado " + usuarioParaAdicionar.getText() + " ao grupo " + getGrupoSelecionado(), "Adicionar", JOptionPane.INFORMATION_MESSAGE);
+					// JOptionPane.showMessageDialog(getFrame(), "Adicionado " +
+					// usuarioParaAdicionar.getText() + " ao grupo " +
+					// getGrupoSelecionado(), "Adicionar",
+					// JOptionPane.INFORMATION_MESSAGE);
 				} else {
 					JOptionPane.showMessageDialog(getFrame(),
 							"Não foi possivel adicionar\nVerifique se o usuário já participa do grupo", "Adicionar",
@@ -329,9 +354,12 @@ public class SvnAclGUI {
 					JOptionPane.showMessageDialog(getFrame(), "Selecione um diretório", "Adicionar",
 							JOptionPane.ERROR_MESSAGE);
 				} else {
-					AdicionarEmDiretorio dialog = new AdicionarEmDiretorio(SvnAclGUI.this);
-					dialog.setModal(true);
+					AdicionarEmDiretorio dialog = new AdicionarEmDiretorio(SvnAclGUI.this, getDiretorioSelecionado());
 					dialog.setVisible(true);
+					// Descartando dialog
+					gerenciador.atualizaArquivo();
+					listaDiretoriosListener.atualizaPermissoes(getDiretorioSelecionado());
+					dialog = null;
 				}
 
 			}
@@ -349,11 +377,13 @@ public class SvnAclGUI {
 							JOptionPane.ERROR_MESSAGE);
 				} else {
 					String grupoOuUser = Util.getGrupoOuUser(getPermissoesSelecionada());
-					AlteraPermissoes dialog = new AlteraPermissoes(SvnAclGUI.this, getDiretorioSelecionado(), grupoOuUser);
+					AlteraPermissoes dialog = new AlteraPermissoes(SvnAclGUI.this, getDiretorioSelecionado(),
+							grupoOuUser);
 					dialog.setVisible(true);
 					gerenciador.atualizaArquivo();
 					listaDiretoriosListener.atualizaPermissoes(getDiretorioSelecionado());
-					//dialog = null;
+					// Descartando dialog
+					dialog = null;
 				}
 			}
 		});
