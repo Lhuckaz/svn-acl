@@ -142,23 +142,21 @@ public class SvnAclGUI {
 
 		adicionarEventoFinal();
 
-		// TODO frame.setPreferredSize(new Dimension(750, 500));
 		frame.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 		frame.pack();
 		frame.setLocationRelativeTo(null);
 		frame.setVisible(true);
 	}
 
-	// TODO ERROR carrega duas vezes o mesmo arquivo (consertado!)
-	private boolean teste = true;
+	private boolean carregadoArquivo = false;
 
 	public void carregaArquivo(String arquivo) {
 		gerenciador = new Gerenciador(arquivo);
 
-		if (teste) {
+		if (!carregadoArquivo) {
 			adicionarGrupos();
 			adicionarDiretorios();
-			teste = false;
+			carregadoArquivo = true;
 		} else {
 			atualizaGrupos();
 			atualizaDiretorios();
