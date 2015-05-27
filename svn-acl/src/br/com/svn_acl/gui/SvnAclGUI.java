@@ -397,7 +397,12 @@ public class SvnAclGUI {
 							JOptionPane.ERROR_MESSAGE);
 				} else {
 					String grupoOuUser = Util.getGrupoOuUser(getPermissoesSelecionada());
-					getGerenciadorDePermissoes().removeGrupoOuUserDoDir(getDiretorioSelecionado(), grupoOuUser);
+					if(getPermissoesSelecionada().startsWith("@")) {
+						getGerenciadorDePermissoes().removeGrupoDoDir(getDiretorioSelecionado(), grupoOuUser);
+					} else {
+						getGerenciadorDePermissoes().removeUserDoDir(getDiretorioSelecionado(), grupoOuUser);
+					}
+					
 					gerenciador.atualizaArquivo();
 					listaDiretoriosListener.atualizaPermissoes(getDiretorioSelecionado());
 				}

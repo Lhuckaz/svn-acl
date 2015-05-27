@@ -161,6 +161,64 @@ public class GerenciadorDePermissoes {
 					while ((line = leitor.readLine()) != null && !line.startsWith("[") && !line.startsWith("#")
 					// && !line.trim().equals("")
 					) {
+						if (line.contains(grupo + " ")) {
+							return true;
+						}
+					}
+				}
+			}
+		} catch (IOException e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				fileReader.close();
+				leitor.close();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
+		return false;
+	}
+	
+	private boolean verificaSeGrupoExisteNoDiretorio(String diretorio, String grupo) {
+		try {
+			fileReader = new FileReader(file);
+			leitor = new BufferedReader(fileReader);
+			String line = "";
+			while ((line = leitor.readLine()) != null) {
+				if (line.matches("^.*.+:.*") && line.startsWith("[") && line.equals("[" + diretorio + "]")) {
+					while ((line = leitor.readLine()) != null && !line.startsWith("[") && !line.startsWith("#")
+					// && !line.trim().equals("")
+					) {
+						if (line.contains("@" + grupo + " ")) {
+							return true;
+						}
+					}
+				}
+			}
+		} catch (IOException e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				fileReader.close();
+				leitor.close();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
+		return false;
+	}
+	
+	private boolean verificaSeUserExisteNoDiretorio(String diretorio, String grupo) {
+		try {
+			fileReader = new FileReader(file);
+			leitor = new BufferedReader(fileReader);
+			String line = "";
+			while ((line = leitor.readLine()) != null) {
+				if (line.matches("^.*.+:.*") && line.startsWith("[") && line.equals("[" + diretorio + "]")) {
+					while ((line = leitor.readLine()) != null && !line.startsWith("[") && !line.startsWith("#")
+					// && !line.trim().equals("")
+					) {
 						if (line.startsWith(grupo + " ")) {
 							return true;
 						}
@@ -211,7 +269,7 @@ public class GerenciadorDePermissoes {
 		} else if (!verificaSeDiretorioExiste(diretorio)) {
 			System.out.println("Diretorio \"" + diretorio + "\" nao existe");
 			return false;
-		} else if (verificaSeGrupoOuUserExisteNoDiretorio(diretorio, "@" + grupo)) {
+		} else if (verificaSeGrupoExisteNoDiretorio(diretorio, grupo)) {
 			System.out.println("Grupo \"" + grupo + "\" ja existe no diretorio \"" + diretorio + "\"");
 			return false;
 		} else {
@@ -228,7 +286,7 @@ public class GerenciadorDePermissoes {
 								fileWriter.write(line + "\r\n");
 							}
 						}
-						// Nao faz a vaidacao pois se for a ultima linha ele
+						// Nao faz a validacao pois se for a ultima linha ele
 						// devera escrever
 						// if (!(line == null))
 						fileWriter.write("@" + grupo + " = " + permissao + "\r\n\r\n");
@@ -260,7 +318,7 @@ public class GerenciadorDePermissoes {
 		} else if (!verificaSeDiretorioExiste(diretorio)) {
 			System.out.println("Diretorio \"" + diretorio + "\" nao existe");
 			return false;
-		} else if (verificaSeGrupoOuUserExisteNoDiretorio(diretorio, usuario)) {
+		} else if (verificaSeUserExisteNoDiretorio(diretorio, usuario)) {
 			System.out.println("Usuario \"" + usuario + "\" ja existe no diretorio \"" + diretorio + "\"");
 			return false;
 		} else {
@@ -277,7 +335,7 @@ public class GerenciadorDePermissoes {
 								fileWriter.write(line + "\r\n");
 							}
 						}
-						// Nao faz a vaidacao pois se for a ultima linha ele
+						// Nao faz a validacao pois se for a ultima linha ele
 						// devera escrever
 						// if (!(line == null))
 						fileWriter.write(usuario + " = " + permissao + "\r\n\r\n");
@@ -301,11 +359,55 @@ public class GerenciadorDePermissoes {
 		}
 	}
 
-	public boolean removeGrupoOuUserDoDir(String diretorio, String grupo) {
+	public boolean removeUserDoDir(String diretorio, String usuario) {
 		if (!verificaSeDiretorioExiste(diretorio)) {
 			System.out.println("Diretorio \"" + diretorio + "\" nao existe");
 			return false;
-		} else if (!verificaSeGrupoOuUserExisteNoDiretorio(diretorio, grupo)) {
+		} else if (!verificaSeUserExisteNoDiretorio(diretorio, usuario)) {
+			System.out.println("Usuario \"" + usuario + "\" nao existe no diretorio \"" + diretorio + "\"");
+			return false;
+		} else {
+			try {
+				fileReader = new FileReader(file);
+				leitor = new BufferedReader(fileReader);
+				fileWriter = new FileWriter(new File(Gerenciador.getCaminhoSaidaOculto(false)));
+				String line = "";
+				while ((line = leitor.readLine()) != null) {
+					if (line.matches("^.*.+:.*") && line.startsWith("[") && line.equals("[" + diretorio + "]")) {
+						fileWriter.write(line + "\r\n");
+						while ((line = leitor.readLine()) != null && !line.startsWith("[") && !line.startsWith("#")
+								&& !line.trim().equals("")) {
+							if (line.startsWith(usuario + " ")) {
+								// nao escreve o user
+							} else {
+								fileWriter.write(line + "\r\n");
+							}
+
+						}
+					}
+					if (!(line == null))
+						fileWriter.write(line + "\r\n");
+				}
+			} catch (IOException e) {
+				e.printStackTrace();
+			} finally {
+				try {
+					fileWriter.close();
+					fileReader.close();
+					leitor.close();
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+			}
+		}
+		return true;
+	}
+	
+	public boolean removeGrupoDoDir(String diretorio, String grupo) {
+		if (!verificaSeDiretorioExiste(diretorio)) {
+			System.out.println("Diretorio \"" + diretorio + "\" nao existe");
+			return false;
+		} else if (!verificaSeGrupoExisteNoDiretorio(diretorio, grupo)) {
 			System.out.println("Grupo \"" + grupo + "\" nao existe no diretorio \"" + diretorio + "\"");
 			return false;
 		} else {
@@ -319,8 +421,8 @@ public class GerenciadorDePermissoes {
 						fileWriter.write(line + "\r\n");
 						while ((line = leitor.readLine()) != null && !line.startsWith("[") && !line.startsWith("#")
 								&& !line.trim().equals("")) {
-							if (line.contains(grupo + " ")) {
-								// nao escreve o grupo/user
+							if (line.startsWith("@" + grupo + " ")) {
+								// nao escreve o grupo
 							} else {
 								fileWriter.write(line + "\r\n");
 							}
