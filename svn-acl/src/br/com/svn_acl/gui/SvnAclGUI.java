@@ -17,6 +17,7 @@ import java.util.List;
 
 import javax.swing.BorderFactory;
 import javax.swing.DefaultListModel;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JList;
@@ -104,6 +105,9 @@ public class SvnAclGUI {
 
 	private void prepareGUI() {
 		frame = new JFrame("Lista de Controle de Acesso do Subversion");
+		
+		ImageIcon ico = new ImageIcon("ico.png");
+		frame.setIconImage(ico.getImage());
 
 		adicionaMenu();
 
