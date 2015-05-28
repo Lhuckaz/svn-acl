@@ -41,7 +41,7 @@ public class Diretorios {
 	 * @return Retorna nome do arquivo para salvar
 	 */
 	public static String retornaArquivoParaSalvar() {
-		return "svn.acl";
+		return "svn";
 	}
 
 }

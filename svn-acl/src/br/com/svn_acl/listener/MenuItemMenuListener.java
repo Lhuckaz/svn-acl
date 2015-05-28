@@ -21,6 +21,7 @@ public class MenuItemMenuListener implements ActionListener {
 	private static final int SALVAR = 0;
 	private JFileChooser chooser;
 	private SvnAclGUI svnAclGUI;
+	private FileNameExtensionFilter filter;
 
 	public MenuItemMenuListener(SvnAclGUI svnAclGUI) {
 		this.svnAclGUI = svnAclGUI;
@@ -35,7 +36,7 @@ public class MenuItemMenuListener implements ActionListener {
 		chooser.setMultiSelectionEnabled(false);
 
 		// Filtro de extensoes para selecionar somente arquivos acl
-		FileNameExtensionFilter filter = new FileNameExtensionFilter("ACL Files (*.acl)", "acl");
+		filter = new FileNameExtensionFilter("ACL Files (*.acl)", "acl");
 		chooser.setFileFilter(filter);
 
 		Object open = e.getSource();
@@ -71,11 +72,29 @@ public class MenuItemMenuListener implements ActionListener {
 		int code = chooser.showSaveDialog(svnAclGUI.getFrame());
 		if (code == JFileChooser.APPROVE_OPTION) {
 			File selectedFile = chooser.getSelectedFile();
-			verficaSeExisteESalva(selectedFile);
+			if (chooser.getFileFilter().equals(filter)) {
+				if (!verificaSeContemExtensao(selectedFile.getName())) {
+					verificaSeExisteESalva(new File(selectedFile + ".acl"));
+				} else {
+					verificaSeExisteESalva(selectedFile.getAbsoluteFile());
+				}
+			} else {
+				verificaSeExisteESalva(selectedFile.getAbsoluteFile());
+			}
 		}
 	}
 
-	private void verficaSeExisteESalva(File selectedFile) {
+	private boolean verificaSeContemExtensao(String selectedFile) {
+		boolean retorno = false;
+		try {
+			retorno = selectedFile.substring(selectedFile.lastIndexOf("."), selectedFile.length()).equals(".acl");
+		} catch (Exception e) {
+			System.out.println("Nao especificado extensão");
+		}
+		return retorno;
+	}
+
+	private void verificaSeExisteESalva(File selectedFile) {
 		if (selectedFile.exists()) {
 			int confirmar = JOptionPane.showConfirmDialog(svnAclGUI.getFrame(),
 					"Arquivo já existe\nDeseja sobrescrever ?", "Salvar", JOptionPane.YES_NO_OPTION);
@@ -100,8 +119,8 @@ public class MenuItemMenuListener implements ActionListener {
 		FileWriter fileWriter = null;
 		BufferedReader leitor = null;
 		if (Gerenciador.getCaminhoSaidaOculto(true) == null) {
-			JOptionPane.showMessageDialog(svnAclGUI.getFrame(), "Não foi possível salvar!", "Nenhum arquivo selecionado",
-					JOptionPane.ERROR_MESSAGE);
+			JOptionPane.showMessageDialog(svnAclGUI.getFrame(), "Não foi possível salvar!",
+					"Nenhum arquivo selecionado", JOptionPane.ERROR_MESSAGE);
 			return;
 		}
 		try {
