@@ -5,6 +5,7 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.GridLayout;
+import java.awt.Image;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -13,6 +14,7 @@ import java.awt.event.FocusListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.net.URL;
 import java.util.List;
 
 import javax.swing.BorderFactory;
@@ -105,9 +107,8 @@ public class SvnAclGUI {
 
 	private void prepareGUI() {
 		frame = new JFrame("Lista de Controle de Acesso do Subversion");
-		
-		ImageIcon ico = new ImageIcon("ico.png");
-		frame.setIconImage(ico.getImage());
+
+		adicionandoIcon();
 
 		adicionaMenu();
 
@@ -167,19 +168,26 @@ public class SvnAclGUI {
 		}
 	}
 
+	private void adicionandoIcon() {
+		Image image = Toolkit.getDefaultToolkit().getImage(
+				getClass().getClassLoader().getResource("images/ico.png"));
+		frame.setIconImage(image);
+	}
+
 	private void adicionaMenu() {
-		MenuItemMenuListener menuItemMenuListener = new MenuItemMenuListener(this);
+		MenuItemMenuListener menuItemMenuListener = new MenuItemMenuListener(
+				this);
 
 		jMenuBar = new JMenuBar();
 		jMenuArquivos = new JMenu("Arquivo");
 		jMenuItemAbrir = new JMenuItem("Abrir");
 		jMenuItemAbrir.addActionListener(menuItemMenuListener);
-		jMenuItemAbrir.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_O, Toolkit.getDefaultToolkit()
-				.getMenuShortcutKeyMask()));
+		jMenuItemAbrir.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_O,
+				Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()));
 		jMenuItemSalvar = new JMenuItem("Salvar");
 		jMenuItemSalvar.addActionListener(menuItemMenuListener);
-		jMenuItemSalvar.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_S, Toolkit.getDefaultToolkit()
-				.getMenuShortcutKeyMask()));
+		jMenuItemSalvar.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_S,
+				Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()));
 		jMenuArquivos.add(jMenuItemAbrir);
 		jMenuArquivos.add(jMenuItemSalvar);
 
@@ -217,7 +225,8 @@ public class SvnAclGUI {
 	private void adicionarGrupos() {
 		listarGrupos = getGerenciadorDeGrupos().listarGrupos();
 		for (String grupos : listarGrupos) {
-			((DefaultListModel<String>) listaGrupos.getModel()).addElement(grupos);
+			((DefaultListModel<String>) listaGrupos.getModel())
+					.addElement(grupos);
 		}
 	}
 
@@ -233,9 +242,11 @@ public class SvnAclGUI {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				if (getGrupoSelecionado().equals("")) {
-					JOptionPane.showMessageDialog(getFrame(), "Selecione um grupo", "Adicionar",
+					JOptionPane.showMessageDialog(getFrame(),
+							"Selecione um grupo", "Adicionar",
 							JOptionPane.ERROR_MESSAGE);
-				} else if (usuarioParaAdicionar.getText().trim().replaceAll(" ", "").equals("")) {
+				} else if (usuarioParaAdicionar.getText().trim()
+						.replaceAll(" ", "").equals("")) {
 					// Evento para deixar a borda vermelha ao usuario nao
 					// digitar nenhum valor para adicionar
 					Border border = BorderFactory.createLineBorder(Color.RED);
@@ -248,17 +259,21 @@ public class SvnAclGUI {
 
 						@Override
 						public void focusGained(FocusEvent e) {
-							Border border = BorderFactory.createLineBorder(Color.LIGHT_GRAY);
+							Border border = BorderFactory
+									.createLineBorder(Color.LIGHT_GRAY);
 							usuarioParaAdicionar.setBorder(border);
 						}
 					});
 				} else {
-					boolean usuarioExiste = getGerenciadorDeGrupos().usuarioExiste(usuarioParaAdicionar.getText());
+					boolean usuarioExiste = getGerenciadorDeGrupos()
+							.usuarioExiste(usuarioParaAdicionar.getText());
 					if (!usuarioExiste) {
-						int confirmar = JOptionPane.showConfirmDialog(getFrame(),
-								"Usuário \"" + usuarioParaAdicionar.getText()
-										+ "\" ainda nao existe\nDeseja adicionar assim mesmo ?", "Adicionar",
-								JOptionPane.YES_NO_OPTION);
+						int confirmar = JOptionPane.showConfirmDialog(
+								getFrame(),
+								"Usuário \""
+										+ usuarioParaAdicionar.getText()
+										+ "\" ainda nao existe\nDeseja adicionar assim mesmo ?",
+								"Adicionar", JOptionPane.YES_NO_OPTION);
 						if (confirmar == 0)
 							adicionaUsuario();
 					} else {
@@ -269,17 +284,20 @@ public class SvnAclGUI {
 			}
 
 			private void adicionaUsuario() {
-				boolean adicionou = getGerenciadorDeGrupos().adicionaUsuarioNoGrupo(getGrupoSelecionado(),
-						usuarioParaAdicionar.getText());
+				boolean adicionou = getGerenciadorDeGrupos()
+						.adicionaUsuarioNoGrupo(getGrupoSelecionado(),
+								usuarioParaAdicionar.getText());
 				if (adicionou) {
 					// JOptionPane.showMessageDialog(getFrame(), "Adicionado " +
 					// usuarioParaAdicionar.getText() + " ao grupo " +
 					// getGrupoSelecionado(), "Adicionar",
 					// JOptionPane.INFORMATION_MESSAGE);
 				} else {
-					JOptionPane.showMessageDialog(getFrame(),
-							"Não foi possivel adicionar\nVerifique se o usuário já participa do grupo", "Adicionar",
-							JOptionPane.ERROR_MESSAGE);
+					JOptionPane
+							.showMessageDialog(
+									getFrame(),
+									"Não foi possivel adicionar\nVerifique se o usuário já participa do grupo",
+									"Adicionar", JOptionPane.ERROR_MESSAGE);
 				}
 				gerenciador.atualizaArquivo();
 				listaGrupoListener.atualizaUsuarios(getGrupoSelecionado());
@@ -291,13 +309,16 @@ public class SvnAclGUI {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				if (getGrupoSelecionado().equals("")) {
-					JOptionPane.showMessageDialog(getFrame(), "Selecione um grupo", "Remover",
+					JOptionPane.showMessageDialog(getFrame(),
+							"Selecione um grupo", "Remover",
 							JOptionPane.ERROR_MESSAGE);
 				} else if (getUsuarioSelecionado().equals("")) {
-					JOptionPane.showMessageDialog(getFrame(), "Selecione um usuário", "Remover",
+					JOptionPane.showMessageDialog(getFrame(),
+							"Selecione um usuário", "Remover",
 							JOptionPane.ERROR_MESSAGE);
 				} else {
-					getGerenciadorDeGrupos().removeUsuarioDoGrupo(getGrupoSelecionado(), getUsuarioSelecionado());
+					getGerenciadorDeGrupos().removeUsuarioDoGrupo(
+							getGrupoSelecionado(), getUsuarioSelecionado());
 					gerenciador.atualizaArquivo();
 					listaGrupoListener.atualizaUsuarios(getGrupoSelecionado());
 				}
@@ -339,7 +360,8 @@ public class SvnAclGUI {
 	private void adicionarDiretorios() {
 		listarDiretorios = getGerenciadorDePermissoes().listaDiretorios();
 		for (String diretorios : listarDiretorios) {
-			((DefaultListModel<String>) listaDiretorios.getModel()).addElement(diretorios);
+			((DefaultListModel<String>) listaDiretorios.getModel())
+					.addElement(diretorios);
 		}
 	}
 
@@ -352,14 +374,17 @@ public class SvnAclGUI {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				if (getDiretorioSelecionado().equals("")) {
-					JOptionPane.showMessageDialog(getFrame(), "Selecione um diretório", "Adicionar",
+					JOptionPane.showMessageDialog(getFrame(),
+							"Selecione um diretório", "Adicionar",
 							JOptionPane.ERROR_MESSAGE);
 				} else {
-					AdicionarEmDiretorio dialog = new AdicionarEmDiretorio(SvnAclGUI.this, getDiretorioSelecionado());
+					AdicionarEmDiretorio dialog = new AdicionarEmDiretorio(
+							SvnAclGUI.this, getDiretorioSelecionado());
 					dialog.setVisible(true);
 					// Descartando dialog
 					gerenciador.atualizaArquivo();
-					listaDiretoriosListener.atualizaPermissoes(getDiretorioSelecionado());
+					listaDiretoriosListener
+							.atualizaPermissoes(getDiretorioSelecionado());
 					dialog = null;
 				}
 
@@ -371,18 +396,23 @@ public class SvnAclGUI {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				if (getDiretorioSelecionado().equals("")) {
-					JOptionPane.showMessageDialog(getFrame(), "Selecione um diretorio", "Adicionar",
+					JOptionPane.showMessageDialog(getFrame(),
+							"Selecione um diretorio", "Adicionar",
 							JOptionPane.ERROR_MESSAGE);
 				} else if (getPermissoesSelecionada().equals("")) {
-					JOptionPane.showMessageDialog(getFrame(), "Selecione um grupo ou usuário", "Adicionar",
+					JOptionPane.showMessageDialog(getFrame(),
+							"Selecione um grupo ou usuário", "Adicionar",
 							JOptionPane.ERROR_MESSAGE);
 				} else {
-					String grupoOuUser = Util.getGrupoOuUser(getPermissoesSelecionada());
-					AlteraPermissoes dialog = new AlteraPermissoes(SvnAclGUI.this, getDiretorioSelecionado(),
+					String grupoOuUser = Util
+							.getGrupoOuUser(getPermissoesSelecionada());
+					AlteraPermissoes dialog = new AlteraPermissoes(
+							SvnAclGUI.this, getDiretorioSelecionado(),
 							grupoOuUser);
 					dialog.setVisible(true);
 					gerenciador.atualizaArquivo();
-					listaDiretoriosListener.atualizaPermissoes(getDiretorioSelecionado());
+					listaDiretoriosListener
+							.atualizaPermissoes(getDiretorioSelecionado());
 					// Descartando dialog
 					dialog = null;
 				}
@@ -394,28 +424,35 @@ public class SvnAclGUI {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				if (getDiretorioSelecionado().equals("")) {
-					JOptionPane.showMessageDialog(getFrame(), "Selecione um diretorio", "Remover",
+					JOptionPane.showMessageDialog(getFrame(),
+							"Selecione um diretorio", "Remover",
 							JOptionPane.ERROR_MESSAGE);
 				} else if (getPermissoesSelecionada().equals("")) {
-					JOptionPane.showMessageDialog(getFrame(), "Selecione um grupo ou usuário", "Remover",
+					JOptionPane.showMessageDialog(getFrame(),
+							"Selecione um grupo ou usuário", "Remover",
 							JOptionPane.ERROR_MESSAGE);
 				} else {
-					String grupoOuUser = Util.getGrupoOuUser(getPermissoesSelecionada());
-					if(getPermissoesSelecionada().startsWith("@")) {
-						getGerenciadorDePermissoes().removeGrupoDoDir(getDiretorioSelecionado(), grupoOuUser);
+					String grupoOuUser = Util
+							.getGrupoOuUser(getPermissoesSelecionada());
+					if (getPermissoesSelecionada().startsWith("@")) {
+						getGerenciadorDePermissoes().removeGrupoDoDir(
+								getDiretorioSelecionado(), grupoOuUser);
 					} else {
-						getGerenciadorDePermissoes().removeUserDoDir(getDiretorioSelecionado(), grupoOuUser);
+						getGerenciadorDePermissoes().removeUserDoDir(
+								getDiretorioSelecionado(), grupoOuUser);
 					}
-					
+
 					gerenciador.atualizaArquivo();
-					listaDiretoriosListener.atualizaPermissoes(getDiretorioSelecionado());
+					listaDiretoriosListener
+							.atualizaPermissoes(getDiretorioSelecionado());
 				}
 			}
 		});
 		painelComboBoxPermissoes.add(botaoAdicionar);
 		painelComboBoxPermissoes.add(botaoAlterar);
 		painelComboBoxPermissoes.add(botaoRemover);
-		jPanelPrincipalPermissoes.add(painelComboBoxPermissoes, BorderLayout.SOUTH);
+		jPanelPrincipalPermissoes.add(painelComboBoxPermissoes,
+				BorderLayout.SOUTH);
 	}
 
 	private void adicionaPainelsATabPainel() {
@@ -497,7 +534,8 @@ public class SvnAclGUI {
 		((DefaultListModel<String>) listaGrupos.getModel()).removeAllElements();
 		List<String> listarGrupos = getListarGrupos();
 		for (String usuarios : listarGrupos) {
-			((DefaultListModel<String>) listaGrupos.getModel()).addElement(usuarios);
+			((DefaultListModel<String>) listaGrupos.getModel())
+					.addElement(usuarios);
 		}
 		// atualiza lista de usuarios se caso mudar de arquivo
 		if (listarGrupos.size() != 0)
@@ -509,10 +547,12 @@ public class SvnAclGUI {
 	}
 
 	public void atualizaDiretorios() {
-		((DefaultListModel<String>) listaDiretorios.getModel()).removeAllElements();
+		((DefaultListModel<String>) listaDiretorios.getModel())
+				.removeAllElements();
 		List<String> listarDiretorios = getListarDiretorios();
 		for (String diretorios : listarDiretorios) {
-			((DefaultListModel<String>) listaDiretorios.getModel()).addElement(diretorios);
+			((DefaultListModel<String>) listaDiretorios.getModel())
+					.addElement(diretorios);
 		}
 		// atualiza lista de permissoes se caso mudar de arquivo
 		if (listarDiretorios.size() != 0)
@@ -524,16 +564,20 @@ public class SvnAclGUI {
 	}
 
 	public void atualizaUsuarios() {
-		((DefaultListModel<String>) listaUsuarios.getModel()).removeAllElements();
+		((DefaultListModel<String>) listaUsuarios.getModel())
+				.removeAllElements();
 		for (String usuarios : listaUsuariosGrupo) {
-			((DefaultListModel<String>) listaUsuarios.getModel()).addElement(usuarios);
+			((DefaultListModel<String>) listaUsuarios.getModel())
+					.addElement(usuarios);
 		}
 	}
 
 	public void atualizaPermissoes() {
-		((DefaultListModel<String>) listaPermissoes.getModel()).removeAllElements();
+		((DefaultListModel<String>) listaPermissoes.getModel())
+				.removeAllElements();
 		for (String usuarios : listaPermissaoDiretorio) {
-			((DefaultListModel<String>) listaPermissoes.getModel()).addElement(usuarios);
+			((DefaultListModel<String>) listaPermissoes.getModel())
+					.addElement(usuarios);
 		}
 	}
 
