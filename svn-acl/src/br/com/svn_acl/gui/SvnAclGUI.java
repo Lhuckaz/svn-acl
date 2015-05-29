@@ -14,12 +14,10 @@ import java.awt.event.FocusListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-import java.net.URL;
 import java.util.List;
 
 import javax.swing.BorderFactory;
 import javax.swing.DefaultListModel;
-import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JList;
@@ -112,7 +110,7 @@ public class SvnAclGUI {
 
 		adicionaMenu();
 
-		dimensao = new Dimension(300, 250);
+		dimensao = new Dimension(600, 550);
 
 		tabPainel = new JTabbedPane();
 		jPanelPrincipalGrupos = new JPanel(new BorderLayout());
