@@ -55,7 +55,7 @@ public class Gerenciador {
 			leitor = new BufferedReader(fileReader);
 			String line = "";
 			while ((line = leitor.readLine()) != null) {
-				fileWriter.write(line + "\r\n");
+				fileWriter.write(line + "\n");
 			}
 
 		} catch (IOException e) {
@@ -78,7 +78,7 @@ public class Gerenciador {
 			leitor = new BufferedReader(fileReader);
 			String line = "";
 			while ((line = leitor.readLine()) != null) {
-				fileWriter.write(line + "\r\n");
+				fileWriter.write(line + "\n");
 			}
 
 		} catch (IOException e) {
@@ -145,7 +145,7 @@ public class Gerenciador {
 			leitor = new BufferedReader(fileReader);
 			String line = "";
 			while ((line = leitor.readLine()) != null) {
-				fileWriter.write(line + "\r\n");
+				fileWriter.write(line + "\n");
 			}
 
 		} catch (IOException e) {

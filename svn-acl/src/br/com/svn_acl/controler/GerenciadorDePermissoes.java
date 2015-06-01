@@ -122,19 +122,19 @@ public class GerenciadorDePermissoes {
 				String line = "";
 				while ((line = leitor.readLine()) != null) {
 					if (line.matches("^.*.+:.*") && line.startsWith("[") && line.equals("[" + diretorio + "]")) {
-						fileWriter.write(line + "\r\n");
+						fileWriter.write(line + "\n");
 						while ((line = leitor.readLine()) != null && !line.startsWith("[") && !line.startsWith("#")
 								&& !line.trim().equals("")) {
 							if (line.contains(grupo + " ")) {
 								String[] linha = line.trim().replace(" ", "").split("=");
-								fileWriter.write(linha[0] + " = " + permissao + "\r\n");
+								fileWriter.write(linha[0] + " = " + permissao + "\n");
 							} else {
-								fileWriter.write(line + "\r\n");
+								fileWriter.write(line + "\n");
 							}
 						}
 					}
 					if (!(line == null))
-						fileWriter.write(line + "\r\n");
+						fileWriter.write(line + "\n");
 				}
 			} catch (IOException e) {
 				e.printStackTrace();
@@ -280,19 +280,19 @@ public class GerenciadorDePermissoes {
 				String line = "";
 				while ((line = leitor.readLine()) != null) {
 					if (line.equals("[" + diretorio + "]")) {
-						fileWriter.write(line + "\r\n");
+						fileWriter.write(line + "\n");
 						while ((line = leitor.readLine()) != null && !line.trim().equals("")) {
 							if (line.startsWith("@") || line.matches("^\\w.+=.*")) {
-								fileWriter.write(line + "\r\n");
+								fileWriter.write(line + "\n");
 							}
 						}
 						// Nao faz a validacao pois se for a ultima linha ele
 						// devera escrever
 						// if (!(line == null))
-						fileWriter.write("@" + grupo + " = " + permissao + "\r\n\r\n");
+						fileWriter.write("@" + grupo + " = " + permissao + "\n\n");
 					} else {
 						if (!(line == null))
-							fileWriter.write(line + "\r\n");
+							fileWriter.write(line + "\n");
 					}
 				}
 			} catch (IOException e) {
@@ -329,19 +329,19 @@ public class GerenciadorDePermissoes {
 				String line = "";
 				while ((line = leitor.readLine()) != null) {
 					if (line.equals("[" + diretorio + "]")) {
-						fileWriter.write(line + "\r\n");
+						fileWriter.write(line + "\n");
 						while ((line = leitor.readLine()) != null && !line.trim().equals("")) {
 							if (line.startsWith("@") || line.matches("^\\w.+=.*")) {
-								fileWriter.write(line + "\r\n");
+								fileWriter.write(line + "\n");
 							}
 						}
 						// Nao faz a validacao pois se for a ultima linha ele
 						// devera escrever
 						// if (!(line == null))
-						fileWriter.write(usuario + " = " + permissao + "\r\n\r\n");
+						fileWriter.write(usuario + " = " + permissao + "\n\n");
 					} else {
 						if (!(line == null))
-							fileWriter.write(line + "\r\n");
+							fileWriter.write(line + "\n");
 					}
 				}
 			} catch (IOException e) {
@@ -374,19 +374,19 @@ public class GerenciadorDePermissoes {
 				String line = "";
 				while ((line = leitor.readLine()) != null) {
 					if (line.matches("^.*.+:.*") && line.startsWith("[") && line.equals("[" + diretorio + "]")) {
-						fileWriter.write(line + "\r\n");
+						fileWriter.write(line + "\n");
 						while ((line = leitor.readLine()) != null && !line.startsWith("[") && !line.startsWith("#")
 								&& !line.trim().equals("")) {
 							if (line.startsWith(usuario + " ")) {
 								// nao escreve o user
 							} else {
-								fileWriter.write(line + "\r\n");
+								fileWriter.write(line + "\n");
 							}
 
 						}
 					}
 					if (!(line == null))
-						fileWriter.write(line + "\r\n");
+						fileWriter.write(line + "\n");
 				}
 			} catch (IOException e) {
 				e.printStackTrace();
@@ -418,19 +418,19 @@ public class GerenciadorDePermissoes {
 				String line = "";
 				while ((line = leitor.readLine()) != null) {
 					if (line.matches("^.*.+:.*") && line.startsWith("[") && line.equals("[" + diretorio + "]")) {
-						fileWriter.write(line + "\r\n");
+						fileWriter.write(line + "\n");
 						while ((line = leitor.readLine()) != null && !line.startsWith("[") && !line.startsWith("#")
 								&& !line.trim().equals("")) {
 							if (line.startsWith("@" + grupo + " ")) {
 								// nao escreve o grupo
 							} else {
-								fileWriter.write(line + "\r\n");
+								fileWriter.write(line + "\n");
 							}
 
 						}
 					}
 					if (!(line == null))
-						fileWriter.write(line + "\r\n");
+						fileWriter.write(line + "\n");
 				}
 			} catch (IOException e) {
 				e.printStackTrace();

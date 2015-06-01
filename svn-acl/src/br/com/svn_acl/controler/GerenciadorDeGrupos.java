@@ -183,9 +183,9 @@ public class GerenciadorDeGrupos {
 				String line = "";
 				while ((line = leitor.readLine()) != null) {
 					if (line.startsWith(grupo + " ")) {
-						fileWriter.write(line + " " + usuario + "," + "\r\n");
+						fileWriter.write(line + " " + usuario + "," + "\n");
 					} else {
-						fileWriter.write(line + "\r\n");
+						fileWriter.write(line + "\n");
 					}
 				}
 
@@ -238,9 +238,9 @@ public class GerenciadorDeGrupos {
 						for (String usuariox : usuarios) {
 							string.append(" " + usuariox + ",");
 						}
-						fileWriter.write(string + "\r\n");
+						fileWriter.write(string + "\n");
 					} else {
-						fileWriter.write(line + "\r\n");
+						fileWriter.write(line + "\n");
 					}
 				}
 
@@ -362,13 +362,13 @@ public class GerenciadorDeGrupos {
 					for (String usuariox : listaUsuarioGrupo) {
 						string.append(" " + usuariox + ",");
 					}
-					fileWriter.write(string + "\r\n");
+					fileWriter.write(string + "\n");
 					System.out.println("Removido do Grupo: " + grupo);
 				} else if (line.matches(usuario + "\\s{0,}=\\s{0,}.{0,}")) {
 					// nao faz nada, para remover caso o usuario tenha um
 					// permissao associada a ele proprio
 				} else {
-					fileWriter.write(line + "\r\n");
+					fileWriter.write(line + "\n");
 				}
 			}
 
@@ -444,9 +444,9 @@ public class GerenciadorDeGrupos {
 			String line = "";
 			while ((line = leitor.readLine()) != null) {
 				if (grupos.contains(retornaGrupoDaLinha(line))) {
-					fileWriter.write(line + " " + usuario + "," + "\r\n");
+					fileWriter.write(line + " " + usuario + "," + "\n");
 				} else {
-					fileWriter.write(line + "\r\n");
+					fileWriter.write(line + "\n");
 				}
 			}
 			System.out.println("Adicionado " + usuario + " ao grupos " + grupos);
@@ -474,7 +474,7 @@ public class GerenciadorDeGrupos {
 				if (retornaGrupoDaLinha(line).equals(grupo) || line.startsWith("@" + grupo)) {
 					// nao escreve
 				} else {
-					fileWriter.write(line + "\r\n");
+					fileWriter.write(line + "\n");
 				}
 			}
 		} catch (IOException e) {

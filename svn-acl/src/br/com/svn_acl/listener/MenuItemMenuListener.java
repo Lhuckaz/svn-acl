@@ -129,7 +129,7 @@ public class MenuItemMenuListener implements ActionListener {
 			leitor = new BufferedReader(fileReader);
 			String line = "";
 			while ((line = leitor.readLine()) != null) {
-				fileWriter.write(line + "\r\n");
+				fileWriter.write(line + "\n");
 			}
 
 		} catch (IOException e) {
