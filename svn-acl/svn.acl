@@ -5,7 +5,7 @@ PROGRAMADORES = hulk, tirano,
 ANALISTAS = mario, luidi, yoshi, browser, zelda,
 ALONE =
 JOGADORES = usuario, fulano,
-NERDS = dexter,
+NERDS = dexter, mario
 
 [c:/]
 @GRUPO = r
