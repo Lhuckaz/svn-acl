@@ -40,7 +40,7 @@ import br.com.svn_acl.listener.ListaDiretoriosListener;
 import br.com.svn_acl.listener.ListaGrupoListener;
 import br.com.svn_acl.listener.ListaPermissoesListener;
 import br.com.svn_acl.listener.ListaUsuariosListener;
-import br.com.svn_acl.listener.MenuItemMenuListener;
+import br.com.svn_acl.listener.ArquivoItemMenuListener;
 import br.com.svn_acl.util.DefineTamanhoJTextField;
 import br.com.svn_acl.util.Util;
 
@@ -52,8 +52,11 @@ public class SvnAclGUI {
 
 	private JMenuBar jMenuBar;
 	private JMenu jMenuArquivos;
+	private JMenu jMenuSubversion;
 	private JMenuItem jMenuItemAbrir;
 	private JMenuItem jMenuItemSalvar;
+	private JMenuItem jMenuItemExport;
+	private JMenuItem jMenuItemCommit;
 
 	private JPanel jPanelPrincipalGrupos;
 	private JPanel jPanelPrincipalListGrupos;
@@ -172,22 +175,35 @@ public class SvnAclGUI {
 	}
 
 	private void adicionaMenu() {
-		MenuItemMenuListener menuItemMenuListener = new MenuItemMenuListener(this);
+		ArquivoItemMenuListener arquivoItemMenuListener = new ArquivoItemMenuListener(this);
 
 		jMenuBar = new JMenuBar();
 		jMenuArquivos = new JMenu("Arquivo");
 		jMenuItemAbrir = new JMenuItem("Abrir");
-		jMenuItemAbrir.addActionListener(menuItemMenuListener);
+		jMenuItemAbrir.addActionListener(arquivoItemMenuListener);
 		jMenuItemAbrir.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_O, Toolkit.getDefaultToolkit()
 				.getMenuShortcutKeyMask()));
 		jMenuItemSalvar = new JMenuItem("Salvar");
-		jMenuItemSalvar.addActionListener(menuItemMenuListener);
+		jMenuItemSalvar.addActionListener(arquivoItemMenuListener);
 		jMenuItemSalvar.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_S, Toolkit.getDefaultToolkit()
 				.getMenuShortcutKeyMask()));
 		jMenuArquivos.add(jMenuItemAbrir);
 		jMenuArquivos.add(jMenuItemSalvar);
+		
+		jMenuSubversion = new JMenu("Subversion");
+		jMenuItemExport = new JMenuItem("Export");
+		jMenuItemExport.addActionListener(arquivoItemMenuListener);
+		jMenuItemExport.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_E, Toolkit.getDefaultToolkit()
+				.getMenuShortcutKeyMask()));
+		jMenuItemCommit = new JMenuItem("Commit");
+		jMenuItemCommit.addActionListener(arquivoItemMenuListener);
+		jMenuItemCommit.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_I, Toolkit.getDefaultToolkit()
+				.getMenuShortcutKeyMask()));
+		jMenuSubversion.add(jMenuItemExport);
+		jMenuSubversion.add(jMenuItemCommit);
 
 		jMenuBar.add(jMenuArquivos);
+		jMenuBar.add(jMenuSubversion);
 
 		frame.setJMenuBar(jMenuBar);
 	}
