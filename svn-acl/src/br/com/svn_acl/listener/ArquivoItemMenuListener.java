@@ -16,14 +16,14 @@ import br.com.svn_acl.controler.Gerenciador;
 import br.com.svn_acl.gui.SvnAclGUI;
 import br.com.svn_acl.util.Diretorios;
 
-public class MenuItemMenuListener implements ActionListener {
+public class ArquivoItemMenuListener implements ActionListener {
 
 	private static final int SALVAR = 0;
 	private JFileChooser chooser;
 	private SvnAclGUI svnAclGUI;
 	private FileNameExtensionFilter filter;
 
-	public MenuItemMenuListener(SvnAclGUI svnAclGUI) {
+	public ArquivoItemMenuListener(SvnAclGUI svnAclGUI) {
 		this.svnAclGUI = svnAclGUI;
 	}
 

@@ -12,7 +12,6 @@ public class Gerenciador {
 	private static final String ARQUIVO_SAIDA = "~svn-saida.acl";
 
 	private static File arquivo;
-	// private static String caminhoParenteArquivo;
 
 	private File arquivoOculto;
 	private String caminhoArquivoOculto;
