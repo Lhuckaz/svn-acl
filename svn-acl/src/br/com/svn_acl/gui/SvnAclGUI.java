@@ -41,6 +41,7 @@ import br.com.svn_acl.listener.ListaGrupoListener;
 import br.com.svn_acl.listener.ListaPermissoesListener;
 import br.com.svn_acl.listener.ListaUsuariosListener;
 import br.com.svn_acl.listener.ArquivoItemMenuListener;
+import br.com.svn_acl.listener.SubversionItemMenuListener;
 import br.com.svn_acl.util.DefineTamanhoJTextField;
 import br.com.svn_acl.util.Util;
 
@@ -176,6 +177,7 @@ public class SvnAclGUI {
 
 	private void adicionaMenu() {
 		ArquivoItemMenuListener arquivoItemMenuListener = new ArquivoItemMenuListener(this);
+		SubversionItemMenuListener subversionItemMenuListener = new SubversionItemMenuListener(this);
 
 		jMenuBar = new JMenuBar();
 		jMenuArquivos = new JMenu("Arquivo");
@@ -192,11 +194,11 @@ public class SvnAclGUI {
 		
 		jMenuSubversion = new JMenu("Subversion");
 		jMenuItemExport = new JMenuItem("Export");
-		jMenuItemExport.addActionListener(arquivoItemMenuListener);
+		jMenuItemExport.addActionListener(subversionItemMenuListener);
 		jMenuItemExport.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_E, Toolkit.getDefaultToolkit()
 				.getMenuShortcutKeyMask()));
 		jMenuItemCommit = new JMenuItem("Commit");
-		jMenuItemCommit.addActionListener(arquivoItemMenuListener);
+		jMenuItemCommit.addActionListener(subversionItemMenuListener);
 		jMenuItemCommit.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_I, Toolkit.getDefaultToolkit()
 				.getMenuShortcutKeyMask()));
 		jMenuSubversion.add(jMenuItemExport);
@@ -467,6 +469,14 @@ public class SvnAclGUI {
 
 	public JMenuItem getJMenuItemSalvar() {
 		return jMenuItemSalvar;
+	}
+	
+	public JMenuItem getJMenuItemExport() {
+		return jMenuItemExport;
+	}
+
+	public JMenuItem getJMenuItemCommit() {
+		return jMenuItemCommit;
 	}
 
 	public String getGrupoSelecionado() {

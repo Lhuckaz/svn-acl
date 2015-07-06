@@ -13,6 +13,8 @@ package br.com.svn_acl.svn;
 
 import java.io.ByteArrayInputStream;
 
+import org.tmatesoft.svn.core.SVNAuthenticationException;
+import org.tmatesoft.svn.core.SVNCancelException;
 import org.tmatesoft.svn.core.SVNCommitInfo;
 import org.tmatesoft.svn.core.SVNErrorCode;
 import org.tmatesoft.svn.core.SVNErrorMessage;
@@ -29,108 +31,25 @@ import org.tmatesoft.svn.core.io.SVNRepositoryFactory;
 import org.tmatesoft.svn.core.io.diff.SVNDeltaGenerator;
 import org.tmatesoft.svn.core.wc.SVNWCUtil;
 
-/*
- * This is an example of how to commit several types of changes to a repository: 
- *  - a new directory with a file, 
- *  - modification to anexisting file, 
- *  - copying a directory into a branch, 
- *  - deletion of the directory and its entries.
- * 
- * Main aspects of performing a commit with the help of ISVNEditor:
- * 0)initialize the library (this is done in setupLibrary() method);
- * 
- * 1)create an SVNRepository driver for a particular  repository  location, that 
- * will be the root directory for committing - that is all paths that are  being  
- * committed will be below that root;
- * 
- * 2)provide user's authentication information - name/password, since committing 
- * generally requires authentication;
- * 
- * 3)"ask" your SVNRepository for a commit editor:
- *     
- *     ISVNCommitEditor editor = SVNRepository.getCommitEditor();
- * 
- * 4)"edit"  a repository - perform a sequence of edit calls (for
- * example, here you "say" to the server that you have added such-and-such a new
- * directory at such-and-such a path as well as a new file). First of all,  
- * ISVNEditor.openRoot()  is called to 'open' the root directory;
- * 
- * 5)at last you close the editor with the  ISVNEditor.closeEdit()  method  that
- * fixes your modificaions in the repository finalizing the commit.
- * 
- * For  each  commit  a  new  ISVNEditor is required - that is after having been 
- * closed the editor can no longer be used!
- * 
- * This example can be run for a locally installed Subversion repository via the
- * svn:// protocol. This is how you can do it:
- * 
- * 1)after   you   install  the   Subversion  pack (available  for  download  at 
- * http://subversion.tigris.org)  you  should  create  a  new  repository in  a 
- * directory, like this (in a command line under a Windows OS):
- * 
- * >svnadmin create X:\path\to\rep
- * 
- * 2)after the repository is created you can add a new account: navigate to your
- * repository root (X:\path\to\rep\),  then  move  to  \conf  and  open the file 
- * 'passwd'. In the file you'll see the section [users]. Uncomment it and add  a 
- * new account below the section name, like:
- * 
- * [users] 
- * userName = userPassword.
- * 
- * In the program you may further use this account as user's credentials.
- * 
- * 3)the next step is to launch the custom Subversion  server  (svnserve)  in  a
- * background mode for the just created repository:
- * 
- * >svnserve -d -r X:\path\to
- * 
- * That's all. The repository is now available via svn://localhost/rep.
- * 
- */
 public class Commit {
 
-	public static void main(String[] args) {
-		/*
-		 * Initialize the library. It must be done before calling any method of
-		 * the library.
-		 */
+	public Commit() {
 		setupLibrary();
-
-		/*
-		 * Run commit example and process error if any.
-		 */
-		try {
-			commitando();
-		} catch (SVNException e) {
-			SVNErrorMessage err = e.getErrorMessage();
-			/*
-			 * Display all tree of error messages. Utility method
-			 * SVNErrorMessage.getFullMessage() may be used instead of the loop.
-			 */
-			while (err != null) {
-				System.err.println(err.getErrorCode().getCode() + " : " + err.getMessage());
-				err = err.getChildErrorMessage();
-			}
-			System.exit(1);
-		}
-		System.exit(0);
 	}
 
-	private static void commitando() throws SVNException {
+	private void commitando(String endereco, String user, String password, String arquivo, byte[] conteudo,
+			String commit, boolean begin) throws SVNException {
 		/*
 		 * URL that points to repository.
 		 */
-		SVNURL url = SVNURL
-				.parseURIEncoded("");
+		SVNURL url = SVNURL.parseURIEncoded(endereco);
 		/*
 		 * Credentials to use for authentication.
 		 */
-		String userName = "";
-		char[] userPassword = "".toCharArray();
-		
-		byte[] contents = {0};
-		byte[] modifiedContents = {0};
+		String userName = user;
+		char[] userPassword = password.toCharArray();
+
+		byte[] modifiedContents = conteudo;
 
 		/*
 		 * Create an instance of SVNRepository class. This class is the main
@@ -159,8 +78,7 @@ public class Commit {
 		 * 
 		 * You may also skip this point - anonymous access will be used.
 		 */
-		ISVNAuthenticationManager authManager = SVNWCUtil.createDefaultAuthenticationManager(userName,
-				userPassword);
+		ISVNAuthenticationManager authManager = SVNWCUtil.createDefaultAuthenticationManager(userName, userPassword);
 		repository.setAuthenticationManager(authManager);
 
 		/*
@@ -186,12 +104,6 @@ public class Commit {
 		}
 
 		/*
-		 * Get exact value of the latest (HEAD) revision.
-		 */
-		long latestRevision = repository.getLatestRevision();
-		System.out.println("Repository latest revision (before committing): " + latestRevision);
-
-		/*
 		 * Gets an editor for committing the changes to the repository. NOTE:
 		 * you must not invoke methods of the SVNRepository until you close the
 		 * editor with the ISVNEditor.closeEdit() method.
@@ -202,147 +114,33 @@ public class Commit {
 		 * when 'null' is passed, then default system temporary directory will
 		 * be used to create temporary files.
 		 */
-		ISVNEditor editor = repository.getCommitEditor("", null);
-
-		/*
-		 * Add a directory and a file within that directory.
-		 * 
-		 * SVNCommitInfo object contains basic information on the committed
-		 * revision, i.e. revision number, author name, commit date and commit
-		 * message.
-		 */
-		SVNCommitInfo commitInfo = addFile(editor, "svn.acl", contents);
-		System.out.println("The directory was added: " + commitInfo);
+		ISVNEditor editor = repository.getCommitEditor(commit, null);
 		
-		/*
-		 * Modify file added at the previous revision.
-		 */
-		editor = repository.getCommitEditor("file contents changed", null);
-		commitInfo = modifyFile(editor, "test", "svn.acl", contents, modifiedContents);
-		System.out.println("The file was changed: " + commitInfo);
-
-		/*
-		 * Copy recently added directory to another location. This operation
-		 * will create new directory "test2" taking its properties and contents
-		 * from the directory "test". Revisions history will be preserved.
-		 * 
-		 * Copy is usually used to create tags or branches in repository or to
-		 * rename files or directories.
-		 */
-
-		/*
-		 * To make a copy of a repository entry, absolute path of that entry and
-		 * revision from which to make a copy are needed.
-		 * 
-		 * Absolute path is the path relative to repository root URL and such
-		 * paths always start with '/'. Relative paths are relative to
-		 * SVNRepository instance location.
-		 * 
-		 * For more information see SVNRepository.getRepositoryRoot(...) and
-		 * SVNRepository.getLocation() methods. Utility method
-		 * getRepositoryPath(...) converts relative path to the absolute one.
-		 */
-		String absoluteSrcPath = repository.getRepositoryPath("test");
-		long srcRevision = repository.getLatestRevision();
-
-		editor = repository.getCommitEditor("directory copied", null);
-
-		commitInfo = copyDir(editor, absoluteSrcPath, "test2", srcRevision);
-		System.out.println("The directory was copied: " + commitInfo);
-
-		/*
-		 * Delete directory "test".
-		 */
-		editor = repository.getCommitEditor("directory deleted", null);
-		commitInfo = deleteDir(editor, "test");
-		System.out.println("The directory was deleted: " + commitInfo);
-
-		/*
-		 * And directory "test2".
-		 */
-		editor = repository.getCommitEditor("copied directory deleted", null);
-		commitInfo = deleteDir(editor, "test2");
-		System.out.println("The copied directory was deleted: " + commitInfo);
-
-		latestRevision = repository.getLatestRevision();
-		System.out.println("Repository latest revision (after committing): " + latestRevision);
+		if (begin) {
+			addFile(editor, arquivo, modifiedContents);
+		} else {
+			modifyFile(editor, arquivo, modifiedContents);
+		}
 	}
 
 	/*
-	 * This method performs commiting an addition of a directory containing a
-	 * file.
+	 * Initializes the library to work with a repository via different
+	 * protocols.
 	 */
-	private static SVNCommitInfo addDir(ISVNEditor editor, String dirPath, String filePath, byte[] data)
-			throws SVNException {
+	private static void setupLibrary() {
 		/*
-		 * Always called first. Opens the current root directory. It means all
-		 * modifications will be applied to this directory until a next entry
-		 * (located inside the root) is opened/added.
-		 * 
-		 * -1 - revision is HEAD (actually, for a comit editor this number is
-		 * irrelevant)
+		 * For using over http:// and https://
 		 */
-		editor.openRoot(-1);
+		DAVRepositoryFactory.setup();
 		/*
-		 * Adds a new directory (in this case - to the root directory for which
-		 * the SVNRepository was created). Since this moment all changes will be
-		 * applied to this new directory.
-		 * 
-		 * dirPath is relative to the root directory.
-		 * 
-		 * copyFromPath (the 2nd parameter) is set to null and copyFromRevision
-		 * (the 3rd) parameter is set to -1 since the directory is not added
-		 * with history (is not copied, in other words).
+		 * For using over svn:// and svn+xxx://
 		 */
-		editor.addDir(dirPath, null, -1);
+		SVNRepositoryFactoryImpl.setup();
+	
 		/*
-		 * Adds a new file to the just added directory. The file path is also
-		 * defined as relative to the root directory.
-		 * 
-		 * copyFromPath (the 2nd parameter) is set to null and copyFromRevision
-		 * (the 3rd parameter) is set to -1 since the file is not added with
-		 * history.
+		 * For using over file:///
 		 */
-		editor.addFile(filePath, null, -1);
-		/*
-		 * The next steps are directed to applying delta to the file (that is
-		 * the full contents of the file in this case).
-		 */
-		editor.applyTextDelta(filePath, null);
-		/*
-		 * Use delta generator utility class to generate and send delta
-		 * 
-		 * Note that you may use only 'target' data to generate delta when there
-		 * is no access to the 'base' (previous) version of the file. However,
-		 * using 'base' data will result in smaller network overhead.
-		 * 
-		 * SVNDeltaGenerator will call editor.textDeltaChunk(...) method for
-		 * each generated "diff window" and then editor.textDeltaEnd(...) in the
-		 * end of delta transmission. Number of diff windows depends on the file
-		 * size.
-		 */
-		SVNDeltaGenerator deltaGenerator = new SVNDeltaGenerator();
-		String checksum = deltaGenerator.sendDelta(filePath, new ByteArrayInputStream(data), editor, true);
-
-		/*
-		 * Closes the new added file.
-		 */
-		editor.closeFile(filePath, checksum);
-		/*
-		 * Closes the new added directory.
-		 */
-		editor.closeDir();
-		/*
-		 * Closes the root directory.
-		 */
-		editor.closeDir();
-		/*
-		 * This is the final point in all editor handling. Only now all that new
-		 * information previously described with the editor's methods is sent to
-		 * the server for committing. As a result the server sends the new
-		 * commit information.
-		 */
-		return editor.closeEdit();
+		FSRepositoryFactory.setup();
 	}
 
 	/*
@@ -419,8 +217,7 @@ public class Commit {
 	/*
 	 * This method performs committing file modifications.
 	 */
-	private static SVNCommitInfo modifyFile(ISVNEditor editor, String dirPath, String filePath, byte[] oldData,
-			byte[] newData) throws SVNException {
+	private static SVNCommitInfo modifyFile(ISVNEditor editor, String filePath, byte[] newData) throws SVNException {
 		/*
 		 * Always called first. Opens the current root directory. It means all
 		 * modifications will be applied to this directory until a next entry
@@ -430,19 +227,15 @@ public class Commit {
 		 */
 		editor.openRoot(-1);
 		/*
-		 * Opens a next subdirectory (in this example program it's the directory
-		 * added in the last commit). Since this moment all changes will be
-		 * applied to this directory.
-		 * 
-		 * dirPath is relative to the root directory. -1 - revision is HEAD
-		 */
-		editor.openDir(dirPath, -1);
-		/*
 		 * Opens the file added in the previous commit.
 		 * 
 		 * filePath is also defined as a relative path to the root directory.
 		 */
-		editor.openFile(filePath, -1);
+		try {
+			editor.openFile(filePath, -1);
+		} catch (SVNException e) {
+			throw new SVNCancelException();
+		}
 
 		/*
 		 * The next steps are directed to applying and writing the file delta.
@@ -463,9 +256,7 @@ public class Commit {
 		 * size.
 		 */
 		SVNDeltaGenerator deltaGenerator = new SVNDeltaGenerator();
-		String checksum = deltaGenerator.sendDelta(filePath, new ByteArrayInputStream(oldData), 0,
-				new ByteArrayInputStream(newData), editor, true);
-
+		String checksum = deltaGenerator.sendDelta(filePath, new ByteArrayInputStream(newData), editor, true);
 		/*
 		 * Closes the file.
 		 */
@@ -477,11 +268,6 @@ public class Commit {
 		editor.closeDir();
 
 		/*
-		 * Closes the root directory.
-		 */
-		editor.closeDir();
-
-		/*
 		 * This is the final point in all editor handling. Only now all that new
 		 * information previously described with the editor's methods is sent to
 		 * the server for committing. As a result the server sends the new
@@ -490,98 +276,34 @@ public class Commit {
 		return editor.closeEdit();
 	}
 
-	/*
-	 * This method performs committing a deletion of a directory.
-	 */
-	private static SVNCommitInfo deleteDir(ISVNEditor editor, String dirPath) throws SVNException {
-		/*
-		 * Always called first. Opens the current root directory. It means all
-		 * modifications will be applied to this directory until a next entry
-		 * (located inside the root) is opened/added.
-		 * 
-		 * -1 - revision is HEAD
-		 */
-		editor.openRoot(-1);
-		/*
-		 * Deletes the subdirectory with all its contents.
-		 * 
-		 * dirPath is relative to the root directory.
-		 */
-		editor.deleteEntry(dirPath, -1);
-		/*
-		 * Closes the root directory.
-		 */
-		editor.closeDir();
-		/*
-		 * This is the final point in all editor handling. Only now all that new
-		 * information previously described with the editor's methods is sent to
-		 * the server for committing. As a result the server sends the new
-		 * commit information.
-		 */
-		return editor.closeEdit();
-	}
+	public static void main(String[] args) {
 
-	/*
-	 * This method performs how a directory in the repository can be copied to
-	 * branch.
-	 */
-	private static SVNCommitInfo copyDir(ISVNEditor editor, String srcDirPath, String dstDirPath, long revision)
-			throws SVNException {
-		/*
-		 * Always called first. Opens the current root directory. It means all
-		 * modifications will be applied to this directory until a next entry
-		 * (located inside the root) is opened/added.
-		 * 
-		 * -1 - revision is HEAD
-		 */
-		editor.openRoot(-1);
+		Commit cCommit = new Commit();
 
-		/*
-		 * Adds a new directory that is a copy of the existing one.
-		 * 
-		 * srcDirPath - the source directory path (relative to the root
-		 * directory).
-		 * 
-		 * dstDirPath - the destination directory path where the source will be
-		 * copied to (relative to the root directory).
-		 * 
-		 * revision - the number of the source directory revision.
-		 */
-		editor.addDir(dstDirPath, srcDirPath, revision);
-		/*
-		 * Closes the just added copy of the directory.
-		 */
-		editor.closeDir();
-		/*
-		 * Closes the root directory.
-		 */
-		editor.closeDir();
-		/*
-		 * This is the final point in all editor handling. Only now all that new
-		 * information previously described with the editor's methods is sent to
-		 * the server for committing. As a result the server sends the new
-		 * commit information.
-		 */
-		return editor.closeEdit();
-	}
+		String endereco = "http://mizar/svn/brad2011/dn1/svn_acl";
+		String user = "lucas.fernandes";
+		String password = "P@ssw0rd1997";
+		String arquivo = "svn.acl";
+		byte[] conteudo = "teste".getBytes();
 
-	/*
-	 * Initializes the library to work with a repository via different
-	 * protocols.
-	 */
-	private static void setupLibrary() {
-		/*
-		 * For using over http:// and https://
-		 */
-		DAVRepositoryFactory.setup();
-		/*
-		 * For using over svn:// and svn+xxx://
-		 */
-		SVNRepositoryFactoryImpl.setup();
+		String commit = "Alteracao";
 
-		/*
-		 * For using over file:///
-		 */
-		FSRepositoryFactory.setup();
+		try {
+			cCommit.commitando(endereco, user, password, arquivo, conteudo, commit, false);
+		} catch (SVNAuthenticationException e) {
+			System.out.println("Usuário ou senha inválidos");
+		} catch (SVNCancelException e) {
+			System.out.println("Arquivo não existe");
+		} catch (SVNException e) {
+			System.out.println("URL Invalida");
+		} catch (Exception e) {
+			System.out.println("Error");
+		}
+
+		try {
+			// cCommit.commitando(endereco, user, password, arquivo, conteudo, commit, true);
+		} catch (Exception e) {
+			System.out.println("Error");
+		}
 	}
 }
