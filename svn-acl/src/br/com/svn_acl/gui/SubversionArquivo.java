@@ -39,6 +39,7 @@ public class SubversionArquivo extends JDialog implements ActionListener {
 		
 
 		JPanel p = new JPanel(new SpringLayout());
+		
 		// for (int i = 0; i < labelsLength; i++) {
 		// JLabel l = new JLabel(labels[i], JLabel.TRAILING);
 		// p.add(l);
