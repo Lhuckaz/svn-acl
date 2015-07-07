@@ -18,12 +18,12 @@ public class SubversionItemMenuListener implements ActionListener {
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		Object open = e.getSource();
-		// MenuItem abrir
+		// MenuItem exportar
 		if (open == svnAclGUI.getJMenuItemExport()) {
 			export();
 		}
 
-		// MenuItem salvar
+		// MenuItem commit
 		if (open == svnAclGUI.getJMenuItemCommit()) {
 			commit();
 		}

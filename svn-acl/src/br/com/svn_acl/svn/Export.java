@@ -17,11 +17,13 @@ import org.tmatesoft.svn.core.wc.SVNRevision;
 import org.tmatesoft.svn.core.wc.SVNUpdateClient;
 import org.tmatesoft.svn.core.wc.SVNWCUtil;
 
+import br.com.svn_acl.util.Util;
+
 public class Export {
 
-	private final String destPath = "svn.acl";
-
-	public void exportando(String url, String user, String password) throws SVNException {
+	public boolean exportando(String url, String user, String password) throws SVNException {
+		
+		String destPath = Util.getNomeArquivoURL(url);
 
 		SVNRepository repository = null;
 
@@ -56,8 +58,10 @@ public class Export {
 		// use SVNUpdateClient to do the export
 		SVNUpdateClient updateClient = ourClientManager.getUpdateClient();
 		updateClient.setIgnoreExternals(false);
+		// TODO Arquivo baixado ira ser renomeado caso exista
 		updateClient.doExport(repository.getLocation(), new File(destPath), SVNRevision.create(latestRevision),
 				SVNRevision.create(latestRevision), null, true, SVNDepth.INFINITY);
+		return true;
 
 	}
 

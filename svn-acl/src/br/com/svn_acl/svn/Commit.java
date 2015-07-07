@@ -37,7 +37,7 @@ public class Commit {
 		setupLibrary();
 	}
 
-	private void commitando(String endereco, String user, String password, String arquivo, byte[] conteudo,
+	public boolean commitando(String endereco, String user, String password, String arquivo, byte[] conteudo,
 			String commit, boolean begin) throws SVNException {
 		/*
 		 * URL that points to repository.
@@ -121,6 +121,7 @@ public class Commit {
 		} else {
 			modifyFile(editor, arquivo, modifiedContents);
 		}
+		return true;
 	}
 
 	/*

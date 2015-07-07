@@ -3,6 +3,8 @@ package br.com.svn_acl.util;
 public class Diretorios {
 	
 	private static String diretorioCorrente = retornaUserDocuments();
+	private static String fileExportName;
+	private static String endereco;
 
 	/**
 	 * 
@@ -42,6 +44,38 @@ public class Diretorios {
 	 */
 	public static String retornaArquivoParaSalvar() {
 		return "svn";
+	}
+	
+	/**
+	 * 
+	 * @param nome do arquivo exportado
+	 */
+	public static void setFileExportName(String nome) {
+		fileExportName = nome;
+	}
+	
+	/**
+	 * 
+	 * @return Retorna nome do arquivo exportado
+	 */
+	public static String retornaFileExportName() {
+		return fileExportName;
+	}
+
+	/**
+	 * 
+	 * @param url setar a url
+	 */
+	public static void setUrl(String url) {
+		endereco = url;
+	}
+
+	/**
+	 * 
+	 * @return Retorna a url
+	 */
+	public static String retornaUrl() {
+		return endereco;
 	}
 
 }

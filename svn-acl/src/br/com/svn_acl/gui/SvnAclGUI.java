@@ -168,6 +168,7 @@ public class SvnAclGUI {
 			atualizaGrupos();
 			atualizaDiretorios();
 		}
+		jMenuItemCommit.setEnabled(true);
 	}
 
 	private void adicionandoIcon() {
@@ -201,6 +202,7 @@ public class SvnAclGUI {
 		jMenuItemCommit.addActionListener(subversionItemMenuListener);
 		jMenuItemCommit.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_I, Toolkit.getDefaultToolkit()
 				.getMenuShortcutKeyMask()));
+		jMenuItemCommit.setEnabled(false);
 		jMenuSubversion.add(jMenuItemExport);
 		jMenuSubversion.add(jMenuItemCommit);
 
