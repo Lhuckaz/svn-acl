@@ -58,7 +58,7 @@ public class Export {
 		// use SVNUpdateClient to do the export
 		SVNUpdateClient updateClient = ourClientManager.getUpdateClient();
 		updateClient.setIgnoreExternals(false);
-		// TODO Arquivo baixado ira ser renomeado caso exista
+
 		updateClient.doExport(repository.getLocation(), new File(destPath), SVNRevision.create(latestRevision),
 				SVNRevision.create(latestRevision), null, true, SVNDepth.INFINITY);
 		return true;

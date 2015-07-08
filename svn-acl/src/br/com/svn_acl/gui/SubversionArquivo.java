@@ -53,7 +53,7 @@ public class SubversionArquivo extends JDialog {
 		JLabel l = new JLabel(labels[0], JLabel.TRAILING);
 		p.add(l);
 		url = new JTextField(50);
-		// TODO Retirar
+
 		if(titulo.equals("Exportar")) {
 			if (Diretorios.retornaFileExportName() == null) {
 				url.setText(Util.enderecoPadraoComArquivo());
@@ -170,7 +170,7 @@ public class SubversionArquivo extends JDialog {
 				String message = "";
 				
 				// Retira o nome do arquivo da url
-				Diretorios.setUrl(url.substring(0, url.lastIndexOf("/")));
+				Diretorios.setUrl(Util.validaURL(url));
 				
 				try {
 					exportando = export.exportando(url, user, password);
@@ -182,7 +182,6 @@ public class SubversionArquivo extends JDialog {
 					message = "Erro Fatal";
 				}
 
-				// TODO Verificar nome do arquivo ao qual foi baixado
 				if (exportando) {
 					String arquivo = Util.getNomeArquivoURL(url);
 					file = new File(arquivo);
@@ -209,7 +208,7 @@ public class SubversionArquivo extends JDialog {
 					String arquivo = Diretorios.retornaFileExportName();
 					
 					// Retira o nome do arquivo da url
-					url = url.substring(0, url.lastIndexOf("/"));
+					url = Util.validaURL(url);
 					Diretorios.setUrl(url);
 					
 					commitando = commit.commitando(url, user, password, arquivo, bytes, comentario, false);
@@ -223,7 +222,6 @@ public class SubversionArquivo extends JDialog {
 					message = "Erro Fatal";
 				}
 
-				// TODO Verificar nome do arquivo ao qual foi baixado
 				if (commitando) {
 					subversionArquivo.setVisible(false);
 					JOptionPane.showMessageDialog(owner.getFrame(), "Commitado", "Commit", JOptionPane.INFORMATION_MESSAGE);

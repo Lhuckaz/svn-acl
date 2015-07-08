@@ -46,4 +46,14 @@ public class Util {
 		return "http://mizar/svn/brad2011/dn1/svn_acl/";
 	}
 
+	public static String validaURL(String url) {
+		String ret;
+		try {
+			ret = url.substring(0, url.lastIndexOf("/"));
+			return ret;
+		} catch (StringIndexOutOfBoundsException e) {
+			return "";
+		}
+	}
+
 }
