@@ -37,21 +37,25 @@ public class SshTransfere extends JDialog {
 
 		JLabel l = new JLabel(labels[0], JLabel.TRAILING);
 		p.add(l);
-		host = new JTextField(10);
+		host = new JTextField(50);
 		l.setLabelFor(host);
 		p.add(host);
 		
+		JPanel users = new JPanel(new BorderLayout());
 		JLabel l1 = new JLabel(labels[1], JLabel.TRAILING);
 		p.add(l1);
-		user = new JTextField(10);
+		user = new JTextField(20);
 		l1.setLabelFor(user);
-		p.add(user);
+		users.add(user, BorderLayout.WEST);
+		p.add(users);
 		
+		JPanel passwords = new JPanel(new BorderLayout());
 		JLabel l2 = new JLabel(labels[2], JLabel.TRAILING);
 		p.add(l2);
-		password = new JPasswordField(10);
+		password = new JPasswordField(20);
 		l2.setLabelFor(password);
-		p.add(password);
+		passwords.add(password, BorderLayout.WEST);
+		p.add(passwords);
 		
 		JLabel l3 = new JLabel(labels[3], JLabel.TRAILING);
 		p.add(l3);

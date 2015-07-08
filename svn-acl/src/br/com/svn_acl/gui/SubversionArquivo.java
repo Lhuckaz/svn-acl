@@ -58,13 +58,13 @@ public class SubversionArquivo extends JDialog {
 			if (Diretorios.retornaFileExportName() == null) {
 				url.setText(Util.enderecoPadraoComArquivo());
 			} else {
-				url.setText(Diretorios.retornaUrl() + File.separator + Diretorios.retornaFileExportName());
+				url.setText(Diretorios.retornaUrl() + "/" + Diretorios.retornaFileExportName());
 			}
 		} else {
 			if (Diretorios.retornaUrl() == null || !Util.validaString(Diretorios.retornaUrl())) {
-				url.setText(Util.enderecoPadraoComArquivo() + Diretorios.retornaFileExportName());
+				url.setText(Util.enderecoPadraoComArquivo());
 			} else {
-				url.setText(Diretorios.retornaUrl() + File.separator + Diretorios.retornaFileExportName());
+				url.setText(Diretorios.retornaUrl() + "/" + Diretorios.retornaFileExportName());
 			}	
 		}
 		l.setLabelFor(url);
@@ -169,11 +169,10 @@ public class SubversionArquivo extends JDialog {
 				boolean exportando = false;
 				String message = "";
 				
-				// Retira o nome do arquivo da url
-				Diretorios.setUrl(Util.validaURL(url));
-				
 				try {
 					exportando = export.exportando(url, user, password);
+					// Retira o nome do arquivo da url
+					Diretorios.setUrl(Util.validaURL(url));
 				} catch (SVNAuthenticationException ex) {
 					message = "Usuario ou senha invalidos";
 				} catch (SVNException ex) {
@@ -181,7 +180,7 @@ public class SubversionArquivo extends JDialog {
 				} catch (Exception ex) {
 					message = "Erro Fatal";
 				}
-
+				
 				if (exportando) {
 					String arquivo = Util.getNomeArquivoURL(url);
 					file = new File(arquivo);
@@ -192,6 +191,7 @@ public class SubversionArquivo extends JDialog {
 				} else {
 					JOptionPane.showMessageDialog(owner.getFrame(), message, "Export", JOptionPane.ERROR_MESSAGE);
 				}
+	
 			} else {
 				String url = subversionArquivo.url.getText();
 				String user = subversionArquivo.user.getText();
@@ -207,11 +207,10 @@ public class SubversionArquivo extends JDialog {
 					
 					String arquivo = Diretorios.retornaFileExportName();
 					
+					commitando = commit.commitando(url, user, password, arquivo, bytes, comentario, false);
 					// Retira o nome do arquivo da url
 					url = Util.validaURL(url);
 					Diretorios.setUrl(url);
-					
-					commitando = commit.commitando(url, user, password, arquivo, bytes, comentario, false);
 				} catch (SVNAuthenticationException ex) {
 					message = "Usuário ou senha inválidos";
 				} catch (SVNCancelException ex) {
