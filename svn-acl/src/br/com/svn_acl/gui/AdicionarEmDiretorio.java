@@ -18,12 +18,9 @@ import javax.swing.JPanel;
 
 import br.com.svn_acl.util.Util;
 
+@SuppressWarnings("serial")
 public class AdicionarEmDiretorio extends JDialog implements ActionListener {
 
-	/**
-	 * Serial Version
-	 */
-	private static final long serialVersionUID = 1L;
 	private SvnAclGUI owner;
 	private JCheckBox jCheckBoxUsuario;
 	private JComboBox<String> comboGrupos;

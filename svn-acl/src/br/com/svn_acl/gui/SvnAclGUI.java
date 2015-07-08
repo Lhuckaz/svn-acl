@@ -14,8 +14,11 @@ import java.awt.event.FocusListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.io.FileNotFoundException;
+import java.net.ConnectException;
 import java.util.List;
 
+import javax.naming.AuthenticationException;
 import javax.swing.BorderFactory;
 import javax.swing.DefaultListModel;
 import javax.swing.JButton;
@@ -41,7 +44,9 @@ import br.com.svn_acl.listener.ListaGrupoListener;
 import br.com.svn_acl.listener.ListaPermissoesListener;
 import br.com.svn_acl.listener.ListaUsuariosListener;
 import br.com.svn_acl.listener.ArquivoItemMenuListener;
+import br.com.svn_acl.listener.SshItemMenuListener;
 import br.com.svn_acl.listener.SubversionItemMenuListener;
+import br.com.svn_acl.svn.ActiveDirectory;
 import br.com.svn_acl.util.DefineTamanhoJTextField;
 import br.com.svn_acl.util.Util;
 
@@ -54,10 +59,12 @@ public class SvnAclGUI {
 	private JMenuBar jMenuBar;
 	private JMenu jMenuArquivos;
 	private JMenu jMenuSubversion;
+	private JMenu jMenuSsh;
 	private JMenuItem jMenuItemAbrir;
 	private JMenuItem jMenuItemSalvar;
 	private JMenuItem jMenuItemExport;
 	private JMenuItem jMenuItemCommit;
+	private JMenuItem jMenuItemTransferir;
 
 	private JPanel jPanelPrincipalGrupos;
 	private JPanel jPanelPrincipalListGrupos;
@@ -102,6 +109,8 @@ public class SvnAclGUI {
 	private List<String> listarDiretorios;
 	private List<String> listaUsuariosGrupo;
 	private List<String> listaPermissaoDiretorio;
+
+	private List<String> allUser;
 
 	public SvnAclGUI() {
 		prepareGUI();
@@ -153,6 +162,8 @@ public class SvnAclGUI {
 		frame.pack();
 		frame.setLocationRelativeTo(null);
 		frame.setVisible(true);
+		
+		verificaUsuariosAD();
 	}
 
 	private boolean carregadoArquivo = false;
@@ -169,6 +180,8 @@ public class SvnAclGUI {
 			atualizaDiretorios();
 		}
 		jMenuItemCommit.setEnabled(true);
+		jMenuItemTransferir.setEnabled(true);
+		jMenuItemSalvar.setEnabled(true);
 	}
 
 	private void adicionandoIcon() {
@@ -179,6 +192,7 @@ public class SvnAclGUI {
 	private void adicionaMenu() {
 		ArquivoItemMenuListener arquivoItemMenuListener = new ArquivoItemMenuListener(this);
 		SubversionItemMenuListener subversionItemMenuListener = new SubversionItemMenuListener(this);
+		SshItemMenuListener sshItemMenuListener = new SshItemMenuListener(this);
 
 		jMenuBar = new JMenuBar();
 		jMenuArquivos = new JMenu("Arquivo");
@@ -190,9 +204,10 @@ public class SvnAclGUI {
 		jMenuItemSalvar.addActionListener(arquivoItemMenuListener);
 		jMenuItemSalvar.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_S, Toolkit.getDefaultToolkit()
 				.getMenuShortcutKeyMask()));
+		jMenuItemSalvar.setEnabled(false);
 		jMenuArquivos.add(jMenuItemAbrir);
 		jMenuArquivos.add(jMenuItemSalvar);
-		
+
 		jMenuSubversion = new JMenu("Subversion");
 		jMenuItemExport = new JMenuItem("Export");
 		jMenuItemExport.addActionListener(subversionItemMenuListener);
@@ -206,8 +221,17 @@ public class SvnAclGUI {
 		jMenuSubversion.add(jMenuItemExport);
 		jMenuSubversion.add(jMenuItemCommit);
 
+		jMenuSsh = new JMenu("SSH");
+		jMenuItemTransferir = new JMenuItem("Transferir");
+		jMenuItemTransferir.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_T, Toolkit.getDefaultToolkit()
+				.getMenuShortcutKeyMask()));
+		jMenuItemTransferir.setEnabled(false);
+		jMenuItemTransferir.addActionListener(sshItemMenuListener);
+		jMenuSsh.add(jMenuItemTransferir);
+
 		jMenuBar.add(jMenuArquivos);
 		jMenuBar.add(jMenuSubversion);
+		jMenuBar.add(jMenuSsh);
 
 		frame.setJMenuBar(jMenuBar);
 	}
@@ -293,7 +317,11 @@ public class SvnAclGUI {
 
 			private void verificaUsuario(String usuarioParaAdicionar) {
 				boolean usuarioExiste = getGerenciadorDeGrupos().usuarioExiste(usuarioParaAdicionar);
-				if (!usuarioExiste) {
+				boolean contains = true;
+				if(allUser != null) {
+					contains = allUser.contains(usuarioParaAdicionar);
+				}
+				if (!usuarioExiste || !contains) {
 					int confirmar = JOptionPane.showConfirmDialog(getFrame(), "Usuário \"" + usuarioParaAdicionar
 							+ "\" ainda nao existe\nDeseja adicionar assim mesmo ?", "Adicionar",
 							JOptionPane.YES_NO_OPTION);
@@ -461,6 +489,34 @@ public class SvnAclGUI {
 		tabPainel.addTab("Permissões", jPanelPrincipalPermissoes);
 	}
 
+	private void verificaUsuariosAD() {
+		ActiveDirectory ad = null;
+		String message = "";
+		try {
+			ad = new ActiveDirectory();
+			allUser = ad.allUser();
+		} catch (AuthenticationException e) {
+			message = "Usuario ou senhas invalidos";
+		} catch (ConnectException e) {
+			message = "Conexão com AD falhou";
+		} catch (FileNotFoundException e) {
+			message = "Verifique arquivo system.properties";
+		} catch (Exception e) {
+			message = "Erro com conexao LDAP";
+		} finally {
+			if (ad != null) {
+				ad.closeLdapConnection();
+			}
+		}
+
+		if (message != "") {
+			JOptionPane.showMessageDialog(null, message);
+		}
+
+		// Finalizando
+		ad = null;
+	}
+
 	public JFrame getFrame() {
 		return frame;
 	}
@@ -472,7 +528,7 @@ public class SvnAclGUI {
 	public JMenuItem getJMenuItemSalvar() {
 		return jMenuItemSalvar;
 	}
-	
+
 	public JMenuItem getJMenuItemExport() {
 		return jMenuItemExport;
 	}

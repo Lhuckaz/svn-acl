@@ -58,13 +58,13 @@ public class SubversionArquivo extends JDialog {
 			if (Diretorios.retornaFileExportName() == null) {
 				url.setText(Util.enderecoPadraoComArquivo());
 			} else {
-				url.setText(Diretorios.retornaUrl() + "/" + Diretorios.retornaFileExportName());
+				url.setText(Diretorios.retornaUrl() + File.separator + Diretorios.retornaFileExportName());
 			}
 		} else {
 			if (Diretorios.retornaUrl() == null || !Util.validaString(Diretorios.retornaUrl())) {
 				url.setText(Util.enderecoPadraoComArquivo() + Diretorios.retornaFileExportName());
 			} else {
-				url.setText(Diretorios.retornaUrl() + "/" + Diretorios.retornaFileExportName());
+				url.setText(Diretorios.retornaUrl() + File.separator + Diretorios.retornaFileExportName());
 			}	
 		}
 		l.setLabelFor(url);

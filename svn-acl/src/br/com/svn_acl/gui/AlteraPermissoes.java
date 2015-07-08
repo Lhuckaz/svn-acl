@@ -12,12 +12,9 @@ import javax.swing.JPanel;
 
 import br.com.svn_acl.util.Util;
 
+@SuppressWarnings("serial")
 public class AlteraPermissoes extends JDialog implements ActionListener {
 
-	/**
-	 * Serial Version
-	 */
-	private static final long serialVersionUID = 1L;
 	private JComboBox<String> comboPermissoes;
 	private String permissoes;
 	private String diretorioSelecionado;
