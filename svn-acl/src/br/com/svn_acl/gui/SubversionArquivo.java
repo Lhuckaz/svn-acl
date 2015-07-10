@@ -207,9 +207,12 @@ public class SubversionArquivo extends JDialog {
 					
 					String arquivo = Diretorios.retornaFileExportName();
 					
-					commitando = commit.commitando(url, user, password, arquivo, bytes, comentario, false);
 					// Retira o nome do arquivo da url
 					url = Util.validaURL(url);
+					
+					commitando = commit.commitando(url, user, password, arquivo, bytes, comentario, false);
+					
+					// Seta o valor na url atual
 					Diretorios.setUrl(url);
 				} catch (SVNAuthenticationException ex) {
 					message = "Usuário ou senha inválidos";

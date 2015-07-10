@@ -36,17 +36,17 @@ import javax.swing.KeyStroke;
 import javax.swing.ListSelectionModel;
 import javax.swing.border.Border;
 
+import br.com.svn_acl.ad.ActiveDirectory;
 import br.com.svn_acl.controler.Gerenciador;
 import br.com.svn_acl.controler.GerenciadorDeGrupos;
 import br.com.svn_acl.controler.GerenciadorDePermissoes;
+import br.com.svn_acl.listener.ArquivoItemMenuListener;
 import br.com.svn_acl.listener.ListaDiretoriosListener;
 import br.com.svn_acl.listener.ListaGrupoListener;
 import br.com.svn_acl.listener.ListaPermissoesListener;
 import br.com.svn_acl.listener.ListaUsuariosListener;
-import br.com.svn_acl.listener.ArquivoItemMenuListener;
 import br.com.svn_acl.listener.SshItemMenuListener;
 import br.com.svn_acl.listener.SubversionItemMenuListener;
-import br.com.svn_acl.svn.ActiveDirectory;
 import br.com.svn_acl.util.DefineTamanhoJTextField;
 import br.com.svn_acl.util.Util;
 

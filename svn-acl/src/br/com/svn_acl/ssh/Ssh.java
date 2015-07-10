@@ -10,6 +10,8 @@ import com.jcraft.jsch.Session;
 
 public class Ssh {
 	
+	File f;
+	
 	public boolean transfere(String host, String user, String password, String dir) {
 		return transfere(host, user, password, dir, 22);
 	}
@@ -27,14 +29,17 @@ public class Ssh {
 			channel.connect();
 			ChannelSftp channelSftp = (ChannelSftp) channel;
 			channelSftp.cd(dir);
-			File f = new File("~svn-saida.acl");
-			channelSftp.put(new FileInputStream(f), "svn.acl");
+			f = new File("~svn-saida.acl");
+			FileInputStream fileInputStream = new FileInputStream(f);
+			channelSftp.put(fileInputStream, "svn.acl");
+			fileInputStream.close();
+			channelSftp.disconnect();
+			channel.disconnect();
+			session.disconnect();
 		} catch (Exception e) {
 			return false;
 		}
 		return true;
 		
 	}
-	
-
 }
