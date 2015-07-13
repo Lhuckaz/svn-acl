@@ -18,6 +18,9 @@ import javax.naming.directory.InitialDirContext;
 import javax.naming.directory.SearchControls;
 import javax.naming.directory.SearchResult;
 
+import br.com.svn_acl.gui.AdConfigura;
+import br.com.svn_acl.util.Util;
+
 public class ActiveDirectory {
 
 	private DirContext dirContext;
@@ -30,13 +33,17 @@ public class ActiveDirectory {
 	public ActiveDirectory() throws NamingException, ConnectException, FileNotFoundException {
 		Properties propertiesSystem = new Properties();
 		try {
-			propertiesSystem.load(new FileInputStream("system.properties"));
+			propertiesSystem.load(new FileInputStream(Util.getArquivoProperties()));
 		} catch (Exception e) {
 			throw new FileNotFoundException();
 		}
 		String domainController = propertiesSystem.getProperty("domain.ldap");
 		String username = propertiesSystem.getProperty("username.ldap");
-		String password = propertiesSystem.getProperty("password.ldap");
+		String password = AdConfigura.recuperaSenha();
+
+		if (domainController.equals("") || username.equals("") || password.equals("")) {
+			throw new NullPointerException();
+		}
 
 		Properties properties = new Properties();
 
@@ -128,6 +135,7 @@ public class ActiveDirectory {
 			ad = new ActiveDirectory();
 			allUser = ad.allUser();
 			System.out.println(ad.existeUsuario("lucas.fernandes"));
+		} catch (NullPointerException e) {
 		} catch (AuthenticationException e) {
 			System.out.println("Usuario ou senhas do AD inválidos");
 		} catch (ConnectException e) {

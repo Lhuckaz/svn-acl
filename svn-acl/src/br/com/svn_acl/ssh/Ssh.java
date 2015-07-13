@@ -2,6 +2,9 @@ package br.com.svn_acl.ssh;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.util.Properties;
+
+import br.com.svn_acl.util.Util;
 
 import com.jcraft.jsch.Channel;
 import com.jcraft.jsch.ChannelSftp;
@@ -10,10 +13,8 @@ import com.jcraft.jsch.Session;
 
 public class Ssh {
 	
-	File f;
-	
 	public boolean transfere(String host, String user, String password, String dir) {
-		return transfere(host, user, password, dir, 22);
+		return transfere(host, user, password, dir, Util.getNumberPortDefault());
 	}
 
 	public boolean transfere(String host, String user, String password, String dir, int porta) {
@@ -21,7 +22,7 @@ public class Ssh {
 			JSch jsch = new JSch();
 			Session session = jsch.getSession(user, host, porta);
 			session.setPassword(password);
-			java.util.Properties config = new java.util.Properties();
+			Properties config = new Properties();
 			config.put("StrictHostKeyChecking", "no");
 			session.setConfig(config);
 			session.connect();
@@ -29,7 +30,7 @@ public class Ssh {
 			channel.connect();
 			ChannelSftp channelSftp = (ChannelSftp) channel;
 			channelSftp.cd(dir);
-			f = new File("~svn-saida.acl");
+			File f = new File("~svn-saida.acl");
 			FileInputStream fileInputStream = new FileInputStream(f);
 			channelSftp.put(fileInputStream, "svn.acl");
 			fileInputStream.close();

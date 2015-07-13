@@ -184,7 +184,9 @@ public class SubversionArquivo extends JDialog {
 				if (exportando) {
 					String arquivo = Util.getNomeArquivoURL(url);
 					file = new File(arquivo);
+					// Salva o nome da URL no properties
 					Diretorios.setFileExportName(arquivo);
+
 					owner.carregaArquivo(arquivo);
 					file.delete();
 					subversionArquivo.setVisible(false);

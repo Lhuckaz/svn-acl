@@ -15,6 +15,7 @@ import java.awt.event.KeyEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.io.FileNotFoundException;
+import java.io.ObjectInputStream.GetField;
 import java.net.ConnectException;
 import java.util.List;
 
@@ -40,6 +41,7 @@ import br.com.svn_acl.ad.ActiveDirectory;
 import br.com.svn_acl.controler.Gerenciador;
 import br.com.svn_acl.controler.GerenciadorDeGrupos;
 import br.com.svn_acl.controler.GerenciadorDePermissoes;
+import br.com.svn_acl.listener.AdItemMenuListener;
 import br.com.svn_acl.listener.ArquivoItemMenuListener;
 import br.com.svn_acl.listener.ListaDiretoriosListener;
 import br.com.svn_acl.listener.ListaGrupoListener;
@@ -60,11 +62,13 @@ public class SvnAclGUI {
 	private JMenu jMenuArquivos;
 	private JMenu jMenuSubversion;
 	private JMenu jMenuSsh;
+	private JMenu jMenuAd;
 	private JMenuItem jMenuItemAbrir;
 	private JMenuItem jMenuItemSalvar;
 	private JMenuItem jMenuItemExport;
 	private JMenuItem jMenuItemCommit;
 	private JMenuItem jMenuItemTransferir;
+	private JMenuItem jMenuItemAdSettings;
 
 	private JPanel jPanelPrincipalGrupos;
 	private JPanel jPanelPrincipalListGrupos;
@@ -110,7 +114,7 @@ public class SvnAclGUI {
 	private List<String> listaUsuariosGrupo;
 	private List<String> listaPermissaoDiretorio;
 
-	private List<String> allUser;
+	public static List<String> allUser;
 
 	public SvnAclGUI() {
 		prepareGUI();
@@ -162,8 +166,9 @@ public class SvnAclGUI {
 		frame.pack();
 		frame.setLocationRelativeTo(null);
 		frame.setVisible(true);
-		
-		verificaUsuariosAD();
+
+		// Iniciado na classe Main
+		// verificaUsuariosAD();
 	}
 
 	private boolean carregadoArquivo = false;
@@ -193,6 +198,7 @@ public class SvnAclGUI {
 		ArquivoItemMenuListener arquivoItemMenuListener = new ArquivoItemMenuListener(this);
 		SubversionItemMenuListener subversionItemMenuListener = new SubversionItemMenuListener(this);
 		SshItemMenuListener sshItemMenuListener = new SshItemMenuListener(this);
+		AdItemMenuListener adItemMenuListener = new AdItemMenuListener(this);
 
 		jMenuBar = new JMenuBar();
 		jMenuArquivos = new JMenu("Arquivo");
@@ -228,10 +234,18 @@ public class SvnAclGUI {
 		jMenuItemTransferir.setEnabled(false);
 		jMenuItemTransferir.addActionListener(sshItemMenuListener);
 		jMenuSsh.add(jMenuItemTransferir);
+		
+		jMenuAd = new JMenu("AD");
+		jMenuItemAdSettings = new JMenuItem("Configurar LDAP");
+		jMenuItemAdSettings.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_L, Toolkit.getDefaultToolkit()
+				.getMenuShortcutKeyMask()));
+		jMenuItemAdSettings.addActionListener(adItemMenuListener);
+		jMenuAd.add(jMenuItemAdSettings);
 
 		jMenuBar.add(jMenuArquivos);
 		jMenuBar.add(jMenuSubversion);
 		jMenuBar.add(jMenuSsh);
+		jMenuBar.add(jMenuAd);
 
 		frame.setJMenuBar(jMenuBar);
 	}
@@ -318,7 +332,7 @@ public class SvnAclGUI {
 			private void verificaUsuario(String usuarioParaAdicionar) {
 				boolean usuarioExiste = getGerenciadorDeGrupos().usuarioExiste(usuarioParaAdicionar);
 				boolean contains = true;
-				if(allUser != null) {
+				if (allUser != null) {
 					contains = allUser.contains(usuarioParaAdicionar);
 				}
 				if (!usuarioExiste || !contains) {
@@ -489,20 +503,26 @@ public class SvnAclGUI {
 		tabPainel.addTab("Permissões", jPanelPrincipalPermissoes);
 	}
 
-	private void verificaUsuariosAD() {
+	public static boolean verificaUsuariosAD() {
 		ActiveDirectory ad = null;
 		String message = "";
+		boolean ret = false;
+		int option = JOptionPane.INFORMATION_MESSAGE;
 		try {
 			ad = new ActiveDirectory();
 			allUser = ad.allUser();
+			ret = true;
 		} catch (AuthenticationException e) {
 			message = "Usuario ou senhas invalidos";
 		} catch (ConnectException e) {
-			message = "Conexão com AD falhou";
+			message = "Conexão com AD falhou\n1. Verifique a URL";
+			option = JOptionPane.INFORMATION_MESSAGE;
 		} catch (FileNotFoundException e) {
 			message = "Verifique arquivo system.properties";
+		} catch (NullPointerException e) {
 		} catch (Exception e) {
 			message = "Erro com conexao LDAP";
+			option = JOptionPane.ERROR_MESSAGE;
 		} finally {
 			if (ad != null) {
 				ad.closeLdapConnection();
@@ -510,11 +530,12 @@ public class SvnAclGUI {
 		}
 
 		if (message != "") {
-			JOptionPane.showMessageDialog(null, message);
+			JOptionPane.showMessageDialog(null, message, "LDAP", option);
 		}
 
 		// Finalizando
 		ad = null;
+		return ret;
 	}
 
 	public JFrame getFrame() {

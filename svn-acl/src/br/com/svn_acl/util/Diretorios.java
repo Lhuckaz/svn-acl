@@ -1,5 +1,12 @@
 package br.com.svn_acl.util;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.ObjectInputStream.GetField;
+
+import javax.swing.JOptionPane;
+
 public class Diretorios {
 	
 	private static String diretorioCorrente = retornaUserDocuments();
@@ -52,8 +59,25 @@ public class Diretorios {
 	 */
 	public static void setFileExportName(String nome) {
 		fileExportName = nome;
+		setURLNoProperties();
 	}
 	
+	private static void setURLNoProperties() {
+		try {
+			FileInputStream fileInputStream = new FileInputStream(Util.arquivoProperties);
+			Util.propertiesSystem.load(new FileInputStream(Util.arquivoProperties));
+			Util.propertiesSystem.setProperty("url.svn.file", endereco + "/" + fileExportName);
+			File file = new File(Util.getArquivoProperties());
+			FileOutputStream fos = new FileOutputStream(file);
+			Util.propertiesSystem.store(fos, "Alteracao de URL");
+			fileInputStream.close();
+			fos.close();
+		} catch (Exception e) {
+			JOptionPane.showMessageDialog(null, "Verifique arquivo system.properties", "Erro",
+					JOptionPane.INFORMATION_MESSAGE);
+		}
+	}
+
 	/**
 	 * 
 	 * @return Retorna nome do arquivo exportado
