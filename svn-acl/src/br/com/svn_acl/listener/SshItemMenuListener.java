@@ -3,7 +3,7 @@ package br.com.svn_acl.listener;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-import br.com.svn_acl.gui.SshTransfere;
+import br.com.svn_acl.gui.SshGui;
 import br.com.svn_acl.gui.SvnAclGUI;
 
 public class SshItemMenuListener implements ActionListener {
@@ -16,7 +16,24 @@ public class SshItemMenuListener implements ActionListener {
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		new SshTransfere(svnAclGUI);
+		Object open = e.getSource();
+		// MenuItem importar
+		if (open == svnAclGUI.getJMenuItemImportar()) {
+			importar();
+		}
+
+		// MenuItem exportar
+		if (open == svnAclGUI.getJMenuItemTransferir()) {
+			exportar();
+		}
+	}
+
+	private void importar() {
+		new SshGui(svnAclGUI, "Importar");
+	}
+
+	private void exportar() {
+		new SshGui(svnAclGUI, "Transferir");
 	}
 
 }

@@ -15,7 +15,6 @@ import java.awt.event.KeyEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.io.FileNotFoundException;
-import java.io.ObjectInputStream.GetField;
 import java.net.ConnectException;
 import java.util.List;
 
@@ -67,6 +66,7 @@ public class SvnAclGUI {
 	private JMenuItem jMenuItemSalvar;
 	private JMenuItem jMenuItemExport;
 	private JMenuItem jMenuItemCommit;
+	private JMenuItem jMenuItemImportar;
 	private JMenuItem jMenuItemTransferir;
 	private JMenuItem jMenuItemAdSettings;
 
@@ -166,6 +166,8 @@ public class SvnAclGUI {
 		frame.pack();
 		frame.setLocationRelativeTo(null);
 		frame.setVisible(true);
+		// Tela iniciada maximilizada
+		frame.setExtendedState(JFrame.MAXIMIZED_BOTH);
 
 		// Iniciado na classe Main
 		// verificaUsuariosAD();
@@ -228,13 +230,18 @@ public class SvnAclGUI {
 		jMenuSubversion.add(jMenuItemCommit);
 
 		jMenuSsh = new JMenu("SSH");
+		jMenuItemImportar = new JMenuItem("Importar");
+		jMenuItemImportar.addActionListener(sshItemMenuListener);
+		jMenuItemImportar.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_P, Toolkit.getDefaultToolkit()
+				.getMenuShortcutKeyMask()));
 		jMenuItemTransferir = new JMenuItem("Transferir");
 		jMenuItemTransferir.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_T, Toolkit.getDefaultToolkit()
 				.getMenuShortcutKeyMask()));
 		jMenuItemTransferir.setEnabled(false);
 		jMenuItemTransferir.addActionListener(sshItemMenuListener);
+		jMenuSsh.add(jMenuItemImportar);
 		jMenuSsh.add(jMenuItemTransferir);
-		
+
 		jMenuAd = new JMenu("AD");
 		jMenuItemAdSettings = new JMenuItem("Configurar LDAP");
 		jMenuItemAdSettings.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_L, Toolkit.getDefaultToolkit()
@@ -515,7 +522,7 @@ public class SvnAclGUI {
 		} catch (AuthenticationException e) {
 			message = "Usuario ou senhas invalidos";
 		} catch (ConnectException e) {
-			message = "Conexão com AD falhou\n1. Verifique a URL";
+			message = "Conexão com AD falhou";
 			option = JOptionPane.INFORMATION_MESSAGE;
 		} catch (FileNotFoundException e) {
 			message = "Verifique arquivo system.properties";
@@ -548,6 +555,14 @@ public class SvnAclGUI {
 
 	public JMenuItem getJMenuItemSalvar() {
 		return jMenuItemSalvar;
+	}
+
+	public JMenuItem getJMenuItemImportar() {
+		return jMenuItemImportar;
+	}
+
+	public JMenuItem getJMenuItemTransferir() {
+		return jMenuItemTransferir;
 	}
 
 	public JMenuItem getJMenuItemExport() {

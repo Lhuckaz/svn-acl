@@ -7,7 +7,6 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -31,7 +30,6 @@ import br.com.svn_acl.util.Util;
 @SuppressWarnings("serial")
 public class AdConfigura extends JDialog {
 
-	private SvnAclGUI owner;
 	JTextField dominio;
 	JTextField user;
 	JTextField password;
@@ -41,7 +39,6 @@ public class AdConfigura extends JDialog {
 
 	public AdConfigura(SvnAclGUI owner) {
 		super(owner.getFrame(), "Configurações", true);
-		this.owner = owner;
 
 		carregaProperties();
 

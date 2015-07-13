@@ -74,6 +74,7 @@ public class SubversionArquivo extends JDialog {
 		JLabel l1 = new JLabel(labels[1], JLabel.TRAILING);
 		p.add(l1);
 		user = new JTextField(20);
+		user.setText(Util.getUserNameSvn());
 		l1.setLabelFor(user);
 		users.add(user, BorderLayout.WEST);
 		p.add(users);
@@ -184,8 +185,8 @@ public class SubversionArquivo extends JDialog {
 				if (exportando) {
 					String arquivo = Util.getNomeArquivoURL(url);
 					file = new File(arquivo);
-					// Salva o nome da URL no properties
-					Diretorios.setFileExportName(arquivo);
+					// Salva o nome da URL e do User no properties
+					Diretorios.setFileExportNameAndUser(arquivo, user);
 
 					owner.carregaArquivo(arquivo);
 					file.delete();

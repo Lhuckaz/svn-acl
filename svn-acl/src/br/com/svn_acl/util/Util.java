@@ -1,6 +1,8 @@
 package br.com.svn_acl.util;
 
+import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.util.Arrays;
 import java.util.Properties;
 
@@ -8,8 +10,9 @@ import javax.swing.JOptionPane;
 
 public class Util {
 
-	public static String arquivoProperties = "system.properties";
+	public final static String arquivoProperties = "system.properties";
 	public static Properties propertiesSystem = new Properties();
+	public final static String FILE = "svn.acl";
 
 	public static String getArquivoProperties() {
 		return arquivoProperties;
@@ -37,7 +40,7 @@ public class Util {
 			String string = split[split.length - 1];
 			return string;
 		} catch (Exception e) {
-			return "svn.acl";
+			return FILE;
 		}
 	}
 
@@ -81,18 +84,54 @@ public class Util {
 		} catch (Exception e) {
 			return "";
 		}
-		return propertiesSystem.getProperty("number.port");
+		return propertiesSystem.getProperty("number.port.ssh");
 	}
 
 	public static int getNumberPortDefault() {
 		return 22;
 	}
 
+	public static String getHostName() {
+		try {
+			propertiesSystem.load(new FileInputStream(arquivoProperties));
+		} catch (Exception e) {
+			return "";
+		}
+		return propertiesSystem.getProperty("host.ssh");
+	}
+
+	public static String getUserNameSsh() {
+		try {
+			propertiesSystem.load(new FileInputStream(arquivoProperties));
+		} catch (Exception e) {
+			return "";
+		}
+		return propertiesSystem.getProperty("user.ssh");
+	}
+
+	public static String getUserNameSvn() {
+		try {
+			propertiesSystem.load(new FileInputStream(arquivoProperties));
+		} catch (Exception e) {
+			return "";
+		}
+		return propertiesSystem.getProperty("user.svn");
+	}
+
+	public static String getDirSsh() {
+		try {
+			propertiesSystem.load(new FileInputStream(arquivoProperties));
+		} catch (Exception e) {
+			return "";
+		}
+		return propertiesSystem.getProperty("dir.ssh");
+	}
+
 	public static String byteToString(byte[] value) {
 		return stringArrayToString(Arrays.toString(value));
 
 	}
-	
+
 	public static byte[] stringArrayToByte(String array) {
 		String[] byteValues = array.substring(1, array.length() - 1).split(",");
 
@@ -105,5 +144,42 @@ public class Util {
 
 	public static String stringArrayToString(String array) {
 		return new String(stringArrayToByte(array));
+	}
+
+	public static void setAtributosSsh(String host, String user, String dir, int porta) {
+		try {
+			FileInputStream fileInputStream = new FileInputStream(Util.arquivoProperties);
+			propertiesSystem.load(new FileInputStream(Util.arquivoProperties));
+			propertiesSystem.setProperty("host.ssh", host);
+			propertiesSystem.setProperty("user.ssh", user);
+			propertiesSystem.setProperty("dir.ssh", dir);
+			propertiesSystem.setProperty("number.port", String.valueOf(porta));
+			File file = new File(Util.getArquivoProperties());
+			FileOutputStream fos = new FileOutputStream(file);
+			Util.propertiesSystem.store(fos, "Alteracao de URL");
+			fileInputStream.close();
+			fos.close();
+		} catch (Exception e) {
+			JOptionPane.showMessageDialog(null, "Verifique arquivo system.properties", "Erro",
+					JOptionPane.INFORMATION_MESSAGE);
+		}
+	}
+
+	public static void setUserSvn(String user) {
+		try {
+			FileInputStream fileInputStream = new FileInputStream(Util.arquivoProperties);
+			propertiesSystem.load(new FileInputStream(Util.arquivoProperties));
+			if (propertiesSystem.getProperty("user.svn") != user) {
+				propertiesSystem.setProperty("user.svn", user);
+				File file = new File(Util.getArquivoProperties());
+				FileOutputStream fos = new FileOutputStream(file);
+				Util.propertiesSystem.store(fos, "Alteracao de User SVN");
+				fileInputStream.close();
+				fos.close();
+			}
+		} catch (Exception e) {
+			JOptionPane.showMessageDialog(null, "Verifique arquivo system.properties", "Erro",
+					JOptionPane.INFORMATION_MESSAGE);
+		}
 	}
 }

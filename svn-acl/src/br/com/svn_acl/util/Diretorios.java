@@ -3,7 +3,6 @@ package br.com.svn_acl.util;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
-import java.io.ObjectInputStream.GetField;
 
 import javax.swing.JOptionPane;
 
@@ -57,9 +56,10 @@ public class Diretorios {
 	 * 
 	 * @param nome do arquivo exportado
 	 */
-	public static void setFileExportName(String nome) {
+	public static void setFileExportNameAndUser(String nome, String user) {
 		fileExportName = nome;
 		setURLNoProperties();
+		Util.setUserSvn(user);
 	}
 	
 	private static void setURLNoProperties() {
