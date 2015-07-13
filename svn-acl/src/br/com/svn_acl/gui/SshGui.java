@@ -39,7 +39,6 @@ public class SshGui extends JDialog {
 	JTextField user;
 	JTextField password;
 	JTextField dir;
-	JTextField file;
 
 	public SshGui(SvnAclGUI owner, String titulo) {
 		super(owner.getFrame());
@@ -48,7 +47,7 @@ public class SshGui extends JDialog {
 		this.setModal(true);
 		JPanel principal = new JPanel();
 
-		final String[] labels = { "Porta: ", "Host: ", "Usuário: ", "Senha: ", "Diretorio: ", "Arquivo: " };
+		final String[] labels = { "Porta: ", "Host: ", "Usuário: ", "Senha: ", "Diretorio: " };
 		int labelsLength = labels.length;
 
 		JPanel p = new JPanel(new SpringLayout());
@@ -56,7 +55,7 @@ public class SshGui extends JDialog {
 		JPanel ports = new JPanel(new BorderLayout());
 		JLabel lPort = new JLabel(labels[0], JLabel.TRAILING);
 		p.add(lPort);
-		port = new JTextField(3);
+		port = new JTextField(4);
 		((AbstractDocument) port.getDocument()).setDocumentFilter(new DocumentFilterOnlyNumbers());
 		port.setText(Util.getNumberPort());
 		lPort.setLabelFor(port);
@@ -90,27 +89,9 @@ public class SshGui extends JDialog {
 		JLabel l3 = new JLabel(labels[4], JLabel.TRAILING);
 		p.add(l3);
 		dir = new JTextField(10);
-		if (!titulo.equals("Importar"))
-			dir.setText(Util.validaURL(Util.getDirSsh()));
-		else
-			dir.setText(Util.getDirSsh());
+		dir.setText(Util.getDirSsh());
 		l3.setLabelFor(dir);
 		p.add(dir);
-
-		// Retira um campo para a tela "Importar" para nao adicionar o
-		// Arquivo
-		labelsLength--;
-		if (!titulo.equals("Importar")) {
-			JPanel files = new JPanel(new BorderLayout());
-			JLabel l4 = new JLabel(labels[5], JLabel.TRAILING);
-			p.add(l4);
-			file = new JTextField(20);
-			file.setText(Util.FILE);
-			l4.setLabelFor(file);
-			files.add(file, BorderLayout.WEST);
-			p.add(files);
-			labelsLength++;
-		}
 
 		JPanel botoes = new JPanel(new BorderLayout());
 		p.add(new JLabel());
@@ -157,14 +138,14 @@ public class SshGui extends JDialog {
 				String user = sshTransfere.user.getText();
 				String password = sshTransfere.password.getText();
 				String dir = sshTransfere.dir.getText();
-				String file = sshTransfere.file.getText();
+				String file = Util.getNomeArquivoURL(dir);
 
 				Ssh ssh = new Ssh();
 				boolean transferindo = false;
 				String message = "";
 
 				try {
-					transferindo = ssh.transfere(host, user, password, dir, porta, file);
+					transferindo = ssh.transfere(host, user, password, Util.validaURL(dir), porta, file);
 					Util.setAtributosSsh(host, user, dir, porta);
 				} catch (JSchException ex) {
 					String messageEx = ex.getMessage();

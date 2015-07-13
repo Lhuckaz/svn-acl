@@ -19,8 +19,11 @@ public class Main {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		
-		SvnAclGUI.verificaUsuariosAD();
+
+		boolean verificaUsuariosAD = SvnAclGUI.verificaUsuariosAD();
+		if (!verificaUsuariosAD) {
+			SvnAclGUI.allUser = SvnAclGUI.addAllUserByFile();
+		}
 
 	}
 }

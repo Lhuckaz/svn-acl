@@ -14,8 +14,14 @@ import java.awt.event.FocusListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.io.BufferedReader;
+import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.net.ConnectException;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.naming.AuthenticationException;
@@ -519,6 +525,7 @@ public class SvnAclGUI {
 			ad = new ActiveDirectory();
 			allUser = ad.allUser();
 			ret = true;
+			adicionaTodosOsUsuariosNoArquivo(ad.allUser());
 		} catch (AuthenticationException e) {
 			message = "Usuario ou senhas invalidos";
 		} catch (ConnectException e) {
@@ -543,6 +550,77 @@ public class SvnAclGUI {
 		// Finalizando
 		ad = null;
 		return ret;
+	}
+
+	private static void adicionaTodosOsUsuariosNoArquivo(List<String> allUser) {
+		File file = new File("allusers.txt");
+		FileReader fileReader = null;
+		BufferedReader leitor = null;
+		FileWriter fileWriter = null;
+		if (file.exists()) {
+			file.delete();
+			try {
+				file.createNewFile();
+			} catch (IOException e) {
+				// Falha ao criar novo arquivo
+			}
+		} else {
+			try {
+				file.createNewFile();
+			} catch (IOException e) {
+				// Falha ao criar novo arquivo
+			}
+		}
+		try {
+			fileReader = new FileReader(file);
+			fileWriter = new FileWriter(file, false);
+			leitor = new BufferedReader(fileReader);
+			boolean finale = false;
+			while (!finale) {
+				for (String user : allUser) {
+					fileWriter.write(user + "\n");
+				}
+				finale = true;
+			}
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			// Falha escrever arquivo
+		} finally {
+			try {
+				fileWriter.close();
+				fileReader.close();
+				leitor.close();
+			} catch (IOException e) {
+				// Falha ao fechar arquivo
+			}
+		}
+
+	}
+
+	public static List<String> addAllUserByFile() {
+		ArrayList<String> allUser = new ArrayList<>();
+		FileReader fileReader = null;
+		BufferedReader leitor = null;
+		try {
+			File file = new File("allusers.txt");
+			fileReader = new FileReader(file);
+			leitor = new BufferedReader(fileReader);
+			String line = "";
+			while ((line = leitor.readLine()) != null) {
+				allUser.add(line);
+			}
+			return allUser;
+		} catch (Exception e) {
+			return null;
+		} finally {
+			try {
+				fileReader.close();
+				leitor.close();
+			} catch (IOException e) {
+				// Falha ao fechar arquivo
+			}
+		}
 	}
 
 	public JFrame getFrame() {
