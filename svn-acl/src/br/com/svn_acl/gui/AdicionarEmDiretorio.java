@@ -32,7 +32,7 @@ import br.com.svn_acl.util.Util;
 @SuppressWarnings("serial")
 public class AdicionarEmDiretorio extends JDialog implements ActionListener {
 
-	private SvnAclGUI owner;
+	private SvnAclGUI svnAclGUI;
 	private JCheckBox jCheckBoxUsuario;
 	private JComboBox<String> comboGrupos;
 	private JComboBox<String> comboUsuarios;
@@ -45,24 +45,24 @@ public class AdicionarEmDiretorio extends JDialog implements ActionListener {
 	 * Construtor da classe {@link AdicionarEmDiretorio} monta a interface gráfica do
 	 * {@link JDialog}
 	 * 
-	 * @param owner
+	 * @param svnAclGUI
 	 *            interface principal
 	 * @param diretorio
 	 */
-	public AdicionarEmDiretorio(SvnAclGUI owner, String diretorio) {
-		super(owner.getFrame(), "Adicionar em Diretorio", true);
-		this.owner = owner;
+	public AdicionarEmDiretorio(SvnAclGUI svnAclGUI, String diretorio) {
+		super(svnAclGUI.getFrame(), "Adicionar em Diretorio", true);
+		this.svnAclGUI = svnAclGUI;
 		this.diretorio = diretorio;
 		JPanel painelAdiciona = new JPanel(new GridLayout(2, 1));
 		JPanel painelCheckUsuario = new JPanel(new FlowLayout(FlowLayout.LEFT));
 		final JPanel painelOpcoes = new JPanel(new FlowLayout());
 
 		final JLabel grupo = new JLabel("Grupo");
-		Vector<String> listarGrupos = new Vector<String>(owner.getGerenciadorDeGrupos().listarGrupos());
+		Vector<String> listarGrupos = new Vector<String>(svnAclGUI.getGerenciadorDeGrupos().listarGrupos());
 		comboGrupos = new JComboBox<>(listarGrupos);
 
 		final JLabel usuario = new JLabel("Usuario");
-		Vector<String> listaUsuarios = new Vector<String>(owner.getGerenciadorDeGrupos().listarUsuarios());
+		Vector<String> listaUsuarios = new Vector<String>(svnAclGUI.getGerenciadorDeGrupos().listarUsuarios());
 		comboUsuarios = new JComboBox<>(listaUsuarios);
 
 		String[] permissoes = { "LEITURA", "LEITURA/ESCRITA", "ESCRITA" };
@@ -136,7 +136,7 @@ public class AdicionarEmDiretorio extends JDialog implements ActionListener {
 		painelAdiciona.add(painelOpcoes);
 		getContentPane().add(painelAdiciona);
 		pack();
-		setLocationRelativeTo(owner.getFrame());
+		setLocationRelativeTo(svnAclGUI.getFrame());
 		setModal(true);
 	}
 
@@ -147,15 +147,15 @@ public class AdicionarEmDiretorio extends JDialog implements ActionListener {
 		boolean adicionou = true;
 		if (!jCheckBoxUsuario.isSelected()) {
 			String grupoSelecionado = (String) comboGrupos.getSelectedItem();
-			adicionou = owner.getGerenciadorDePermissoes().adicionaGrupoEPermissoesNoDiretorio(diretorio,
+			adicionou = svnAclGUI.getGerenciadorDePermissoes().adicionaGrupoEPermissoesNoDiretorio(diretorio,
 					grupoSelecionado, permissao);
 		} else {
 			String usuarioSelecionado = (String) comboUsuarios.getSelectedItem();
-			adicionou = owner.getGerenciadorDePermissoes().adicionaUserEPermissoesNoDiretorio(diretorio,
+			adicionou = svnAclGUI.getGerenciadorDePermissoes().adicionaUserEPermissoesNoDiretorio(diretorio,
 					usuarioSelecionado, permissao);
 		}
 		if (!adicionou)
-			JOptionPane.showMessageDialog(owner.getFrame(),
+			JOptionPane.showMessageDialog(svnAclGUI.getFrame(),
 					"Não foi possivel adicionar\nVerifique se o grupo/usuário já tem permissões no diretório",
 					"Adicionar", JOptionPane.ERROR_MESSAGE);
 		setVisible(false);

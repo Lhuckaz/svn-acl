@@ -22,7 +22,7 @@ import br.com.svn_acl.gui.AdConfigura;
 import br.com.svn_acl.util.Util;
 
 /**
- * Classe responsavel por acessar o AD
+ * Classe responsável por acessar o AD
  * 
  * @author Lhuckaz
  *
@@ -97,7 +97,7 @@ public class ActiveDirectory {
 
 	/**
 	 * 
-	 * Realiza a conexao e retorna todos os usuarios da LDAP no AD
+	 * Realiza a conexão e retorna todos os usuarios da LDAP no AD
 	 * 
 	 * @return retorna todos os usuários do LDAP
 	 * @throws ConnectException
@@ -159,7 +159,7 @@ public class ActiveDirectory {
 
 	/**
 	 * 
-	 * Faz comparaçãao com os usuários do AD e verifica se existe
+	 * Faz comparação com os usuários do AD e verifica se existe
 	 * 
 	 * @param usuario
 	 *            nome do usuário

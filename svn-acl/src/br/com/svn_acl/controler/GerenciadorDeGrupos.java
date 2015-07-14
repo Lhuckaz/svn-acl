@@ -511,7 +511,7 @@ public class GerenciadorDeGrupos {
 
 	/**
 	 * 
-	 * Adiciona o usuario em uma lista de grupos
+	 * Adiciona o usuário em uma lista de grupos
 	 * 
 	 * @param gruposAdd lista de grupo
 	 * @param usuario nome do usuário
@@ -551,7 +551,7 @@ public class GerenciadorDeGrupos {
 	}
 
 	/**
-	 * Remove o grupo e suas permissoes
+	 * Remove o grupo e suas permissões
 	 * @param grupo nome do grupo
 	 */
 	public void removeGrupoEPermissoes(String grupo) {

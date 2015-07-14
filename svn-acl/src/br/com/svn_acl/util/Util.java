@@ -164,7 +164,7 @@ public class Util {
 
 	/**
 	 * 
-	 * @return retorn Retona nome do host ou IP salvo no properties do SSH
+	 * @return retorna nome do host ou IP salvo no properties do SSH
 	 */
 	public static String getHostName() {
 		try {

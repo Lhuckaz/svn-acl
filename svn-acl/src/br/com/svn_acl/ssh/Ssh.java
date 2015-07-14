@@ -23,7 +23,7 @@ import com.jcraft.jsch.SftpException;
 
 /**
  * 
- * Classe responsável por transferir e importar através de conexão SSH
+ * Classe responsável por transferir e importar arquivos através de conexão SSH
  * 
  * @author Lhuckaz
  *

@@ -60,7 +60,7 @@ import br.com.svn_acl.util.Util;
 /**
  * 
  * Interface gráfica principal, composta de {@link JFrame}, exibe na
- * {@link JTabbedPane} "Grupos" ps grupos e usuários e em "Permissões" os
+ * {@link JTabbedPane} "Grupos" os grupos e usuários e em "Permissões" os
  * diretórios e as permissões dos grupos e usuários
  * 
  * @author Lhuckaz
@@ -630,7 +630,7 @@ public class SvnAclGUI {
 
 	/**
 	 * 
-	 * Realiza conexão e verifica usuários no Ad
+	 * Realiza conexão e verifica usuários no AD
 	 * 
 	 * @return retorna true se conexão foi bem sucedida
 	 */
@@ -863,7 +863,10 @@ public class SvnAclGUI {
 	}
 
 	/**
-	 * @param usuarioSelecionado
+	 * 
+	 * Setar usuário selecionado
+	 * 
+	 * @param usuarioSelecionado usuário selecionado
 	 */
 	public void setUsuarioSelecionado(String usuarioSelecionado) {
 		this.usuarioSelecionado = usuarioSelecionado;
@@ -898,14 +901,20 @@ public class SvnAclGUI {
 	}
 
 	/**
-	 * @param listaUsuariosGrupo
+	 * 
+	 * Setar lista de usuários do Grupo
+	 * 
+	 * @param listaUsuariosGrupo lista usuarios grupo
 	 */
 	public void setUsuariosDoGrupo(List<String> listaUsuariosGrupo) {
 		this.listaUsuariosGrupo = listaUsuariosGrupo;
 	}
 
 	/**
-	 * @param listaPermissaoDiretorio
+	 * 
+	 * Setar lista de permissão do Diretório
+	 * 
+	 * @param listaPermissaoDiretorio lista permissão diretorio
 	 */
 	public void setPermissoesDoDiretorio(List<String> listaPermissaoDiretorio) {
 		this.listaPermissaoDiretorio = listaPermissaoDiretorio;

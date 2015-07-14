@@ -7,7 +7,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 
 /**
- * Classe responsável por gerenciar os arquivos de sincronizacao e saída. 
+ * Classe responsável por gerenciar os arquivos de sincronização e saída. 
  * 
  * @author Lhuckaz
  *
@@ -62,7 +62,7 @@ public class Gerenciador {
 
 	/**
 	 * 
-	 * @param saida ao pegar o caminho do arquivo de saida o metodo o apaga para as classes {@link GerenciadorDeGrupos} e {@link GerenciadorDePermissoes} realizar um outro arquivo com novas escritas
+	 * @param saida ao pegar o caminho do arquivo de saida o metodo o apaga para as classes {@link GerenciadorDeGrupos} e {@link GerenciadorDePermissoes} criar um outro arquivo com as modificações
 	 * @return retorna o caminho do arquivo de saída
 	 */
 	public static String getCaminhoSaidaOculto(boolean saida) {
@@ -143,7 +143,7 @@ public class Gerenciador {
 	}
 
 	/**
-	 * Apaga arquivo de sincronizacao
+	 * Apaga arquivo de sincronização
 	 */
 	private void apagaArquivoSincronizacao(String caminho) {
 		// Arquivo criado no diretorio em que esta o arquivo ao qual foi aberto,
@@ -160,7 +160,7 @@ public class Gerenciador {
 	}
 
 	/**
-	 * Copia o conteudo do arquivo de sincronizacao para o de saida
+	 * Copia o conteudo do arquivo de sincronização para o de saida
 	 */
 	private static void apagaArquivoSaida(String caminho) {
 		// Arquivo criado no diretorio em que esta o arquivo ao qual foi aberto,
@@ -177,7 +177,7 @@ public class Gerenciador {
 	}
 
 	/**
-	 * Copia o conteudo do arquivo de sincronizacao para o de saida
+	 * Copia o conteúdo do arquivo de sincronização para o de saída
 	 */
 	public void atualizaArquivo() {
 		String caminho = arquivo.getAbsolutePath();
@@ -212,7 +212,7 @@ public class Gerenciador {
 	}
 
 	/**
-	 *  Apaga arquivo de sincronizacao e de saida 
+	 *  Apaga arquivo de sincronização e de saída 
 	 */
 	public void apagaArquivosDeGerenciamento() {
 		if (arquivo != null) {

@@ -30,23 +30,23 @@ public class AlteraPermissoes extends JDialog implements ActionListener {
 	private String permissoes;
 	private String diretorioSelecionado;
 	private String grupoOuUser;
-	private SvnAclGUI owner;
+	private SvnAclGUI svnAclGUI;
 
 	/**
 	 * 
 	 * Construtor da classe {@link AlteraPermissoes} monta a interface gráfica do
 	 * {@link JDialog}
 	 * 
-	 * @param owner
+	 * @param svnAclGUI
 	 *            interface principal
 	 * @param diretorioSelecionado
 	 *            diretório escolhido
 	 * @param grupoOuUser
 	 *            grupo ao usuário para alterar a permissão
 	 */
-	public AlteraPermissoes(SvnAclGUI owner, String diretorioSelecionado, String grupoOuUser) {
-		super(owner.getFrame(), "Altera Permissoes", true);
-		this.owner = owner;
+	public AlteraPermissoes(SvnAclGUI svnAclGUI, String diretorioSelecionado, String grupoOuUser) {
+		super(svnAclGUI.getFrame(), "Altera Permissoes", true);
+		this.svnAclGUI = svnAclGUI;
 		this.diretorioSelecionado = diretorioSelecionado;
 		this.grupoOuUser = grupoOuUser;
 		JPanel painelAlteraPermissoes = new JPanel(new FlowLayout());
@@ -62,7 +62,7 @@ public class AlteraPermissoes extends JDialog implements ActionListener {
 		painelAlteraPermissoes.add(botaoOk);
 		getContentPane().add(painelAlteraPermissoes);
 		pack();
-		setLocationRelativeTo(owner.getFrame());
+		setLocationRelativeTo(svnAclGUI.getFrame());
 		setModal(true);
 	}
 
@@ -70,7 +70,7 @@ public class AlteraPermissoes extends JDialog implements ActionListener {
 	public void actionPerformed(ActionEvent e) {
 		permissoes = (String) comboPermissoes.getSelectedItem();
 		String permissao = Util.getPermissao(permissoes);
-		owner.getGerenciadorDePermissoes().alteraPermissoesDoGrupoDoDir(diretorioSelecionado, grupoOuUser, permissao);
+		svnAclGUI.getGerenciadorDePermissoes().alteraPermissoesDoGrupoDoDir(diretorioSelecionado, grupoOuUser, permissao);
 		setVisible(false);
 	}
 }

@@ -8,7 +8,7 @@ import javax.swing.text.DocumentFilter;
 
 /**
  * 
- * Classe que liimita o {@link javax.swing.JTextField JTextField} para receber
+ * Classe que limita o {@link javax.swing.JTextField JTextField} para receber
  * apenas números
  * 
  * @author Lhuckaz

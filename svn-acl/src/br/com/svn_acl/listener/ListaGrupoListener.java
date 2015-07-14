@@ -37,7 +37,7 @@ public class ListaGrupoListener implements ListSelectionListener {
 
 	/**
 	 * 
-	 * Atualiza as usuários quando o grupo é alterado
+	 * Atualiza os usuários quando o grupo é alterado
 	 * 
 	 * @param grupoSelecionado
 	 *            grupo selecionado

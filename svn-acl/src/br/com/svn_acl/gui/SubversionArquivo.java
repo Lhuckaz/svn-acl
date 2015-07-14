@@ -40,7 +40,7 @@ import br.com.svn_acl.util.Util;
 @SuppressWarnings("serial")
 public class SubversionArquivo extends JDialog {
 
-	private SvnAclGUI owner;
+	private SvnAclGUI svnAclGUI;
 	JTextField url;
 	JTextField user;
 	JTextField password;
@@ -50,14 +50,14 @@ public class SubversionArquivo extends JDialog {
 	 * Construtor da classe {@link SubversionArquivo} monta a interface com
 	 * {@link SpringLayout}
 	 * 
-	 * @param owner
+	 * @param svnAclGUI
 	 *            interface principal
 	 * @param titulo
 	 *            título da pagina
 	 */
-	public SubversionArquivo(SvnAclGUI owner, String titulo) {
-		super(owner.getFrame(), titulo, true);
-		this.owner = owner;
+	public SubversionArquivo(SvnAclGUI svnAclGUI, String titulo) {
+		super(svnAclGUI.getFrame(), titulo, true);
+		this.svnAclGUI = svnAclGUI;
 
 		JPanel principal = new JPanel(new BorderLayout());
 
@@ -139,7 +139,7 @@ public class SubversionArquivo extends JDialog {
 		principal.add(p);
 		getContentPane().add(principal);
 		pack();
-		setLocationRelativeTo(owner.getFrame());
+		setLocationRelativeTo(svnAclGUI.getFrame());
 		setModal(true);
 	}
 
@@ -225,11 +225,11 @@ public class SubversionArquivo extends JDialog {
 					// Salva o nome da URL e do User no properties
 					Diretorios.setFileExportNameAndUser(arquivo, user);
 
-					owner.carregaArquivo(arquivo);
+					svnAclGUI.carregaArquivo(arquivo);
 					file.delete();
 					subversionArquivo.setVisible(false);
 				} else {
-					JOptionPane.showMessageDialog(owner.getFrame(), message, "Export", JOptionPane.ERROR_MESSAGE);
+					JOptionPane.showMessageDialog(svnAclGUI.getFrame(), message, "Export", JOptionPane.ERROR_MESSAGE);
 				}
 
 			} else {
@@ -266,10 +266,10 @@ public class SubversionArquivo extends JDialog {
 
 				if (commitando) {
 					subversionArquivo.setVisible(false);
-					JOptionPane.showMessageDialog(owner.getFrame(), "Commitado", "Commit",
+					JOptionPane.showMessageDialog(svnAclGUI.getFrame(), "Commitado", "Commit",
 							JOptionPane.INFORMATION_MESSAGE);
 				} else {
-					JOptionPane.showMessageDialog(owner.getFrame(), message, "Commit", JOptionPane.ERROR_MESSAGE);
+					JOptionPane.showMessageDialog(svnAclGUI.getFrame(), message, "Commit", JOptionPane.ERROR_MESSAGE);
 				}
 			}
 		}

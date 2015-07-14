@@ -38,7 +38,7 @@ import com.jcraft.jsch.SftpException;
 @SuppressWarnings("serial")
 public class SshGui extends JDialog {
 
-	private SvnAclGUI owner;
+	private SvnAclGUI svnAclGUI;
 	JTextField host;
 	JTextField port;
 	JTextField user;
@@ -50,15 +50,15 @@ public class SshGui extends JDialog {
 	 * Construtor da classe {@link SshGui} monta a interface com
 	 * {@link SpringLayout}
 	 * 
-	 * @param owner
+	 * @param svnAclGUI
 	 *            interface principal
 	 * 
 	 * @param titulo
 	 *            título ja janela
 	 */
-	public SshGui(SvnAclGUI owner, String titulo) {
-		super(owner.getFrame());
-		this.owner = owner;
+	public SshGui(SvnAclGUI svnAclGUI, String titulo) {
+		super(svnAclGUI.getFrame());
+		this.svnAclGUI = svnAclGUI;
 		this.setTitle(titulo);
 		this.setModal(true);
 		JPanel principal = new JPanel();
@@ -129,7 +129,7 @@ public class SshGui extends JDialog {
 		});
 
 		pack();
-		setLocationRelativeTo(owner.getFrame());
+		setLocationRelativeTo(svnAclGUI.getFrame());
 		setModal(true);
 		setVisible(true);
 	}
@@ -192,7 +192,7 @@ public class SshGui extends JDialog {
 				} else {
 					option = JOptionPane.ERROR_MESSAGE;
 				}
-				JOptionPane.showMessageDialog(owner.getFrame(), message, "Transferir", option);
+				JOptionPane.showMessageDialog(svnAclGUI.getFrame(), message, "Transferir", option);
 			} else {
 				String port = sshTransfere.port.getText();
 				int porta = pegaNumberPorta(port);
@@ -209,7 +209,7 @@ public class SshGui extends JDialog {
 				try {
 					importando = ssh.importar(host, user, password, dir, porta);
 					File fileExport = new File(Util.getNomeArquivoURL(dir));
-					owner.carregaArquivo(Util.FILE);
+					svnAclGUI.carregaArquivo(Util.FILE);
 					fileExport.delete();
 					Util.setAtributosSsh(host, user, dir, porta);
 				} catch (JSchException ex) {
@@ -234,7 +234,7 @@ public class SshGui extends JDialog {
 				} else {
 					option = JOptionPane.ERROR_MESSAGE;
 				}
-				JOptionPane.showMessageDialog(owner.getFrame(), message, "Importar", option);
+				JOptionPane.showMessageDialog(svnAclGUI.getFrame(), message, "Importar", option);
 			}
 		}
 

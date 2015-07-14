@@ -47,11 +47,11 @@ public class AdConfigura extends JDialog {
 	 * 
 	 * Construtor da classe {@link AdConfigura} monta a interface com {@link SpringLayout}
 	 * 
-	 * @param owner
+	 * @param svnAclGUI
 	 *            interface principal
 	 */
-	public AdConfigura(SvnAclGUI owner) {
-		super(owner.getFrame(), "Configurações", true);
+	public AdConfigura(SvnAclGUI svnAclGUI) {
+		super(svnAclGUI.getFrame(), "Configurações", true);
 
 		carregaProperties();
 
@@ -108,7 +108,7 @@ public class AdConfigura extends JDialog {
 		});
 
 		pack();
-		setLocationRelativeTo(owner.getFrame());
+		setLocationRelativeTo(svnAclGUI.getFrame());
 		setModal(true);
 		setVisible(true);
 	}
