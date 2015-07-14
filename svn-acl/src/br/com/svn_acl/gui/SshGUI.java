@@ -30,13 +30,13 @@ import com.jcraft.jsch.SftpException;
 /**
  * 
  * Interface gráfica extends {@link JDialog} para configurações do acesso ao
- * {@link SshGui}
+ * {@link SshGUI}
  * 
  * @author Lhuckaz
  *
  */
 @SuppressWarnings("serial")
-public class SshGui extends JDialog {
+public class SshGUI extends JDialog {
 
 	private SvnAclGUI svnAclGUI;
 	JTextField host;
@@ -47,7 +47,7 @@ public class SshGui extends JDialog {
 
 	/**
 	 * 
-	 * Construtor da classe {@link SshGui} monta a interface com
+	 * Construtor da classe {@link SshGUI} monta a interface com
 	 * {@link SpringLayout}
 	 * 
 	 * @param svnAclGUI
@@ -56,7 +56,7 @@ public class SshGui extends JDialog {
 	 * @param titulo
 	 *            título ja janela
 	 */
-	public SshGui(SvnAclGUI svnAclGUI, String titulo) {
+	public SshGUI(SvnAclGUI svnAclGUI, String titulo) {
 		super(svnAclGUI.getFrame());
 		this.svnAclGUI = svnAclGUI;
 		this.setTitle(titulo);
@@ -136,7 +136,7 @@ public class SshGui extends JDialog {
 
 	/**
 	 * 
-	 * Classe ouvinte do {@link JButton} "OK" da classe {@link SshGui} para
+	 * Classe ouvinte do {@link JButton} "OK" da classe {@link SshGUI} para
 	 * conexão com SSH
 	 * 
 	 * @author Lhuckaz
@@ -144,10 +144,10 @@ public class SshGui extends JDialog {
 	 */
 	public class AcaoSsh implements ActionListener {
 
-		private SshGui sshTransfere;
+		private SshGUI sshTransfere;
 		private String titulo;
 
-		public AcaoSsh(SshGui sshGui, String titulo) {
+		public AcaoSsh(SshGUI sshGui, String titulo) {
 			this.sshTransfere = sshGui;
 			this.titulo = titulo;
 		}

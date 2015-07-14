@@ -6,14 +6,14 @@ import java.awt.event.ActionListener;
 import javax.swing.JMenu;
 import javax.swing.JMenuItem;
 
-import br.com.svn_acl.gui.SshGui;
+import br.com.svn_acl.gui.SshGUI;
 import br.com.svn_acl.gui.SvnAclGUI;
 
 /**
  * 
  * Classe ouvinte do {@link JMenuItem} "Importar" e "Transferir" do
  * {@link JMenu} "SSH" da classe {@link SvnAclGUI} para abrir a classe
- * {@link SshGui} com determinadas configurações
+ * {@link SshGUI} com determinadas configurações
  * 
  * @author Lhuckaz
  *
@@ -41,17 +41,17 @@ public class SshItemMenuListener implements ActionListener {
 	}
 
 	/**
-	 * Abre a classe {@link SshGui} com o titulo "Importar"
+	 * Abre a classe {@link SshGUI} com o titulo "Importar"
 	 */
 	private void importar() {
-		new SshGui(svnAclGUI, "Importar");
+		new SshGUI(svnAclGUI, "Importar");
 	}
 
 	/**
-	 * Abre a classe {@link SshGui} com o titulo "Transferir"
+	 * Abre a classe {@link SshGUI} com o titulo "Transferir"
 	 */
 	private void exportar() {
-		new SshGui(svnAclGUI, "Transferir");
+		new SshGUI(svnAclGUI, "Transferir");
 	}
 
 }
