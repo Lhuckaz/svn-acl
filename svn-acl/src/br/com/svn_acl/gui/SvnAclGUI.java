@@ -54,7 +54,7 @@ import br.com.svn_acl.listener.ListaPermissoesListener;
 import br.com.svn_acl.listener.ListaUsuariosListener;
 import br.com.svn_acl.listener.SshItemMenuListener;
 import br.com.svn_acl.listener.SubversionItemMenuListener;
-import br.com.svn_acl.util.DefineTamanhoJTextField;
+import br.com.svn_acl.util.DocumentTamanhoJTextField;
 import br.com.svn_acl.util.Util;
 
 public class SvnAclGUI {
@@ -300,7 +300,7 @@ public class SvnAclGUI {
 		JPanel painelBotoesGrupos = new JPanel();
 		painelBotoesGrupos.setLayout(new FlowLayout(FlowLayout.RIGHT));
 		usuarioParaAdicionar = new JTextField(25);
-		usuarioParaAdicionar.setDocument(new DefineTamanhoJTextField(50));
+		usuarioParaAdicionar.setDocument(new DocumentTamanhoJTextField(50));
 		usuarioParaAdicionar.setPreferredSize(new Dimension(0, 20));
 		JButton botaoAdicionar = new JButton("Adicionar");
 		botaoAdicionar.addActionListener(new ActionListener() {
@@ -342,20 +342,71 @@ public class SvnAclGUI {
 
 			}
 
+			// FIXME Metodo funcional, porem confuso
 			private void verificaUsuario(String usuarioParaAdicionar) {
 				boolean usuarioExiste = getGerenciadorDeGrupos().usuarioExiste(usuarioParaAdicionar);
 				boolean contains = true;
+				boolean allUserEquals0 = false;
 				if (allUser != null) {
 					contains = allUser.contains(usuarioParaAdicionar);
-				}
-				if (!usuarioExiste || !contains) {
-					int confirmar = JOptionPane.showConfirmDialog(getFrame(), "Usuário \"" + usuarioParaAdicionar
-							+ "\" ainda nao existe\nDeseja adicionar assim mesmo ?", "Adicionar",
-							JOptionPane.YES_NO_OPTION);
-					if (confirmar == 0)
-						adicionaUsuario(usuarioParaAdicionar);
+					allUserEquals0 = allUser.size() == 0;
 				} else {
-					adicionaUsuario(usuarioParaAdicionar);
+					allUserEquals0 = true;
+				}
+				// Verifica se usuario existe no contexto atual
+				if (allUserEquals0) {
+					if (!usuarioExiste) {
+						if (allUserEquals0) {
+							if (!usuarioExiste) {
+								int confirmar = JOptionPane.showConfirmDialog(getFrame(), "Usuário \""
+										+ usuarioParaAdicionar + "\" ainda nao existe\nDeseja adicionar assim mesmo ?",
+										"Adicionar", JOptionPane.YES_NO_OPTION);
+								if (confirmar == 0)
+									adicionaUsuario(usuarioParaAdicionar);
+								return;
+							} else {
+								adicionaUsuario(usuarioParaAdicionar);
+								return;
+							}
+						}
+						if (contains) {
+							int confirmar = JOptionPane.showConfirmDialog(getFrame(), "Usuário \""
+									+ usuarioParaAdicionar
+									+ "\" ainda nao existe\nUsuario existe no AD\nDeseja adicionar assim mesmo ?",
+									"Adicionar", JOptionPane.YES_NO_OPTION);
+							if (confirmar == 0)
+								adicionaUsuario(usuarioParaAdicionar);
+						} else {
+							int confirmar = JOptionPane.showConfirmDialog(getFrame(), "Usuário \""
+									+ usuarioParaAdicionar
+									+ "\" ainda nao existe\nUsuario NÃO existe no AD\nDeseja adicionar assim mesmo ?",
+									"Adicionar", JOptionPane.YES_NO_OPTION);
+							if (confirmar == 0)
+								adicionaUsuario(usuarioParaAdicionar);
+						}
+					} else {
+						adicionaUsuario(usuarioParaAdicionar);
+					}
+				} else {
+					if (!usuarioExiste) {
+						if (contains) {
+							int confirmar = JOptionPane.showConfirmDialog(getFrame(), "Usuário \""
+									+ usuarioParaAdicionar
+									+ "\" ainda nao existe\nUsuario existe no AD\nDeseja adicionar assim mesmo ?",
+									"Adicionar", JOptionPane.YES_NO_OPTION);
+							if (confirmar == 0)
+								adicionaUsuario(usuarioParaAdicionar);
+						} else {
+							int confirmar = JOptionPane.showConfirmDialog(getFrame(), "Usuário \""
+									+ usuarioParaAdicionar
+									+ "\" ainda nao existe\nUsuario NÃO existe no AD\nDeseja adicionar assim mesmo ?",
+									"Adicionar", JOptionPane.YES_NO_OPTION);
+							if (confirmar == 0)
+								adicionaUsuario(usuarioParaAdicionar);
+						}
+					} else {
+						adicionaUsuario(usuarioParaAdicionar);
+					}
 				}
 			}
 
@@ -582,9 +633,8 @@ public class SvnAclGUI {
 				}
 				finale = true;
 			}
-			
+
 		} catch (Exception e) {
-			e.printStackTrace();
 			// Falha escrever arquivo
 		} finally {
 			try {
@@ -617,7 +667,7 @@ public class SvnAclGUI {
 			try {
 				fileReader.close();
 				leitor.close();
-			} catch (IOException e) {
+			} catch (Exception e) {
 				// Falha ao fechar arquivo
 			}
 		}

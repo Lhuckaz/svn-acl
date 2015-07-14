@@ -6,6 +6,13 @@ import javax.swing.event.ListSelectionListener;
 
 import br.com.svn_acl.gui.SvnAclGUI;
 
+/**
+ * 
+ * Classe ouvinte
+ * 
+ * @author Lhuckaz
+ *
+ */
 public class ListaPermissoesListener implements ListSelectionListener {
 
 	private SvnAclGUI svnAclGUI;

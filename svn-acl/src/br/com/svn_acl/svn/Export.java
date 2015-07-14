@@ -19,10 +19,31 @@ import org.tmatesoft.svn.core.wc.SVNWCUtil;
 
 import br.com.svn_acl.util.Util;
 
+/**
+ * 
+ * Classe responsável por realizar o export do SVN
+ * 
+ * @author Lhuckaz
+ *
+ */
 public class Export {
 
+	/**
+	 * 
+	 * Responável por exportar
+	 * 
+	 * @param url
+	 *            endereço do arquivo no SVN
+	 * @param user
+	 *            nome de usuário
+	 * @param password
+	 *            senha
+	 * @return retorna <code>true</code> caso a conexão for bem sucedida
+	 * @throws SVNException
+	 *             lança caso ocorra algum erro com a conexão
+	 */
 	public boolean exportando(String url, String user, String password) throws SVNException {
-		
+
 		String destPath = Util.getNomeArquivoURL(url);
 
 		SVNRepository repository = null;

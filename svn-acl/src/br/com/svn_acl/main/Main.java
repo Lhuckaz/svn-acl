@@ -1,10 +1,18 @@
 package br.com.svn_acl.main;
 
+import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 
 import br.com.svn_acl.gui.SvnAclGUI;
 
+/**
+ * 
+ * Classe principal
+ * 
+ * @author Lhuckaz
+ *
+ */
 public class Main {
 
 	public static void main(String[] args) {
@@ -17,10 +25,13 @@ public class Main {
 				}
 			});
 		} catch (Exception e) {
-			e.printStackTrace();
+			JOptionPane.showMessageDialog(null, "Erro ao iniciar", "Erro", JOptionPane.ERROR_MESSAGE);
 		}
 
+		// Verifica os usuarios no AD apos a tela ter aberto
 		boolean verificaUsuariosAD = SvnAclGUI.verificaUsuariosAD();
+		// Se nao foi possivel conectar no AD usar os usuarios do arquivo
+		// allusers
 		if (!verificaUsuariosAD) {
 			SvnAclGUI.allUser = SvnAclGUI.addAllUserByFile();
 		}

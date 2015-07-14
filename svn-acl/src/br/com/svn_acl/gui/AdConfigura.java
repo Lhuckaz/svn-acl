@@ -106,7 +106,7 @@ public class AdConfigura extends JDialog {
 			properties = new Properties();
 			FileInputStream fileInputStream;
 
-			fileInputStream = new FileInputStream(new File(Util.getArquivoProperties()));
+			fileInputStream = new FileInputStream(new File(Util.ARQUIVO_PROPERTIES));
 
 			properties.load(fileInputStream);
 			dominioString = properties.getProperty("domain.ldap");
@@ -144,7 +144,7 @@ public class AdConfigura extends JDialog {
 	public static String recuperaSenha() {
 		try {
 			Properties properties = new Properties();
-			FileInputStream fileInputStream = new FileInputStream(Util.getArquivoProperties());
+			FileInputStream fileInputStream = new FileInputStream(Util.ARQUIVO_PROPERTIES);
 			properties.load(fileInputStream);
 			fileInputStream.close();
 			String password = properties.getProperty("password.ldap");
@@ -166,7 +166,7 @@ public class AdConfigura extends JDialog {
 			}
 
 			Properties properties = new Properties();
-			FileInputStream fileInputStream = new FileInputStream(Util.getArquivoProperties());
+			FileInputStream fileInputStream = new FileInputStream(Util.ARQUIVO_PROPERTIES);
 			properties.load(fileInputStream);
 			fileInputStream.close();
 
@@ -177,7 +177,7 @@ public class AdConfigura extends JDialog {
 			properties.setProperty("domain.ldap", dominio);
 			properties.setProperty("username.ldap", user);
 			properties.setProperty("password.ldap", Arrays.toString(textoCriptografado).replace(" ", ""));
-			File file = new File(Util.getArquivoProperties());
+			File file = new File(Util.ARQUIVO_PROPERTIES);
 			FileOutputStream fos = new FileOutputStream(file);
 			properties.store(fos, "Alteracao de senha AD");
 			inputStream.close();

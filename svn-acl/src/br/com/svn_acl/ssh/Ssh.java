@@ -21,12 +21,55 @@ import com.jcraft.jsch.JSchException;
 import com.jcraft.jsch.Session;
 import com.jcraft.jsch.SftpException;
 
+/**
+ * 
+ * Classe responsável por transferir e importar através de conexão SSH
+ * 
+ * @author Lhuckaz
+ *
+ */
 public class Ssh {
 
+	/**
+	 * 
+	 * Transfere o arquivo através de conexão SSH
+	 * 
+	 * @param host
+	 *            nome de host ou IP
+	 * @param user
+	 *            nome de usuário
+	 * @param password
+	 *            senha
+	 * @param dir
+	 *            diretório
+	 * @return retorna <code>true</code> se conexão foi bem sucedida
+	 * @throws Exception
+	 *             lança casso ocorra algum erro de conexão
+	 */
 	public boolean transfere(String host, String user, String password, String dir) throws Exception {
 		return transfere(host, user, password, dir, Util.getNumberPortDefault(), Util.FILE);
 	}
 
+	/**
+	 * 
+	 * Transfere o arquivo através de conexão SSH
+	 * 
+	 * @param host
+	 *            nome de host ou IP
+	 * @param user
+	 *            nome de usuário
+	 * @param password
+	 *            senha
+	 * @param dir
+	 *            diretório
+	 * @param porta
+	 *            número da porta
+	 * @param file
+	 *            nome do arquivo para ser salvo
+	 * @return retorna <code>true</code> se conexão foi bem sucedida
+	 * @throws Exception
+	 *             lança casso ocorra algum erro de conexão
+	 */
 	public boolean transfere(String host, String user, String password, String dir, int porta, String file)
 			throws Exception {
 		Session session = null;
@@ -82,6 +125,23 @@ public class Ssh {
 
 	}
 
+	/**
+	 * 
+	 * Importa um arquivo através de conexão SSH
+	 * 
+	 * @param host
+	 *            nome de host ou IP
+	 * @param user
+	 *            nome de usuário
+	 * @param password
+	 *            senha
+	 * @param dir
+	 *            diretório
+	 * @param porta
+	 *            número da porta
+	 * @return retorna <code>true</code> se conexão foi bem sucedida
+	 * @throws Exception lança casso ocorra algum erro de conexão
+	 */
 	public boolean importar(String host, String user, String password, String dir, int porta) throws Exception {
 		Session session = null;
 		Channel channel = null;

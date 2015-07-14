@@ -16,6 +16,13 @@ import br.com.svn_acl.controler.Gerenciador;
 import br.com.svn_acl.gui.SvnAclGUI;
 import br.com.svn_acl.util.Diretorios;
 
+/**
+ * 
+ * Classe ouvinte
+ * 
+ * @author Lhuckaz
+ *
+ */
 public class ArquivoItemMenuListener implements ActionListener {
 
 	private static final int SALVAR = 0;

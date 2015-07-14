@@ -11,6 +11,13 @@ import java.security.PublicKey;
 
 import javax.crypto.Cipher;
 
+/**
+ * 
+ * Classe responsável pela criptografia
+ * 
+ * @author Lhuckaz
+ *
+ */
 public class Criptografa {
 	public static final String ALGORITHM = "RSA";
 	/** * Local da chave privada no sistema de arquivos. */
@@ -20,7 +27,7 @@ public class Criptografa {
 
 	/**
 	 * * Gera a chave que contém um par de chave Privada e Pública usando 1025
-	 * bytes. * Armazena o conjunto de chaves nos arquivos private.key e
+	 * bytes. <BR>* Armazena o conjunto de chaves nos arquivos private.key e
 	 * public.key
 	 */
 	public static void geraChave() {

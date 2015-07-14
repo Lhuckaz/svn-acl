@@ -8,6 +8,13 @@ import javax.swing.event.ListSelectionListener;
 
 import br.com.svn_acl.gui.SvnAclGUI;
 
+/**
+ * 
+ * Classe ouvinte
+ * 
+ * @author Lhuckaz
+ *
+ */
 public class ListaGrupoListener implements ListSelectionListener {
 
 	private SvnAclGUI svnAclGUI;

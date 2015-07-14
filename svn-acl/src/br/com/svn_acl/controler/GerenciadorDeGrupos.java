@@ -12,6 +12,11 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 
+/**
+ * Classe responsável por gerenciar os grupos
+ * @author Lhuckaz
+ *
+ */
 public class GerenciadorDeGrupos {
 
 	private FileReader fileReader = null;
@@ -27,6 +32,11 @@ public class GerenciadorDeGrupos {
 		this.file = file;
 	}
 
+	/**
+	 * Acessa o arquivo e verifica se o grupo existe
+	 * @param grupo nome do grupo
+	 * @return returna <code>true<code> se o grupo existe
+	 */
 	public boolean grupoExiste(String grupo) {
 		boolean contem = false;
 		if (grupo.equals("")) {
@@ -63,6 +73,13 @@ public class GerenciadorDeGrupos {
 		return false;
 	}
 
+	/**
+	 * 
+	 * Acessa o arquivo e verifica se o usuario existe
+	 * 
+	 * @param usuario nome do usuário
+	 * @return retorna <code>true<code> se o grupo existe
+	 */
 	public boolean usuarioExiste(String usuario) {
 		boolean contem = false;
 		Collection<String> todosOsUsuarios = new HashSet<>();
@@ -107,6 +124,12 @@ public class GerenciadorDeGrupos {
 		return false;
 	}
 
+	/**
+	 * 
+	 * @param grupo nome do grupo
+	 * @param usuario nome do usuario
+	 * @return retorna se <code>true<code> se o usuario existe
+	 */
 	public boolean procuraSeUsuarioPartDoGrupo(String grupo, String usuario) {
 		if (!grupoExiste(grupo)) {
 			return false;
@@ -136,6 +159,13 @@ public class GerenciadorDeGrupos {
 		return false;
 	}
 
+	/**
+	 * 
+	 * Acessa o arquivo e retorna e lista de usuario de um grupo
+	 * 
+	 * @param grupo nome do grupo
+	 * @return retorna a lista de usuarios do grupo
+	 */
 	public List<String> listaUsuariosGrupo(String grupo) {
 		String[] split = {};
 		try {
@@ -171,6 +201,14 @@ public class GerenciadorDeGrupos {
 		return Arrays.asList(split);
 	}
 
+	/**
+	 * 
+	 * Acessa o arquivo e adiciona um usuario no grupo
+	 * 
+	 * @param grupo nome do grupo
+	 * @param usuario nome do usuario
+	 * @return returna <code>true</code> se o usuário foi adicionado
+	 */
 	public boolean adicionaUsuarioNoGrupo(String grupo, String usuario) {
 		if (!grupoExiste(grupo)) {
 			return false;
@@ -205,6 +243,14 @@ public class GerenciadorDeGrupos {
 		return false;
 	}
 
+	/**
+	 * 
+	 * Acessa o arquivo e remove um usuario do grupo
+	 * 
+	 * @param grupo nome do grupo
+	 * @param usuario nome do usuario
+	 * @return returna <code>true</code> se o usuário foi removido
+	 */
 	public boolean removeUsuarioDoGrupo(String grupo, String usuario) {
 		if (!grupoExiste(grupo)) {
 			return false;
@@ -260,6 +306,10 @@ public class GerenciadorDeGrupos {
 		return true;
 	}
 
+	/**
+	 * 
+	 * @return retorna a lista de grupos
+	 */
 	public List<String> listarGrupos() {
 		List<String> grupos = new ArrayList<>();
 		String[] split = {};
@@ -294,6 +344,10 @@ public class GerenciadorDeGrupos {
 		return grupos;
 	}
 
+	/**
+	 * 
+	 * @return retorna a lista de usuários
+	 */
 	public List<String> listarUsuarios() {
 		Collection<String> todosOsUsuarios = new HashSet<>();
 		try {
@@ -330,6 +384,11 @@ public class GerenciadorDeGrupos {
 		return todos;
 	}
 
+	/**
+	 * 
+	 * @param usuario nome do usuario
+	 * @return retorna lista de grupos que contém o usuario
+	 */
 	public List<String> listaGruposDoUsuario(String usuario) {
 		List<String> grupos = new ArrayList<>();
 		boolean existe = false;
@@ -345,6 +404,10 @@ public class GerenciadorDeGrupos {
 		return grupos;
 	}
 
+	/**
+	 * Remove o usuario de todos os grupos e suas permissões
+	 * @param usuario
+	 */
 	public void removeUsuarioDeTodosOsGrupos(String usuario) {
 		List<String> listaGruposDoUsuario = listaGruposDoUsuario(usuario);
 		try {
@@ -385,6 +448,11 @@ public class GerenciadorDeGrupos {
 		}
 	}
 
+	/**
+	 * Comando para auxiliar. Lista usuários de uma linha do arquivo
+	 * @param line linha do arquivo
+	 * @return retorna os usuários
+	 */
 	private List<String> listaUsuariosDaLinha(String line) {
 		String[] split = {};
 		if (line.startsWith("@")) {
@@ -399,6 +467,12 @@ public class GerenciadorDeGrupos {
 		return Arrays.asList(split);
 	}
 
+	/**
+	 * 
+	 * Comando para auxiliar. Retorna grupo de uma linha do arquivo
+	 * @param line linha do arquivo
+	 * @return retorna o grupo
+	 */
 	private String retornaGrupoDaLinha(String line) {
 		if (line.startsWith("@")) {
 			return "";
@@ -416,6 +490,11 @@ public class GerenciadorDeGrupos {
 		return "";
 	}
 
+	/**
+	 * Comando para auxiliar o metodo {@link #adicionaUsuarioNosGrupos(List, String) adicionaUsuarioNosGrupos}. Remove grupos inexistente
+	 * @param grupos lista de grupos
+	 * @return Retorna uma nova lista sem os grupo que nao existem
+	 */
 	private List<String> removeGruposInexistentes(List<String> grupos) {
 		ArrayList<String> deletarGrupoInexistentes = new ArrayList<>();
 		for (String grupo : grupos) {
@@ -430,6 +509,13 @@ public class GerenciadorDeGrupos {
 
 	}
 
+	/**
+	 * 
+	 * Adiciona o usuario em uma lista de grupos
+	 * 
+	 * @param gruposAdd lista de grupo
+	 * @param usuario nome do usuário
+	 */
 	public void adicionaUsuarioNosGrupos(List<String> gruposAdd, String usuario) {
 		// verificar se grupo existe
 		ArrayList<String> grupos = new ArrayList<>(removeGruposInexistentes(gruposAdd));
@@ -464,6 +550,10 @@ public class GerenciadorDeGrupos {
 		}
 	}
 
+	/**
+	 * Remove o grupo e suas permissoes
+	 * @param grupo nome do grupo
+	 */
 	public void removeGrupoEPermissoes(String grupo) {
 		try {
 			fileReader = new FileReader(file);

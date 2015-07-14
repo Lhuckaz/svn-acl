@@ -31,20 +31,52 @@ import org.tmatesoft.svn.core.io.SVNRepositoryFactory;
 import org.tmatesoft.svn.core.io.diff.SVNDeltaGenerator;
 import org.tmatesoft.svn.core.wc.SVNWCUtil;
 
+/**
+ * 
+ * Classe responsável por realizar commit no SVN
+ * 
+ * @author Lhuckaz
+ *
+ */
 public class Commit {
 
+	/**
+	 * Construtor da classe {@link Commit}
+	 */
 	public Commit() {
 		setupLibrary();
 	}
 
+	/**
+	 * 
+	 * Responsavel por commitar as alterações ou adicionar novo arquivo
+	 * 
+	 * @param endereco
+	 *            url do arquivo no SVN
+	 * @param user
+	 *            nome de usuário
+	 * @param password
+	 *            senha
+	 * @param arquivo
+	 *            nome do arquivo
+	 * @param conteudo
+	 *            conteúdo do arquivo
+	 * @param commit
+	 *            conteúdo do comentário
+	 * @param begin
+	 *            <code>true</code> para arquivo novo
+	 * @return retorna <code>true</code> caso a conexão for bem sucedida
+	 * @throws SVNException
+	 *             lança caso ocorra algum erro com a conexão
+	 */
 	public boolean commitando(String endereco, String user, String password, String arquivo, byte[] conteudo,
 			String commit, boolean begin) throws SVNException {
 		/*
-		 * URL that points to repository.
+		 * URL que aponta para repositório.
 		 */
 		SVNURL url = SVNURL.parseURIEncoded(endereco);
 		/*
-		 * Credentials to use for authentication.
+		 * Credenciais para usar para autenticação.
 		 */
 		String userName = user;
 		char[] userPassword = password.toCharArray();
@@ -115,7 +147,7 @@ public class Commit {
 		 * be used to create temporary files.
 		 */
 		ISVNEditor editor = repository.getCommitEditor(commit, null);
-		
+
 		if (begin) {
 			addFile(editor, arquivo, modifiedContents);
 		} else {
@@ -124,28 +156,28 @@ public class Commit {
 		return true;
 	}
 
-	/*
-	 * Initializes the library to work with a repository via different
-	 * protocols.
+	/**
+	 * Inicializa a biblioteca para trabalhar com um repositório através de
+	 * protocolos diferentes.
 	 */
 	private static void setupLibrary() {
-		/*
-		 * For using over http:// and https://
+		/**
+		 * Para usar http:// e https://
 		 */
 		DAVRepositoryFactory.setup();
-		/*
-		 * For using over svn:// and svn+xxx://
+		/**
+		 * Para usar svn:// e svn+xxx://
 		 */
 		SVNRepositoryFactoryImpl.setup();
-	
-		/*
-		 * For using over file:///
+
+		/**
+		 * Para usar file:///
 		 */
 		FSRepositoryFactory.setup();
 	}
 
-	/*
-	 * This method performs commiting an addition of a file.
+	/**
+	 * Esse método realiza commiter de adição de um arquivo.
 	 */
 	private static SVNCommitInfo addFile(ISVNEditor editor, String file, byte[] data) throws SVNException {
 		/*
@@ -215,8 +247,8 @@ public class Commit {
 		return editor.closeEdit();
 	}
 
-	/*
-	 * This method performs committing file modifications.
+	/**
+	 * Esse método realiza commiter de modificações de arquivo.
 	 */
 	private static SVNCommitInfo modifyFile(ISVNEditor editor, String filePath, byte[] newData) throws SVNException {
 		/*
@@ -302,7 +334,8 @@ public class Commit {
 		}
 
 		try {
-			// cCommit.commitando(endereco, user, password, arquivo, conteudo, commit, true);
+			// cCommit.commitando(endereco, user, password, arquivo, conteudo,
+			// commit, true);
 		} catch (Exception e) {
 			System.out.println("Error");
 		}

@@ -4,11 +4,18 @@ import javax.swing.text.AttributeSet;
 import javax.swing.text.BadLocationException;
 import javax.swing.text.PlainDocument;
 
+/**
+ * 
+ * Define o tamanho máximo de um {@link javax.swing.JTextField JTextField}
+ * 
+ * @author Lhuckaz
+ *
+ */
 @SuppressWarnings("serial")
-public class DefineTamanhoJTextField extends PlainDocument {
+public class DocumentTamanhoJTextField extends PlainDocument {
 	private int tamMax;
 
-	public DefineTamanhoJTextField(int tamMax) {
+	public DocumentTamanhoJTextField(int tamMax) {
 		super();
 		this.tamMax = tamMax;
 	}

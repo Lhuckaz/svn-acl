@@ -6,6 +6,13 @@ import java.io.FileOutputStream;
 
 import javax.swing.JOptionPane;
 
+/**
+ * 
+ * Classe responsável por gerenciar os diretórios
+ * 
+ * @author Lhuckaz
+ *
+ */
 public class Diretorios {
 	
 	private static String diretorioCorrente = retornaUserDocuments();
@@ -62,12 +69,15 @@ public class Diretorios {
 		Util.setUserSvn(user);
 	}
 	
+	/**
+	 * Salva o url do svn no properties para tornar mais dinâmico
+	 */
 	private static void setURLNoProperties() {
 		try {
-			FileInputStream fileInputStream = new FileInputStream(Util.arquivoProperties);
-			Util.propertiesSystem.load(new FileInputStream(Util.arquivoProperties));
+			FileInputStream fileInputStream = new FileInputStream(Util.ARQUIVO_PROPERTIES);
+			Util.propertiesSystem.load(new FileInputStream(Util.ARQUIVO_PROPERTIES));
 			Util.propertiesSystem.setProperty("url.svn.file", endereco + "/" + fileExportName);
-			File file = new File(Util.getArquivoProperties());
+			File file = new File(Util.ARQUIVO_PROPERTIES);
 			FileOutputStream fos = new FileOutputStream(file);
 			Util.propertiesSystem.store(fos, "Alteracao de URL");
 			fileInputStream.close();

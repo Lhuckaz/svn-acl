@@ -6,6 +6,13 @@ import java.awt.event.ActionListener;
 import br.com.svn_acl.gui.AdConfigura;
 import br.com.svn_acl.gui.SvnAclGUI;
 
+/**
+ * 
+ * Classe ouvinte
+ * 
+ * @author Lhuckaz
+ *
+ */
 public class AdItemMenuListener implements ActionListener {
 
 	private SvnAclGUI svnAclGUI;
@@ -17,7 +24,7 @@ public class AdItemMenuListener implements ActionListener {
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		new AdConfigura(svnAclGUI);
-		
+
 	}
 
 }

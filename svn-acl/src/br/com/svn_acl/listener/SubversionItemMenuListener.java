@@ -6,6 +6,13 @@ import java.awt.event.ActionListener;
 import br.com.svn_acl.gui.SubversionArquivo;
 import br.com.svn_acl.gui.SvnAclGUI;
 
+/**
+ * 
+ * Classe ouvinte
+ * 
+ * @author Lhuckaz
+ *
+ */
 public class SubversionItemMenuListener implements ActionListener {
 
 	private SvnAclGUI svnAclGUI;

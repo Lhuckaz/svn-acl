@@ -21,6 +21,11 @@ import javax.naming.directory.SearchResult;
 import br.com.svn_acl.gui.AdConfigura;
 import br.com.svn_acl.util.Util;
 
+/**
+ * Classe responsavel por acessar o AD 
+ * @author Lhuckaz
+ *
+ */
 public class ActiveDirectory {
 
 	private DirContext dirContext;
@@ -30,10 +35,18 @@ public class ActiveDirectory {
 	private String[] returnAttributes = { "sAMAccountName" };
 	private boolean comErros;
 
+	/**
+	 * 
+	 * Construtor da classe ActiveDirectory
+	 * 
+	 * @throws NamingException
+	 * @throws ConnectException
+	 * @throws FileNotFoundException
+	 */
 	public ActiveDirectory() throws NamingException, ConnectException, FileNotFoundException {
 		Properties propertiesSystem = new Properties();
 		try {
-			propertiesSystem.load(new FileInputStream(Util.getArquivoProperties()));
+			propertiesSystem.load(new FileInputStream(Util.ARQUIVO_PROPERTIES));
 		} catch (Exception e) {
 			throw new FileNotFoundException();
 		}
