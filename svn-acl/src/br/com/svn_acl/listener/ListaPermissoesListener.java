@@ -8,7 +8,7 @@ import br.com.svn_acl.gui.SvnAclGUI;
 
 /**
  * 
- * Classe ouvinte
+ * Classe ouvinte das mudanças da {@link JList} para alterar as permissões
  * 
  * @author Lhuckaz
  *

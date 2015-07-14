@@ -631,7 +631,7 @@ public class GerenciadorDePermissoes {
 	 * 
 	 * @param grupo
 	 *            nome do grupo ou usuário
-	 * @return Retorna o HashMap
+	 * @return retorna o HashMap
 	 */
 	public Map<String, String> listaQuaisDiretoriosUmGrupoOuUserTemAcessoEQuaisPermissoes(String grupo) {
 		HashMap<String, String> diretoriosEPermissoes = new HashMap<>();

@@ -30,6 +30,13 @@ import br.com.svn_acl.util.Diretorios;
 import br.com.svn_acl.util.SpringUtilities;
 import br.com.svn_acl.util.Util;
 
+/**
+ * 
+ * Interface gráfica extends {@link JDialog} para acesso ao Subversion
+ * 
+ * @author Lhuckaz
+ *
+ */
 @SuppressWarnings("serial")
 public class SubversionArquivo extends JDialog {
 
@@ -39,6 +46,15 @@ public class SubversionArquivo extends JDialog {
 	JTextField password;
 	JTextArea comentario;
 
+	/**
+	 * Construtor da classe {@link SubversionArquivo} monta a interface com
+	 * {@link SpringLayout}
+	 * 
+	 * @param owner
+	 *            interface principal
+	 * @param titulo
+	 *            título da pagina
+	 */
 	public SubversionArquivo(SvnAclGUI owner, String titulo) {
 		super(owner.getFrame(), titulo, true);
 		this.owner = owner;
@@ -54,7 +70,7 @@ public class SubversionArquivo extends JDialog {
 		p.add(l);
 		url = new JTextField(50);
 
-		if(titulo.equals("Exportar")) {
+		if (titulo.equals("Exportar")) {
 			if (Diretorios.retornaFileExportName() == null) {
 				url.setText(Util.enderecoPadraoComArquivo());
 			} else {
@@ -65,7 +81,7 @@ public class SubversionArquivo extends JDialog {
 				url.setText(Util.enderecoPadraoComArquivo());
 			} else {
 				url.setText(Diretorios.retornaUrl() + "/" + Diretorios.retornaFileExportName());
-			}	
+			}
 		}
 		l.setLabelFor(url);
 		p.add(url);
@@ -127,6 +143,15 @@ public class SubversionArquivo extends JDialog {
 		setModal(true);
 	}
 
+	/**
+	 * 
+	 * Retorna os <code>bytes[]</code> de um arquivo para enviar através de uma
+	 * conexao com o SVN
+	 * 
+	 * @param file
+	 *            arquivo
+	 * @return retorna os <code>bytes[]</code>
+	 */
 	private byte[] getBytes(File file) {
 		int len = (int) file.length();
 		byte[] sendBuf = new byte[len];
@@ -148,6 +173,14 @@ public class SubversionArquivo extends JDialog {
 		return sendBuf;
 	}
 
+	/**
+	 * 
+	 * Classe ouvinte {@link JButton} "OK" da classe {@link SubversionArquivo}
+	 * para conexão com SVN
+	 * 
+	 * @author Lhuckaz
+	 *
+	 */
 	public class Acao implements ActionListener {
 
 		private SubversionArquivo subversionArquivo;
@@ -161,6 +194,7 @@ public class SubversionArquivo extends JDialog {
 		@Override
 		public void actionPerformed(ActionEvent e) {
 			File file = null;
+			// Tela com título e funções diferentes "Exportar" ou "Commit"
 			if (titulo.equals("Exportar")) {
 				String url = subversionArquivo.url.getText();
 				String user = subversionArquivo.user.getText();
@@ -169,7 +203,7 @@ public class SubversionArquivo extends JDialog {
 				Export export = new Export();
 				boolean exportando = false;
 				String message = "";
-				
+
 				try {
 					exportando = export.exportando(url, user, password);
 					// Retira o nome do arquivo da url
@@ -181,7 +215,10 @@ public class SubversionArquivo extends JDialog {
 				} catch (Exception ex) {
 					message = "Erro Fatal";
 				}
-				
+
+				// Se exportado com sucesso carregar arquivo, em seguida
+				// apaga-lo setar a valor da url no properties, e fechar a
+				// janela
 				if (exportando) {
 					String arquivo = Util.getNomeArquivoURL(url);
 					file = new File(arquivo);
@@ -194,27 +231,27 @@ public class SubversionArquivo extends JDialog {
 				} else {
 					JOptionPane.showMessageDialog(owner.getFrame(), message, "Export", JOptionPane.ERROR_MESSAGE);
 				}
-	
+
 			} else {
 				String url = subversionArquivo.url.getText();
 				String user = subversionArquivo.user.getText();
 				String password = subversionArquivo.password.getText();
 				String comentario = subversionArquivo.comentario.getText();
-				
+
 				Commit commit = new Commit();
 				boolean commitando = false;
 				String message = "";
 				try {
 					File fileSaida = new File("~svn-saida.acl");
 					byte[] bytes = getBytes(fileSaida);
-					
+
 					String arquivo = Diretorios.retornaFileExportName();
-					
+
 					// Retira o nome do arquivo da url
 					url = Util.validaURL(url);
-					
+
 					commitando = commit.commitando(url, user, password, arquivo, bytes, comentario, false);
-					
+
 					// Seta o valor na url atual
 					Diretorios.setUrl(url);
 				} catch (SVNAuthenticationException ex) {
@@ -229,7 +266,8 @@ public class SubversionArquivo extends JDialog {
 
 				if (commitando) {
 					subversionArquivo.setVisible(false);
-					JOptionPane.showMessageDialog(owner.getFrame(), "Commitado", "Commit", JOptionPane.INFORMATION_MESSAGE);
+					JOptionPane.showMessageDialog(owner.getFrame(), "Commitado", "Commit",
+							JOptionPane.INFORMATION_MESSAGE);
 				} else {
 					JOptionPane.showMessageDialog(owner.getFrame(), message, "Commit", JOptionPane.ERROR_MESSAGE);
 				}

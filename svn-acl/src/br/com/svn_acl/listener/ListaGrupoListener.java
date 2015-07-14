@@ -10,7 +10,7 @@ import br.com.svn_acl.gui.SvnAclGUI;
 
 /**
  * 
- * Classe ouvinte
+ * Classe ouvinte das mudanças da {@link JList} para alterar os grupos
  * 
  * @author Lhuckaz
  *
@@ -35,6 +35,13 @@ public class ListaGrupoListener implements ListSelectionListener {
 		}
 	}
 
+	/**
+	 * 
+	 * Atualiza as usuários quando o grupo é alterado
+	 * 
+	 * @param grupoSelecionado
+	 *            grupo selecionado
+	 */
 	public void atualizaUsuarios(String grupoSelecionado) {
 		List<String> listaUsuariosGrupo = svnAclGUI.getGerenciadorDeGrupos().listaUsuariosGrupo(grupoSelecionado);
 		svnAclGUI.setUsuariosDoGrupo(listaUsuariosGrupo);

@@ -44,10 +44,18 @@ public class Gerenciador {
 		atualizaArquivo();
 	}
 
+	/**
+	 * 
+	 * @return gerenciadorDeGrupos
+	 */
 	public GerenciadorDeGrupos getGerenciadorDeGrupos() {
 		return gerenciadorDeGrupos;
 	}
 
+	/**
+	 * 
+	 * @return gerenciadorDePermissoes
+	 */
 	public GerenciadorDePermissoes getGerenciadorDePermissoes() {
 		return gerenciadorDePermissoes;
 	}

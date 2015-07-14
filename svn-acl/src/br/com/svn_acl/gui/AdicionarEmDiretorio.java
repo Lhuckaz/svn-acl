@@ -15,9 +15,20 @@ import javax.swing.JDialog;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JTabbedPane;
 
 import br.com.svn_acl.util.Util;
 
+/**
+ * 
+ * Interface gráfica extends {@link JDialog} implements {@link ActionListener}
+ * ouvinte do {@link JButton} "Adicionar" no {@link JTabbedPane} "Permissões" da
+ * interface principal {@link SvnAclGUI} para adicionar grupo e usuários e as
+ * permissões dos mesmos
+ * 
+ * @author Lhuckaz
+ *
+ */
 @SuppressWarnings("serial")
 public class AdicionarEmDiretorio extends JDialog implements ActionListener {
 
@@ -29,6 +40,15 @@ public class AdicionarEmDiretorio extends JDialog implements ActionListener {
 	private String permissoes;
 	private String diretorio;
 
+	/**
+	 * 
+	 * Construtor da classe {@link AdicionarEmDiretorio} monta a interface gráfica do
+	 * {@link JDialog}
+	 * 
+	 * @param owner
+	 *            interface principal
+	 * @param diretorio
+	 */
 	public AdicionarEmDiretorio(SvnAclGUI owner, String diretorio) {
 		super(owner.getFrame(), "Adicionar em Diretorio", true);
 		this.owner = owner;
@@ -65,6 +85,14 @@ public class AdicionarEmDiretorio extends JDialog implements ActionListener {
 				}
 			}
 
+			/**
+			 * 
+			 * Adiciona usuário no {@link javax.swing.JList JList} da interface
+			 * principal {@link br.com.svn_acl.gui.SvnAclGUI SvnAclGUI}
+			 * 
+			 * @return retorna algum valor int para o método
+			 *         {@link ActionListener#itemStateChanged itemStateChanged}
+			 */
 			private int adicionaUsuario() {
 				painelOpcoes.setVisible(false);
 				painelOpcoes.removeAll();
@@ -77,6 +105,14 @@ public class AdicionarEmDiretorio extends JDialog implements ActionListener {
 				return 0;
 			}
 
+			/**
+			 * 
+			 * Adiciona grupo no {@link javax.swing.JList JList} da interface
+			 * principal {@link br.com.svn_acl.gui.SvnAclGUI SvnAclGUI}
+			 * 
+			 * @return retorna algum valor int para o método
+			 *         {@link ActionListener#itemStateChanged itemStateChanged}
+			 */
 			private int adicionaGrupo() {
 				painelOpcoes.setVisible(false);
 				painelOpcoes.removeAll();
@@ -109,15 +145,19 @@ public class AdicionarEmDiretorio extends JDialog implements ActionListener {
 		permissoes = (String) comboPermissoes.getSelectedItem();
 		String permissao = Util.getPermissao(permissoes);
 		boolean adicionou = true;
-		if(!jCheckBoxUsuario.isSelected()) {
+		if (!jCheckBoxUsuario.isSelected()) {
 			String grupoSelecionado = (String) comboGrupos.getSelectedItem();
-			adicionou = owner.getGerenciadorDePermissoes().adicionaGrupoEPermissoesNoDiretorio(diretorio, grupoSelecionado, permissao);
+			adicionou = owner.getGerenciadorDePermissoes().adicionaGrupoEPermissoesNoDiretorio(diretorio,
+					grupoSelecionado, permissao);
 		} else {
 			String usuarioSelecionado = (String) comboUsuarios.getSelectedItem();
-			adicionou = owner.getGerenciadorDePermissoes().adicionaUserEPermissoesNoDiretorio(diretorio, usuarioSelecionado, permissao);
+			adicionou = owner.getGerenciadorDePermissoes().adicionaUserEPermissoesNoDiretorio(diretorio,
+					usuarioSelecionado, permissao);
 		}
-		if(!adicionou)
-			JOptionPane.showMessageDialog(owner.getFrame(), "Não foi possivel adicionar\nVerifique se o grupo/usuário já tem permissões no diretório", "Adicionar", JOptionPane.ERROR_MESSAGE);
+		if (!adicionou)
+			JOptionPane.showMessageDialog(owner.getFrame(),
+					"Não foi possivel adicionar\nVerifique se o grupo/usuário já tem permissões no diretório",
+					"Adicionar", JOptionPane.ERROR_MESSAGE);
 		setVisible(false);
 	}
 

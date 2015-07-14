@@ -85,20 +85,4 @@ public class Export {
 		return true;
 
 	}
-
-	public static void main(String[] args) {
-		String url = "http://mizar/svn/brad2011/dn1/svn_acl/svn.acl";
-		String user = "lucas.fernandes";
-		String password = "P@ssw0rd1997";
-		try {
-			new Export().exportando(url, user, password);
-		} catch (SVNAuthenticationException e) {
-			System.out.println("Usuario ou senha invalidos");
-		} catch (SVNException e) {
-			System.out.println("URL Invalida, passe o caminho de um arquivo");
-		} catch (Exception e) {
-			System.out.println("Error");
-		}
-	}
-
 }

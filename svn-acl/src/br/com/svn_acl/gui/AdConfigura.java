@@ -7,12 +7,9 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.security.PrivateKey;
-import java.security.PublicKey;
-import java.util.Arrays;
 import java.util.Properties;
 
 import javax.swing.JButton;
@@ -23,10 +20,19 @@ import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 import javax.swing.SpringLayout;
 
+import br.com.svn_acl.ad.ActiveDirectory;
 import br.com.svn_acl.util.Criptografa;
 import br.com.svn_acl.util.SpringUtilities;
 import br.com.svn_acl.util.Util;
 
+/**
+ * 
+ * Interface gráfica extends {@link JDialog} para configurações do acesso ao
+ * {@link ActiveDirectory}
+ * 
+ * @author Lhuckaz
+ *
+ */
 @SuppressWarnings("serial")
 public class AdConfigura extends JDialog {
 
@@ -37,6 +43,13 @@ public class AdConfigura extends JDialog {
 	String userString = "";
 	String passwordString = "";
 
+	/**
+	 * 
+	 * Construtor da classe {@link AdConfigura} monta a interface com {@link SpringLayout}
+	 * 
+	 * @param owner
+	 *            interface principal
+	 */
 	public AdConfigura(SvnAclGUI owner) {
 		super(owner.getFrame(), "Configurações", true);
 
@@ -100,6 +113,9 @@ public class AdConfigura extends JDialog {
 		setVisible(true);
 	}
 
+	/**
+	 * Carrega atributos da classes com conteúdo do properties
+	 */
 	private void carregaProperties() {
 		Properties properties;
 		try {
@@ -119,6 +135,14 @@ public class AdConfigura extends JDialog {
 		properties = null;
 	}
 
+	/**
+	 * 
+	 * Classe ouvinte do {@link JButton} "OK" da classe {@link AdConfigura} para
+	 * conexão com AD
+	 * 
+	 * @author Lhuckaz
+	 *
+	 */
 	public class Configura implements ActionListener {
 
 		private AdConfigura adConfigura;
@@ -133,7 +157,7 @@ public class AdConfigura extends JDialog {
 			String user = adConfigura.user.getText();
 			String password = adConfigura.password.getText();
 
-			gravaAtributos(dominio, user, password);
+			Util.gravaAtributosAd(dominio, user, password);
 			boolean verificaUsuariosAD = SvnAclGUI.verificaUsuariosAD();
 			if (verificaUsuariosAD)
 				setVisible(false);
@@ -141,51 +165,23 @@ public class AdConfigura extends JDialog {
 
 	}
 
+	/**
+	 * 
+	 * @return retorna a senha recuperada
+	 */
 	public static String recuperaSenha() {
 		try {
-			Properties properties = new Properties();
 			FileInputStream fileInputStream = new FileInputStream(Util.ARQUIVO_PROPERTIES);
-			properties.load(fileInputStream);
+			Util.propertiesSystem.load(fileInputStream);
 			fileInputStream.close();
-			String password = properties.getProperty("password.ldap");
+			String password = Util.propertiesSystem.getProperty("password.ldap");
 
 			ObjectInputStream inputStream = new ObjectInputStream(new FileInputStream(Criptografa.PATH_CHAVE_PRIVADA));
 			final PrivateKey chavePrivada = (PrivateKey) inputStream.readObject();
 			inputStream.close();
-			properties = null;
 			return Criptografa.decriptografa(Util.stringArrayToByte(password), chavePrivada);
 		} catch (Exception e) {
 			return "";
 		}
 	}
-
-	private static void gravaAtributos(String dominio, String user, String password) {
-		try {
-			if (!Criptografa.verificaSeExisteChavesNoSO()) {
-				Criptografa.geraChave();
-			}
-
-			Properties properties = new Properties();
-			FileInputStream fileInputStream = new FileInputStream(Util.ARQUIVO_PROPERTIES);
-			properties.load(fileInputStream);
-			fileInputStream.close();
-
-			ObjectInputStream inputStream = new ObjectInputStream(new FileInputStream(Criptografa.PATH_CHAVE_PUBLICA));
-			final PublicKey chavePublica = (PublicKey) inputStream.readObject();
-
-			final byte[] textoCriptografado = Criptografa.criptografa(password, chavePublica);
-			properties.setProperty("domain.ldap", dominio);
-			properties.setProperty("username.ldap", user);
-			properties.setProperty("password.ldap", Arrays.toString(textoCriptografado).replace(" ", ""));
-			File file = new File(Util.ARQUIVO_PROPERTIES);
-			FileOutputStream fos = new FileOutputStream(file);
-			properties.store(fos, "Alteracao de senha AD");
-			inputStream.close();
-			fos.close();
-			properties = null;
-			file = null;
-		} catch (Exception e) {
-		}
-	}
-
 }

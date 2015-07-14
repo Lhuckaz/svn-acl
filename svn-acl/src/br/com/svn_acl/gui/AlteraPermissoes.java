@@ -9,9 +9,20 @@ import javax.swing.JComboBox;
 import javax.swing.JDialog;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JTabbedPane;
 
 import br.com.svn_acl.util.Util;
 
+/**
+ * 
+ * Interface gráfica extends {@link JDialog} implements {@link ActionListener}
+ * ouvinte do {@link JButton} "Alterar Permissões" no {@link JTabbedPane}
+ * "Permissões" da interface principal {@link SvnAclGUI} para alterar as
+ * permissões dos grupos e usuários
+ * 
+ * @author Lhuckaz
+ *
+ */
 @SuppressWarnings("serial")
 public class AlteraPermissoes extends JDialog implements ActionListener {
 
@@ -21,6 +32,18 @@ public class AlteraPermissoes extends JDialog implements ActionListener {
 	private String grupoOuUser;
 	private SvnAclGUI owner;
 
+	/**
+	 * 
+	 * Construtor da classe {@link AlteraPermissoes} monta a interface gráfica do
+	 * {@link JDialog}
+	 * 
+	 * @param owner
+	 *            interface principal
+	 * @param diretorioSelecionado
+	 *            diretório escolhido
+	 * @param grupoOuUser
+	 *            grupo ao usuário para alterar a permissão
+	 */
 	public AlteraPermissoes(SvnAclGUI owner, String diretorioSelecionado, String grupoOuUser) {
 		super(owner.getFrame(), "Altera Permissoes", true);
 		this.owner = owner;

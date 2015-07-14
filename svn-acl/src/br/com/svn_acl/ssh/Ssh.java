@@ -203,25 +203,4 @@ public class Ssh {
 		return true;
 
 	}
-
-	public static void main(String[] args) {
-		boolean importar = false;
-		try {
-			importar = new Ssh().importar("10.100.50.31", "root", "7comm$", "/root/svn2.acl", 22);
-		} catch (JSchException e) {
-			String message = e.getMessage();
-			if (message.equals("Auth fail"))
-				System.out.println("Usuario ou senha inválidos");
-		} catch (SftpException e) {
-			System.out.println("Diretório inválido");
-		} catch (InvalidActivityException e) {
-			System.out.println("Hostname");
-		} catch (IOException e) {
-			System.out.println("Diretorio inválido. passe o caminho de uma arquivo");
-		} catch (Exception e) {
-			System.out.println("Erro");
-		}
-		if (importar)
-			System.out.println("Sucesso");
-	}
 }

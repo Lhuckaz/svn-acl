@@ -493,7 +493,7 @@ public class GerenciadorDeGrupos {
 	/**
 	 * Comando para auxiliar o metodo {@link #adicionaUsuarioNosGrupos(List, String) adicionaUsuarioNosGrupos}. Remove grupos inexistente
 	 * @param grupos lista de grupos
-	 * @return Retorna uma nova lista sem os grupo que nao existem
+	 * @return retorna uma nova lista sem os grupo que nao existem
 	 */
 	private List<String> removeGruposInexistentes(List<String> grupos) {
 		ArrayList<String> deletarGrupoInexistentes = new ArrayList<>();

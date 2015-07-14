@@ -13,7 +13,6 @@ package br.com.svn_acl.svn;
 
 import java.io.ByteArrayInputStream;
 
-import org.tmatesoft.svn.core.SVNAuthenticationException;
 import org.tmatesoft.svn.core.SVNCancelException;
 import org.tmatesoft.svn.core.SVNCommitInfo;
 import org.tmatesoft.svn.core.SVNErrorCode;
@@ -307,37 +306,5 @@ public class Commit {
 		 * commit information.
 		 */
 		return editor.closeEdit();
-	}
-
-	public static void main(String[] args) {
-
-		Commit cCommit = new Commit();
-
-		String endereco = "http://mizar/svn/brad2011/dn1/svn_acl";
-		String user = "lucas.fernandes";
-		String password = "P@ssw0rd1997";
-		String arquivo = "svn.acl";
-		byte[] conteudo = "teste".getBytes();
-
-		String commit = "Alteracao";
-
-		try {
-			cCommit.commitando(endereco, user, password, arquivo, conteudo, commit, false);
-		} catch (SVNAuthenticationException e) {
-			System.out.println("Usuário ou senha inválidos");
-		} catch (SVNCancelException e) {
-			System.out.println("Arquivo não existe");
-		} catch (SVNException e) {
-			System.out.println("URL Invalida");
-		} catch (Exception e) {
-			System.out.println("Error");
-		}
-
-		try {
-			// cCommit.commitando(endereco, user, password, arquivo, conteudo,
-			// commit, true);
-		} catch (Exception e) {
-			System.out.println("Error");
-		}
 	}
 }

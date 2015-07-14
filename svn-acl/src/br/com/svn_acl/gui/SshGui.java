@@ -1,7 +1,6 @@
 package br.com.svn_acl.gui;
 
 import java.awt.BorderLayout;
-import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
@@ -19,9 +18,6 @@ import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 import javax.swing.SpringLayout;
 import javax.swing.text.AbstractDocument;
-import javax.swing.text.AttributeSet;
-import javax.swing.text.BadLocationException;
-import javax.swing.text.DocumentFilter;
 
 import br.com.svn_acl.ssh.Ssh;
 import br.com.svn_acl.util.DocumentFilterOnlyNumbers;
@@ -31,6 +27,14 @@ import br.com.svn_acl.util.Util;
 import com.jcraft.jsch.JSchException;
 import com.jcraft.jsch.SftpException;
 
+/**
+ * 
+ * Interface gráfica extends {@link JDialog} para configurações do acesso ao
+ * {@link SshGui}
+ * 
+ * @author Lhuckaz
+ *
+ */
 @SuppressWarnings("serial")
 public class SshGui extends JDialog {
 
@@ -41,6 +45,17 @@ public class SshGui extends JDialog {
 	JTextField password;
 	JTextField dir;
 
+	/**
+	 * 
+	 * Construtor da classe {@link SshGui} monta a interface com
+	 * {@link SpringLayout}
+	 * 
+	 * @param owner
+	 *            interface principal
+	 * 
+	 * @param titulo
+	 *            título ja janela
+	 */
 	public SshGui(SvnAclGUI owner, String titulo) {
 		super(owner.getFrame());
 		this.owner = owner;
@@ -119,6 +134,14 @@ public class SshGui extends JDialog {
 		setVisible(true);
 	}
 
+	/**
+	 * 
+	 * Classe ouvinte do {@link JButton} "OK" da classe {@link SshGui} para
+	 * conexão com SSH
+	 * 
+	 * @author Lhuckaz
+	 *
+	 */
 	public class AcaoSsh implements ActionListener {
 
 		private SshGui sshTransfere;
@@ -131,6 +154,7 @@ public class SshGui extends JDialog {
 
 		@Override
 		public void actionPerformed(ActionEvent e) {
+			// Tela com título e funções diferentes "Importar" ou "Transferir"
 			if (titulo.equals("Transferir")) {
 				String port = sshTransfere.port.getText();
 				int porta = pegaNumberPorta(port);
@@ -214,6 +238,15 @@ public class SshGui extends JDialog {
 			}
 		}
 
+		/**
+		 * 
+		 * Faz um {@link Integer#parseInt(String) parseInt(String s)} para
+		 * retornar o número da porta
+		 * 
+		 * @param port
+		 *            numero da porta
+		 * @return retorna um <code>int</code> contendo o número da porta
+		 */
 		private int pegaNumberPorta(String port) {
 			try {
 				return Integer.parseInt(port);

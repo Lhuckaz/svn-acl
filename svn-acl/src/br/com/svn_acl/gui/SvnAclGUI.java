@@ -57,6 +57,15 @@ import br.com.svn_acl.listener.SubversionItemMenuListener;
 import br.com.svn_acl.util.DocumentTamanhoJTextField;
 import br.com.svn_acl.util.Util;
 
+/**
+ * 
+ * Interface gráfica principal, composta de {@link JFrame}, exibe na
+ * {@link JTabbedPane} "Grupos" ps grupos e usuários e em "Permissões" os
+ * diretórios e as permissões dos grupos e usuários
+ * 
+ * @author Lhuckaz
+ *
+ */
 public class SvnAclGUI {
 
 	private JFrame frame;
@@ -126,6 +135,9 @@ public class SvnAclGUI {
 		prepareGUI();
 	}
 
+	/**
+	 * Monta a interface gráfica
+	 */
 	private void prepareGUI() {
 		frame = new JFrame("Lista de Controle de Acesso do Subversion");
 
@@ -181,6 +193,14 @@ public class SvnAclGUI {
 
 	private boolean carregadoArquivo = false;
 
+	/**
+	 * 
+	 * Método principal para carregar o arquivo que será apresentado pelo
+	 * programa
+	 * 
+	 * @param arquivo
+	 *            nome do arquivo a carregar
+	 */
 	public void carregaArquivo(String arquivo) {
 		gerenciador = new Gerenciador(arquivo);
 
@@ -197,11 +217,17 @@ public class SvnAclGUI {
 		jMenuItemSalvar.setEnabled(true);
 	}
 
+	/**
+	 * Adiciona um icone a janela
+	 */
 	private void adicionandoIcon() {
 		Image image = Toolkit.getDefaultToolkit().getImage(getClass().getClassLoader().getResource("images/ico.png"));
 		frame.setIconImage(image);
 	}
 
+	/**
+	 * Adiciona o {@link JMenuBar}
+	 */
 	private void adicionaMenu() {
 		ArquivoItemMenuListener arquivoItemMenuListener = new ArquivoItemMenuListener(this);
 		SubversionItemMenuListener subversionItemMenuListener = new SubversionItemMenuListener(this);
@@ -263,6 +289,9 @@ public class SvnAclGUI {
 		frame.setJMenuBar(jMenuBar);
 	}
 
+	/**
+	 * Adiciona a lista de grupos
+	 */
 	private void adicionarListaDeGrupos() {
 		jPanelGrupos = new JPanel(new FlowLayout(FlowLayout.RIGHT));
 		modeloGrupos = new DefaultListModel<>();
@@ -276,6 +305,9 @@ public class SvnAclGUI {
 		jPanelPrincipalListGrupos.add(jPanelGrupos);
 	}
 
+	/**
+	 * Adiciona lista de usuários em Grupos
+	 */
 	private void adicionarListaDeUsuariosEmGrupos() {
 		jPanelUsuarios = new JPanel(new FlowLayout(FlowLayout.LEFT));
 		modeloUsuarios = new DefaultListModel<>();
@@ -289,6 +321,9 @@ public class SvnAclGUI {
 		jPanelPrincipalListGrupos.add(jPanelUsuarios);
 	}
 
+	/**
+	 * Adiciona os grupos
+	 */
 	private void adicionarGrupos() {
 		listarGrupos = getGerenciadorDeGrupos().listarGrupos();
 		for (String grupos : listarGrupos) {
@@ -296,6 +331,9 @@ public class SvnAclGUI {
 		}
 	}
 
+	/**
+	 * Adiciona {@link JButton}'s em {@link JTabbedPane} "Grupos"
+	 */
 	private void adicionaBotoesEmGrupos() {
 		JPanel painelBotoesGrupos = new JPanel();
 		painelBotoesGrupos.setLayout(new FlowLayout(FlowLayout.RIGHT));
@@ -410,6 +448,13 @@ public class SvnAclGUI {
 				}
 			}
 
+			/**
+			 * 
+			 * Adiciona o usuário ao {@link JList JList}
+			 * 
+			 * @param usuarioParaAdicionar
+			 *            nome do usuário
+			 */
 			private void adicionaUsuario(String usuarioParaAdicionar) {
 				boolean adicionou = getGerenciadorDeGrupos().adicionaUsuarioNoGrupo(getGrupoSelecionado(),
 						usuarioParaAdicionar);
@@ -452,6 +497,9 @@ public class SvnAclGUI {
 		jPanelPrincipalGrupos.add(painelBotoesGrupos, BorderLayout.SOUTH);
 	}
 
+	/**
+	 * Adiciona lista de diretórios
+	 */
 	private void adicionarListaDeDiretorios() {
 		jPanelDiretorios = new JPanel(new FlowLayout(FlowLayout.RIGHT));
 		modeloDiretorios = new DefaultListModel<>();
@@ -465,6 +513,9 @@ public class SvnAclGUI {
 		jPanelPrincipalListPermissoes.add(jPanelDiretorios);
 	}
 
+	/**
+	 * Adiciona lista de permissões em Diretórios
+	 */
 	private void adicionarListaDePermissoesEmDiretorios() {
 		jPanelPermissoes = new JPanel(new FlowLayout(FlowLayout.LEFT));
 		modeloPermissoes = new DefaultListModel<>();
@@ -478,6 +529,9 @@ public class SvnAclGUI {
 		jPanelPrincipalListPermissoes.add(jPanelPermissoes);
 	}
 
+	/**
+	 * Adiciona os diretórios
+	 */
 	private void adicionarDiretorios() {
 		listarDiretorios = getGerenciadorDePermissoes().listaDiretorios();
 		for (String diretorios : listarDiretorios) {
@@ -485,6 +539,9 @@ public class SvnAclGUI {
 		}
 	}
 
+	/**
+	 * Adiciona os {@link JButton}'s em {@link JTabbedPane} "Permissões"
+	 */
 	private void adicionaOpcoesEmPermissoes() {
 		JPanel painelComboBoxPermissoes = new JPanel();
 		painelComboBoxPermissoes.setLayout(new FlowLayout(FlowLayout.RIGHT));
@@ -560,6 +617,10 @@ public class SvnAclGUI {
 		jPanelPrincipalPermissoes.add(painelComboBoxPermissoes, BorderLayout.SOUTH);
 	}
 
+	/**
+	 * Adiciona os {@link JPanel}'s "Grupos" e "Permissões" na
+	 * {@link JTabbedPane}
+	 */
 	private void adicionaPainelsATabPainel() {
 		jPanelPrincipalGrupos.add(jPanelPrincipalListGrupos);
 		tabPainel.addTab("Grupos", jPanelPrincipalGrupos);
@@ -567,6 +628,12 @@ public class SvnAclGUI {
 		tabPainel.addTab("Permissões", jPanelPrincipalPermissoes);
 	}
 
+	/**
+	 * 
+	 * Realiza conexão e verifica usuários no Ad
+	 * 
+	 * @return retorna true se conexão foi bem sucedida
+	 */
 	public static boolean verificaUsuariosAD() {
 		ActiveDirectory ad = null;
 		String message = "";
@@ -603,6 +670,14 @@ public class SvnAclGUI {
 		return ret;
 	}
 
+	/**
+	 * 
+	 * Adiciona todos os usuários encontrados no AD no arquivo
+	 * <i>"allusers.txt"</i>
+	 * 
+	 * @param allUser
+	 *            todos os usuários encontrados no AD
+	 */
 	private static void adicionaTodosOsUsuariosNoArquivo(List<String> allUser) {
 		File file = new File("allusers.txt");
 		FileReader fileReader = null;
@@ -648,6 +723,13 @@ public class SvnAclGUI {
 
 	}
 
+	/**
+	 * 
+	 * Caso a conexão com o AD não for bem sucedida adiciona a varival
+	 * <code>allUser<code> os usuarios que estão no arquivo <i>"allusers.txt"</i> preenchido na ultima conexão com o AD
+	 * 
+	 * @return retorna todos os usuarios encontrados no arquivo
+	 */
 	public static List<String> addAllUserByFile() {
 		ArrayList<String> allUser = new ArrayList<>();
 		FileReader fileReader = null;
@@ -673,90 +755,165 @@ public class SvnAclGUI {
 		}
 	}
 
+	/**
+	 * @return frame
+	 */
 	public JFrame getFrame() {
 		return frame;
 	}
 
+	/**
+	 * @return jMenuItemAbrir
+	 */
 	public JMenuItem getJMenuItemAbrir() {
 		return jMenuItemAbrir;
 	}
 
+	/**
+	 * @return jMenuItemSalvar
+	 */
 	public JMenuItem getJMenuItemSalvar() {
 		return jMenuItemSalvar;
 	}
 
+	/**
+	 * @return jMenuItemImportar
+	 */
 	public JMenuItem getJMenuItemImportar() {
 		return jMenuItemImportar;
 	}
 
+	/**
+	 * @return jMenuItemTransferir
+	 */
 	public JMenuItem getJMenuItemTransferir() {
 		return jMenuItemTransferir;
 	}
 
+	/**
+	 * @return jMenuItemExport
+	 */
 	public JMenuItem getJMenuItemExport() {
 		return jMenuItemExport;
 	}
 
+	/**
+	 * @return jMenuItemCommit
+	 */
 	public JMenuItem getJMenuItemCommit() {
 		return jMenuItemCommit;
 	}
 
+	/**
+	 * @return grupoSelecionado
+	 */
 	public String getGrupoSelecionado() {
 		return grupoSelecionado;
 	}
 
+	/**
+	 * 
+	 * Setar grupo selecionado
+	 * 
+	 * @param grupoSelecionado grupo selecionado
+	 */
 	public void setGrupoSelecionado(String grupoSelecionado) {
 		this.grupoSelecionado = grupoSelecionado;
 	}
 
+	/**
+	 * @return diretorioSelecionado
+	 */
 	public String getDiretorioSelecionado() {
 		return diretorioSelecionado;
 	}
 
+	/**
+	 * 
+	 * Setar diretório selecionado
+	 * 
+	 * @param diretorioSelecionado diretorio selecionado
+	 */
 	public void setDiretorioSelecionado(String diretorioSelecionado) {
 		this.diretorioSelecionado = diretorioSelecionado;
 	}
 
+	/**
+	 * @return permissoesSelecionada
+	 */
 	public String getPermissoesSelecionada() {
 		return permissoesSelecionada;
 	}
 
+	/**
+	 * 
+	 * Setar permissões selecionada
+	 * 
+	 * @param permissoesSelecionada permissoes selecionada
+	 */
 	public void setPermissoesSelecionada(String permissoesSelecionada) {
 		this.permissoesSelecionada = permissoesSelecionada;
 	}
 
+	/**
+	 * @return usuarioSelecionado
+	 */
 	public String getUsuarioSelecionado() {
 		return usuarioSelecionado;
 	}
 
+	/**
+	 * @param usuarioSelecionado
+	 */
 	public void setUsuarioSelecionado(String usuarioSelecionado) {
 		this.usuarioSelecionado = usuarioSelecionado;
 	}
 
+	/**
+	 * @return listarGrupos
+	 */
 	public List<String> getListarGrupos() {
 		return listarGrupos;
 	}
 
+	/**
+	 * @return listarDiretorios
+	 */
 	public List<String> getListarDiretorios() {
 		return listarDiretorios;
 	}
 
+	/**
+	 * @return {@link Gerenciador#getGerenciadorDeGrupos()}
+	 */
 	public GerenciadorDeGrupos getGerenciadorDeGrupos() {
 		return gerenciador.getGerenciadorDeGrupos();
 	}
 
+	/**
+	 * @return {@link Gerenciador#getGerenciadorDePermissoes()}
+	 */
 	public GerenciadorDePermissoes getGerenciadorDePermissoes() {
 		return gerenciador.getGerenciadorDePermissoes();
 	}
 
+	/**
+	 * @param listaUsuariosGrupo
+	 */
 	public void setUsuariosDoGrupo(List<String> listaUsuariosGrupo) {
 		this.listaUsuariosGrupo = listaUsuariosGrupo;
 	}
 
+	/**
+	 * @param listaPermissaoDiretorio
+	 */
 	public void setPermissoesDoDiretorio(List<String> listaPermissaoDiretorio) {
 		this.listaPermissaoDiretorio = listaPermissaoDiretorio;
 	}
 
+	/**
+	 * Atualiza Grupos
+	 */
 	public void atualizaGrupos() {
 		((DefaultListModel<String>) listaGrupos.getModel()).removeAllElements();
 		List<String> listarGrupos = getListarGrupos();
@@ -768,10 +925,16 @@ public class SvnAclGUI {
 			listaGrupoListener.atualizaUsuarios(listarGrupos.get(0));
 	}
 
+	/**
+	 * Atualiza lista de grupos
+	 */
 	public void atulizaListaGrupos() {
 		listarGrupos = getGerenciadorDeGrupos().listarGrupos();
 	}
 
+	/**
+	 * Atualiza diretórios
+	 */
 	public void atualizaDiretorios() {
 		((DefaultListModel<String>) listaDiretorios.getModel()).removeAllElements();
 		List<String> listarDiretorios = getListarDiretorios();
@@ -783,10 +946,16 @@ public class SvnAclGUI {
 			listaDiretoriosListener.atualizaPermissoes(listarDiretorios.get(0));
 	}
 
-	public void atulizaListaDiretorios() {
+	/**
+	 * Atualiza lista de diretórios
+	 */
+	public void atualizaListaDiretorios() {
 		listarDiretorios = getGerenciadorDePermissoes().listaDiretorios();
 	}
 
+	/**
+	 * Atualiza usuários
+	 */
 	public void atualizaUsuarios() {
 		((DefaultListModel<String>) listaUsuarios.getModel()).removeAllElements();
 		for (String usuarios : listaUsuariosGrupo) {
@@ -794,6 +963,9 @@ public class SvnAclGUI {
 		}
 	}
 
+	/**
+	 * Atualiza permissões
+	 */
 	public void atualizaPermissoes() {
 		((DefaultListModel<String>) listaPermissoes.getModel()).removeAllElements();
 		for (String usuarios : listaPermissaoDiretorio) {
@@ -801,6 +973,10 @@ public class SvnAclGUI {
 		}
 	}
 
+	/**
+	 * Adiciona evento para quando fechar a janela apagar os arquivos de
+	 * sincronização e saída
+	 */
 	private void adicionarEventoFinal() {
 		frame.addWindowListener(new WindowAdapter() {
 			@Override

@@ -3,6 +3,8 @@ package br.com.svn_acl.util;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
+import java.io.ObjectInputStream;
+import java.security.PublicKey;
 import java.util.Arrays;
 import java.util.Properties;
 
@@ -32,7 +34,7 @@ public class Util {
 	 * 
 	 * @param permissoesSelecionada
 	 *            permissões selecionada
-	 * @return Retorna grupo ao usuario selecionado em permissões
+	 * @return retorna grupo ao usuario selecionado em permissões
 	 */
 	public static String getGrupoOuUser(String permissoesSelecionada) {
 		if (permissoesSelecionada.startsWith("@"))
@@ -218,7 +220,7 @@ public class Util {
 	 * 
 	 * @param value
 	 *            valor do <code>byte[]</code>
-	 * @return Retorna a String
+	 * @return retorna a String
 	 */
 	public static String byteToString(byte[] value) {
 		return stringArrayToString(Arrays.toString(value));
@@ -231,7 +233,7 @@ public class Util {
 	 * 
 	 * @param array
 	 *            uma String no formato de Array
-	 * @return Retorna string
+	 * @return retorna string
 	 */
 	public static String stringArrayToString(String array) {
 		return new String(stringArrayToByte(array));
@@ -243,7 +245,7 @@ public class Util {
 	 * 
 	 * @param array
 	 *            uma String no formato de Array
-	 * @return Retorna byte[]
+	 * @return retorna byte[]
 	 */
 	public static byte[] stringArrayToByte(String array) {
 		String[] byteValues = array.substring(1, array.length() - 1).split(",");
@@ -269,20 +271,60 @@ public class Util {
 	 */
 	public static void setAtributosSsh(String host, String user, String dir, int porta) {
 		try {
-			FileInputStream fileInputStream = new FileInputStream(Util.ARQUIVO_PROPERTIES);
-			propertiesSystem.load(new FileInputStream(Util.ARQUIVO_PROPERTIES));
+			FileInputStream fis = new FileInputStream(ARQUIVO_PROPERTIES);
+			propertiesSystem.load(fis);
 			propertiesSystem.setProperty("host.ssh", host);
 			propertiesSystem.setProperty("user.ssh", user);
 			propertiesSystem.setProperty("dir.ssh", dir);
 			propertiesSystem.setProperty("number.port", String.valueOf(porta));
 			File file = new File(ARQUIVO_PROPERTIES);
 			FileOutputStream fos = new FileOutputStream(file);
-			Util.propertiesSystem.store(fos, "Alteracao de URL");
-			fileInputStream.close();
+			propertiesSystem.store(fos, "Alteracao de URL");
+			fis.close();
 			fos.close();
 		} catch (Exception e) {
 			JOptionPane.showMessageDialog(null, "Verifique arquivo system.properties", "Erro",
 					JOptionPane.INFORMATION_MESSAGE);
+		}
+	}
+
+	/**
+	 * 
+	 * Salva atributos do AD no properties
+	 * 
+	 * @param dominio
+	 *            nome do domínio
+	 * @param user
+	 *            nome do usuário
+	 * @param password
+	 *            senha
+	 */
+	public static void gravaAtributosAd(String dominio, String user, String password) {
+		try {
+			if (!Criptografa.verificaSeExisteChavesNoSO()) {
+				Criptografa.geraChave();
+			}
+
+			FileInputStream fis = new FileInputStream(ARQUIVO_PROPERTIES);
+			propertiesSystem.load(fis);
+			fis.close();
+
+			FileInputStream fileInputStream = new FileInputStream(Criptografa.PATH_CHAVE_PUBLICA);
+			ObjectInputStream ois = new ObjectInputStream(fileInputStream);
+			final PublicKey chavePublica = (PublicKey) ois.readObject();
+
+			final byte[] textoCriptografado = Criptografa.criptografa(password, chavePublica);
+			propertiesSystem.setProperty("domain.ldap", dominio);
+			propertiesSystem.setProperty("username.ldap", user);
+			propertiesSystem.setProperty("password.ldap", Arrays.toString(textoCriptografado).replace(" ", ""));
+			File file = new File(ARQUIVO_PROPERTIES);
+			FileOutputStream fos = new FileOutputStream(file);
+			propertiesSystem.store(fos, "Alteracao de senha AD");
+			fileInputStream.close();
+			ois.close();
+			fos.close();
+			file = null;
+		} catch (Exception e) {
 		}
 	}
 
@@ -295,8 +337,8 @@ public class Util {
 	 */
 	public static void setUserSvn(String user) {
 		try {
-			FileInputStream fileInputStream = new FileInputStream(Util.ARQUIVO_PROPERTIES);
-			propertiesSystem.load(new FileInputStream(Util.ARQUIVO_PROPERTIES));
+			FileInputStream fileInputStream = new FileInputStream(ARQUIVO_PROPERTIES);
+			propertiesSystem.load(fileInputStream);
 			if (propertiesSystem.getProperty("user.svn") != user) {
 				propertiesSystem.setProperty("user.svn", user);
 				File file = new File(ARQUIVO_PROPERTIES);

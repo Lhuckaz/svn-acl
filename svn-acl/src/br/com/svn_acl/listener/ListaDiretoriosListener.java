@@ -10,7 +10,7 @@ import br.com.svn_acl.gui.SvnAclGUI;
 
 /**
  * 
- * Classe ouvinte
+ * Classe ouvinte das mudanças da {@link JList} para alterar os diretórios
  * 
  * @author Lhuckaz
  *
@@ -35,13 +35,20 @@ public class ListaDiretoriosListener implements ListSelectionListener {
 		}
 	}
 
+	/**
+	 * 
+	 * Atualiza as permissões quando a diretório é alterado
+	 * 
+	 * @param diretorioSelecionado
+	 *            diretório selecionado
+	 */
 	public void atualizaPermissoes(String diretorioSelecionado) {
 		List<String> listaPermissoesDiretorio = svnAclGUI.getGerenciadorDePermissoes()
 				.listaGruposEUserESuasPermissoesDeUmDiretorio(diretorioSelecionado);
 		svnAclGUI.setPermissoesDoDiretorio(listaPermissoesDiretorio);
 		svnAclGUI.atualizaPermissoes();
 		if (!svnAclGUI.getGerenciadorDePermissoes().listaDiretorios().equals(svnAclGUI.getListarDiretorios())) {
-			svnAclGUI.atulizaListaDiretorios();
+			svnAclGUI.atualizaListaDiretorios();
 			svnAclGUI.atualizaDiretorios();
 		}
 	}

@@ -3,12 +3,14 @@ package br.com.svn_acl.listener;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+import javax.swing.JButton;
+
 import br.com.svn_acl.gui.AdConfigura;
 import br.com.svn_acl.gui.SvnAclGUI;
 
 /**
  * 
- * Classe ouvinte
+ * Classe ouvinte do {@link JButton} da classe {@link AdConfigura}
  * 
  * @author Lhuckaz
  *

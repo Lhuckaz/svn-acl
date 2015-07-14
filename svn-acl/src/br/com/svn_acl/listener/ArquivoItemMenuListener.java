@@ -18,13 +18,18 @@ import br.com.svn_acl.util.Diretorios;
 
 /**
  * 
- * Classe ouvinte
+ * Classe ouvinte dos {@link javax.swing.JMenuItem JMenuItem} "Abrir" e "Salvar"
+ * da classe {@link SvnAclGUI}
  * 
  * @author Lhuckaz
  *
  */
 public class ArquivoItemMenuListener implements ActionListener {
 
+	/**
+	 * Valor que confirma o resultado do {@link JOptionPane} para salvar o
+	 * arquivo
+	 */
 	private static final int SALVAR = 0;
 	private JFileChooser chooser;
 	private SvnAclGUI svnAclGUI;
@@ -58,6 +63,9 @@ public class ArquivoItemMenuListener implements ActionListener {
 		}
 	}
 
+	/**
+	 * Abre o JFileChooser para abrir um arquivo
+	 */
 	private void abrirArquivoChooser() {
 		try {
 			int code = chooser.showOpenDialog(svnAclGUI.getFrame());
@@ -72,6 +80,9 @@ public class ArquivoItemMenuListener implements ActionListener {
 		}
 	}
 
+	/**
+	 * Abre o JFileChooser para salvar um arquivo
+	 */
 	private void abrirSalvarChooser() {
 		chooser.setCurrentDirectory(new File(Diretorios.retornaDiretorioCorrente()));
 		chooser.setSelectedFile(new File(Diretorios.retornaArquivoParaSalvar()));
@@ -91,6 +102,14 @@ public class ArquivoItemMenuListener implements ActionListener {
 		}
 	}
 
+	/**
+	 * 
+	 * Verifica se nome do arquivo contêm extensão
+	 * 
+	 * @param selectedFile
+	 *            nome do arquivo
+	 * @return retorna <code>true</code> se o nome do arquivo contêm a extensão
+	 */
 	private boolean verificaSeContemExtensao(String selectedFile) {
 		boolean retorno = false;
 		try {
@@ -101,6 +120,12 @@ public class ArquivoItemMenuListener implements ActionListener {
 		return retorno;
 	}
 
+	/**
+	 * Verifica se existe e se deseja sobrescrever
+	 * 
+	 * @param selectedFile
+	 *            arquivo para salvar
+	 */
 	private void verificaSeExisteESalva(File selectedFile) {
 		if (selectedFile.exists()) {
 			int confirmar = JOptionPane.showConfirmDialog(svnAclGUI.getFrame(),
@@ -112,6 +137,16 @@ public class ArquivoItemMenuListener implements ActionListener {
 		}
 	}
 
+	/**
+	 * 
+	 * Se deseja sobrescrever salva se não abre o {@link JFileChooser} para
+	 * salvar novamente
+	 * 
+	 * @param confirmar
+	 *            resultado do {@link JOptionPane}
+	 * @param selectedFile
+	 *            arquivo para salvar
+	 */
 	private void desejaSobrescrever(int confirmar, File selectedFile) {
 		if (confirmar == SALVAR) {
 			salvarArquivo(selectedFile);
@@ -120,6 +155,13 @@ public class ArquivoItemMenuListener implements ActionListener {
 		}
 	}
 
+	/**
+	 * 
+	 * Salvar o arquivo
+	 * 
+	 * @param selectedFile
+	 *            arquivo para ser salvo
+	 */
 	private void salvarArquivo(File selectedFile) {
 
 		FileReader fileReader = null;
@@ -163,7 +205,7 @@ public class ArquivoItemMenuListener implements ActionListener {
 	private void atualizaListas() {
 		svnAclGUI.atulizaListaGrupos();
 		svnAclGUI.atualizaGrupos();
-		svnAclGUI.atulizaListaDiretorios();
+		svnAclGUI.atualizaListaDiretorios();
 		svnAclGUI.atualizaDiretorios();
 	}
 

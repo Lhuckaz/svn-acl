@@ -21,7 +21,7 @@ public class Diretorios {
 
 	/**
 	 * 
-	 * @return Retorna o caminho para User Home
+	 * @return retorna o caminho para User Home
 	 */
 	public static String retornaUserHome() {
 		return System.getProperty("user.home");
@@ -29,7 +29,7 @@ public class Diretorios {
 
 	/**
 	 * 
-	 * @return Retorna uma string para abrir o JChooser em Documentos
+	 * @return retorna uma string para abrir o JChooser em Documentos
 	 */
 	public static String retornaUserDocuments() {
 		return "\\Documents\\";
@@ -37,7 +37,7 @@ public class Diretorios {
 	
 	/**
 	 * 
-	 * @return Retorna caminho do diretorio atual
+	 * @return retorna caminho do diretorio atual
 	 */
 	public static String retornaDiretorioCorrente() {
 		return diretorioCorrente;
@@ -53,7 +53,7 @@ public class Diretorios {
 	
 	/**
 	 * 
-	 * @return Retorna nome do arquivo para salvar
+	 * @return retorna nome do arquivo para salvar
 	 */
 	public static String retornaArquivoParaSalvar() {
 		return "svn";
@@ -90,7 +90,7 @@ public class Diretorios {
 
 	/**
 	 * 
-	 * @return Retorna nome do arquivo exportado
+	 * @return retorna nome do arquivo exportado
 	 */
 	public static String retornaFileExportName() {
 		return fileExportName;
@@ -106,7 +106,7 @@ public class Diretorios {
 
 	/**
 	 * 
-	 * @return Retorna a url
+	 * @return retorna a url
 	 */
 	public static String retornaUrl() {
 		return endereco;

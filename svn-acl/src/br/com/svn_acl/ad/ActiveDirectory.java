@@ -22,7 +22,8 @@ import br.com.svn_acl.gui.AdConfigura;
 import br.com.svn_acl.util.Util;
 
 /**
- * Classe responsavel por acessar o AD 
+ * Classe responsavel por acessar o AD
+ * 
  * @author Lhuckaz
  *
  */
@@ -37,11 +38,22 @@ public class ActiveDirectory {
 
 	/**
 	 * 
-	 * Construtor da classe ActiveDirectory
+	 * @return retorna se existiu erro na conexão com AD
+	 */
+	public boolean isComErros() {
+		return comErros;
+	}
+
+	/**
+	 * 
+	 * Construtor da classe {@link ActiveDirectory}
 	 * 
 	 * @throws NamingException
+	 *             erro
 	 * @throws ConnectException
+	 *             conexão não efetuada
 	 * @throws FileNotFoundException
+	 *             arquivo properties não encontrado
 	 */
 	public ActiveDirectory() throws NamingException, ConnectException, FileNotFoundException {
 		Properties propertiesSystem = new Properties();
@@ -83,6 +95,14 @@ public class ActiveDirectory {
 		searchCtls.setReturningAttributes(returnAttributes);
 	}
 
+	/**
+	 * 
+	 * Realiza a conexao e retorna todos os usuarios da LDAP no AD
+	 * 
+	 * @return retorna todos os usuários do LDAP
+	 * @throws ConnectException
+	 *             erro de conexão
+	 */
 	public List<String> allUser() throws ConnectException {
 		NamingEnumeration<SearchResult> result = null;
 		try {
@@ -105,6 +125,14 @@ public class ActiveDirectory {
 		return allUsers;
 	}
 
+	/**
+	 * 
+	 * Retorna nome do domínio formatado <i>DC=dominio,DC=corporacao</i>
+	 * 
+	 * @param base
+	 *            nome do domínio
+	 * @return retorna string com o nome do domínio formatado
+	 */
 	private static String getDomainBase(String base) {
 		char[] namePair = base.toUpperCase().toCharArray();
 		String dn = "DC=";
@@ -118,6 +146,9 @@ public class ActiveDirectory {
 		return dn;
 	}
 
+	/**
+	 * Fechar conexao com LDAP
+	 */
 	public void closeLdapConnection() {
 		try {
 			if (dirContext != null)
@@ -126,6 +157,14 @@ public class ActiveDirectory {
 		}
 	}
 
+	/**
+	 * 
+	 * Faz comparaçãao com os usuários do AD e verifica se existe
+	 * 
+	 * @param usuario
+	 *            nome do usuário
+	 * @return retorna <code>true</code> se usuário existe no AD
+	 */
 	public boolean existeUsuario(String usuario) {
 		List<String> allUser;
 		try {
@@ -139,37 +178,5 @@ public class ActiveDirectory {
 			}
 		}
 		return false;
-	}
-
-	public static void main(String[] args) {
-		List<String> allUser = null;
-		ActiveDirectory ad = null;
-		try {
-			ad = new ActiveDirectory();
-			allUser = ad.allUser();
-			System.out.println(ad.existeUsuario("lucas.fernandes"));
-		} catch (NullPointerException e) {
-		} catch (AuthenticationException e) {
-			System.out.println("Usuario ou senhas do AD inválidos");
-		} catch (ConnectException e) {
-			System.out.println("Conexao falhou");
-		} catch (FileNotFoundException e) {
-			System.out.println("Verifique arquivo");
-		} catch (NamingException e) {
-			System.out.println("Erro");
-		} finally {
-			if (ad != null) {
-				ad.closeLdapConnection();
-			}
-		}
-		if (allUser != null) {
-			for (String user : allUser) {
-				System.out.println(user);
-			}
-			System.out.println();
-			if (ad.comErros) {
-				System.out.println("Com erros");
-			}
-		}
 	}
 }
