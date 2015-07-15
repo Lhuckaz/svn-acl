@@ -642,4 +642,95 @@ public class GerenciadorDePermissoes {
 		}
 		return diretoriosEPermissoes;
 	}
+
+	/**
+	 * 
+	 * Remove o diretório
+	 * 
+	 * @param diretorio
+	 *            caminho do diretório
+	 * @return retorna <code>true</code> se diretório foi removido
+	 */
+	public boolean removeDir(String diretorio) {
+		if (!verificaSeDiretorioExiste(diretorio)) {
+			System.out.println("Diretorio \"" + diretorio + "\" nao existe");
+			return false;
+		} else {
+			try {
+				fileReader = new FileReader(file);
+				leitor = new BufferedReader(fileReader);
+				fileWriter = new FileWriter(new File(Gerenciador.getCaminhoSaidaOculto(false)));
+				String line = "";
+				while ((line = leitor.readLine()) != null) {
+					if (line.matches("^.*.+:.*") && line.startsWith("[") && line.equals("[" + diretorio + "]")) {
+						while ((line = leitor.readLine()) != null && !line.startsWith("[") && !line.startsWith("#")
+								&& !line.trim().equals("")) {
+						}
+						if (!(line == null)) {
+							if ((line = leitor.readLine()).equals("")) {
+							} else {
+								fileWriter.write(line + "\n");
+								// Continua para não adicionar duas vezes
+								continue;
+							}
+						} else {
+							// Se a linha for nula não escreve nada
+							continue;
+						}
+					}
+					fileWriter.write(line + "\n");
+				}
+				return true;
+			} catch (IOException e) {
+				e.printStackTrace();
+				return false;
+			} finally {
+				try {
+					fileWriter.close();
+					fileReader.close();
+					leitor.close();
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+			}
+		}
+	}
+
+	/**
+	 * 
+	 * Adiciona o diretório
+	 * 
+	 * @param diretorio
+	 *            caminho do diretório
+	 * @return retorna <code>true</code> se diretório foi adicionado
+	 */
+	public boolean adicionaDir(String diretorio) {
+		if (verificaSeDiretorioExiste(diretorio)) {
+			System.out.println("Diretorio \"" + diretorio + "\" ja existe");
+			return false;
+		} else {
+			try {
+				fileReader = new FileReader(file);
+				leitor = new BufferedReader(fileReader);
+				fileWriter = new FileWriter(new File(Gerenciador.getCaminhoSaidaOculto(false)));
+				String line = "";
+				while ((line = leitor.readLine()) != null) {
+					fileWriter.write(line + "\n");
+				}
+				fileWriter.write("\n" + "[" + diretorio + "]");
+				return true;
+			} catch (IOException e) {
+				e.printStackTrace();
+				return false;
+			} finally {
+				try {
+					fileWriter.close();
+					fileReader.close();
+					leitor.close();
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+			}
+		}
+	}
 }

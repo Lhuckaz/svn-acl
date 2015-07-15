@@ -14,6 +14,7 @@ import java.util.List;
 
 /**
  * Classe responsável por gerenciar os grupos
+ * 
  * @author Lhuckaz
  *
  */
@@ -34,7 +35,9 @@ public class GerenciadorDeGrupos {
 
 	/**
 	 * Acessa o arquivo e verifica se o grupo existe
-	 * @param grupo nome do grupo
+	 * 
+	 * @param grupo
+	 *            nome do grupo
 	 * @return returna <code>true<code> se o grupo existe
 	 */
 	public boolean grupoExiste(String grupo) {
@@ -77,7 +80,8 @@ public class GerenciadorDeGrupos {
 	 * 
 	 * Acessa o arquivo e verifica se o usuario existe
 	 * 
-	 * @param usuario nome do usuário
+	 * @param usuario
+	 *            nome do usuário
 	 * @return retorna <code>true<code> se o grupo existe
 	 */
 	public boolean usuarioExiste(String usuario) {
@@ -126,8 +130,10 @@ public class GerenciadorDeGrupos {
 
 	/**
 	 * 
-	 * @param grupo nome do grupo
-	 * @param usuario nome do usuario
+	 * @param grupo
+	 *            nome do grupo
+	 * @param usuario
+	 *            nome do usuario
 	 * @return retorna se <code>true<code> se o usuario existe
 	 */
 	public boolean procuraSeUsuarioPartDoGrupo(String grupo, String usuario) {
@@ -163,7 +169,8 @@ public class GerenciadorDeGrupos {
 	 * 
 	 * Acessa o arquivo e retorna e lista de usuario de um grupo
 	 * 
-	 * @param grupo nome do grupo
+	 * @param grupo
+	 *            nome do grupo
 	 * @return retorna a lista de usuarios do grupo
 	 */
 	public List<String> listaUsuariosGrupo(String grupo) {
@@ -205,8 +212,10 @@ public class GerenciadorDeGrupos {
 	 * 
 	 * Acessa o arquivo e adiciona um usuario no grupo
 	 * 
-	 * @param grupo nome do grupo
-	 * @param usuario nome do usuario
+	 * @param grupo
+	 *            nome do grupo
+	 * @param usuario
+	 *            nome do usuario
 	 * @return returna <code>true</code> se o usuário foi adicionado
 	 */
 	public boolean adicionaUsuarioNoGrupo(String grupo, String usuario) {
@@ -247,8 +256,10 @@ public class GerenciadorDeGrupos {
 	 * 
 	 * Acessa o arquivo e remove um usuario do grupo
 	 * 
-	 * @param grupo nome do grupo
-	 * @param usuario nome do usuario
+	 * @param grupo
+	 *            nome do grupo
+	 * @param usuario
+	 *            nome do usuario
 	 * @return returna <code>true</code> se o usuário foi removido
 	 */
 	public boolean removeUsuarioDoGrupo(String grupo, String usuario) {
@@ -386,7 +397,8 @@ public class GerenciadorDeGrupos {
 
 	/**
 	 * 
-	 * @param usuario nome do usuario
+	 * @param usuario
+	 *            nome do usuario
 	 * @return retorna lista de grupos que contém o usuario
 	 */
 	public List<String> listaGruposDoUsuario(String usuario) {
@@ -406,6 +418,7 @@ public class GerenciadorDeGrupos {
 
 	/**
 	 * Remove o usuario de todos os grupos e suas permissões
+	 * 
 	 * @param usuario
 	 */
 	public void removeUsuarioDeTodosOsGrupos(String usuario) {
@@ -450,7 +463,9 @@ public class GerenciadorDeGrupos {
 
 	/**
 	 * Comando para auxiliar. Lista usuários de uma linha do arquivo
-	 * @param line linha do arquivo
+	 * 
+	 * @param line
+	 *            linha do arquivo
 	 * @return retorna os usuários
 	 */
 	private List<String> listaUsuariosDaLinha(String line) {
@@ -470,7 +485,9 @@ public class GerenciadorDeGrupos {
 	/**
 	 * 
 	 * Comando para auxiliar. Retorna grupo de uma linha do arquivo
-	 * @param line linha do arquivo
+	 * 
+	 * @param line
+	 *            linha do arquivo
 	 * @return retorna o grupo
 	 */
 	private String retornaGrupoDaLinha(String line) {
@@ -491,8 +508,12 @@ public class GerenciadorDeGrupos {
 	}
 
 	/**
-	 * Comando para auxiliar o metodo {@link #adicionaUsuarioNosGrupos(List, String) adicionaUsuarioNosGrupos}. Remove grupos inexistente
-	 * @param grupos lista de grupos
+	 * Comando para auxiliar o metodo
+	 * {@link #adicionaUsuarioNosGrupos(List, String) adicionaUsuarioNosGrupos}.
+	 * Remove grupos inexistente
+	 * 
+	 * @param grupos
+	 *            lista de grupos
 	 * @return retorna uma nova lista sem os grupo que nao existem
 	 */
 	private List<String> removeGruposInexistentes(List<String> grupos) {
@@ -513,8 +534,10 @@ public class GerenciadorDeGrupos {
 	 * 
 	 * Adiciona o usuário em uma lista de grupos
 	 * 
-	 * @param gruposAdd lista de grupo
-	 * @param usuario nome do usuário
+	 * @param gruposAdd
+	 *            lista de grupo
+	 * @param usuario
+	 *            nome do usuário
 	 */
 	public void adicionaUsuarioNosGrupos(List<String> gruposAdd, String usuario) {
 		// verificar se grupo existe
@@ -552,7 +575,9 @@ public class GerenciadorDeGrupos {
 
 	/**
 	 * Remove o grupo e suas permissões
-	 * @param grupo nome do grupo
+	 * 
+	 * @param grupo
+	 *            nome do grupo
 	 */
 	public void removeGrupoEPermissoes(String grupo) {
 		try {
@@ -561,14 +586,60 @@ public class GerenciadorDeGrupos {
 			leitor = new BufferedReader(fileReader);
 			String line = "";
 			while ((line = leitor.readLine()) != null) {
+				// nao escreve a linha que contêm o grupo
 				if (retornaGrupoDaLinha(line).equals(grupo) || line.startsWith("@" + grupo)) {
-					// nao escreve
+					// nao escreve a linha que está vazia se estiver após do
+					// grupo
+					if ((line = leitor.readLine()).equals("")) {
+					} else {
+						fileWriter.write(line + "\n");
+					}
 				} else {
 					fileWriter.write(line + "\n");
 				}
 			}
 		} catch (IOException e) {
 			e.printStackTrace();
+		} finally {
+			try {
+				fileWriter.close();
+				fileReader.close();
+				leitor.close();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
+	}
+
+	/**
+	 * Adiciona o grupo
+	 * 
+	 * @param grupo
+	 *            nome do grupo
+	 * @return retorna <code>true</code> se grupo foi adicionado
+	 */
+	public boolean adicionaGrupo(String grupo) {
+		if (grupoExiste(grupo)) {
+			System.out.println("Grupo já existe");
+			return false;
+		}
+		List<String> listarGrupos = listarGrupos();
+		String ultimoGrupo = listarGrupos.get(listarGrupos.size() - 1);
+		try {
+			fileReader = new FileReader(file);
+			fileWriter = new FileWriter(new File(Gerenciador.getCaminhoSaidaOculto(false)));
+			leitor = new BufferedReader(fileReader);
+			String line = "";
+			while ((line = leitor.readLine()) != null) {
+				fileWriter.write(line + "\n");
+				if (line.startsWith(ultimoGrupo)) {
+					fileWriter.write("\n" + grupo + " =\n");
+				}
+			}
+			return true;
+		} catch (IOException e) {
+			e.printStackTrace();
+			return false;
 		} finally {
 			try {
 				fileWriter.close();

@@ -31,7 +31,7 @@ public class ActiveDirectory {
 
 	private DirContext dirContext;
 	private String domainBase;
-	SearchControls searchCtls;
+	private SearchControls searchCtls;
 	private final String filter = "(&(objectclass=user)(objectcategory=person))";
 	private String[] returnAttributes = { "sAMAccountName" };
 	private boolean comErros;
