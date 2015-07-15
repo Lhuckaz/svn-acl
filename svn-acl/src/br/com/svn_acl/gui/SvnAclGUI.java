@@ -335,8 +335,52 @@ public class SvnAclGUI {
 	 * Adiciona {@link JButton}'s em {@link JTabbedPane} "Grupos"
 	 */
 	private void adicionaBotoesEmGrupos() {
-		JPanel painelBotoesGrupos = new JPanel();
-		painelBotoesGrupos.setLayout(new FlowLayout(FlowLayout.RIGHT));
+		// Painel dos botões
+		JPanel painelBotoesGrupos = new JPanel(new BorderLayout());
+
+		// Painel dos botões gerenciadores de Grupos
+		JPanel painelBotoesGruposGerGrupos = new JPanel();
+		painelBotoesGruposGerGrupos.setLayout(new FlowLayout(FlowLayout.LEFT));
+		JButton botaoAddGroup = new JButton("+");
+		botaoAddGroup.setToolTipText("Adicionar Grupo");
+		botaoAddGroup.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				String grupo = JOptionPane.showInputDialog(SvnAclGUI.this.getFrame(), "Grupo", "Adicionar Grupo",
+						JOptionPane.PLAIN_MESSAGE);
+				boolean adicionaGrupo = getGerenciadorDeGrupos().adicionaGrupo(grupo);
+				if (adicionaGrupo) {
+					gerenciador.atualizaArquivo();
+					listaGrupoListener.atualizaUsuarios(getGrupoSelecionado());
+				} else {
+					JOptionPane.showMessageDialog(SvnAclGUI.this.getFrame(), "Não foi possível adicionar grupo: "
+							+ "\"" + grupo + "\"\nVerfique se o grupo já existe", "Erro", JOptionPane.ERROR_MESSAGE);
+				}
+
+			}
+		});
+		JButton botaoRemGroup = new JButton("-");
+		botaoRemGroup.setToolTipText("Remover Grupo");
+		botaoRemGroup.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				if (getGrupoSelecionado().equals("")) {
+					JOptionPane.showMessageDialog(getFrame(), "Selecione um grupo", "Remover",
+							JOptionPane.ERROR_MESSAGE);
+				} else {
+					getGerenciadorDeGrupos().removeGrupoEPermissoes(getGrupoSelecionado());
+					gerenciador.atualizaArquivo();
+					listaGrupoListener.atualizaUsuarios(getGrupoSelecionado());
+					setGrupoSelecionado("");
+				}
+			}
+		});
+
+		// Painel dos botões gerenciadores de Usuários
+		JPanel painelBotoesGruposGerUsers = new JPanel();
+		painelBotoesGruposGerUsers.setLayout(new FlowLayout(FlowLayout.RIGHT));
 		usuarioParaAdicionar = new JTextField(25);
 		usuarioParaAdicionar.setDocument(new DocumentTamanhoJTextField(50));
 		usuarioParaAdicionar.setPreferredSize(new Dimension(0, 20));
@@ -491,9 +535,15 @@ public class SvnAclGUI {
 
 			}
 		});
-		painelBotoesGrupos.add(usuarioParaAdicionar);
-		painelBotoesGrupos.add(botaoAdicionar);
-		painelBotoesGrupos.add(botaoRemover);
+
+		painelBotoesGruposGerGrupos.add(botaoAddGroup);
+		painelBotoesGruposGerGrupos.add(botaoRemGroup);
+
+		painelBotoesGruposGerUsers.add(usuarioParaAdicionar);
+		painelBotoesGruposGerUsers.add(botaoAdicionar);
+		painelBotoesGruposGerUsers.add(botaoRemover);
+		painelBotoesGrupos.add(painelBotoesGruposGerUsers, BorderLayout.EAST);
+		painelBotoesGrupos.add(painelBotoesGruposGerGrupos, BorderLayout.WEST);
 		jPanelPrincipalGrupos.add(painelBotoesGrupos, BorderLayout.SOUTH);
 	}
 
@@ -543,8 +593,50 @@ public class SvnAclGUI {
 	 * Adiciona os {@link JButton}'s em {@link JTabbedPane} "Permissões"
 	 */
 	private void adicionaOpcoesEmPermissoes() {
-		JPanel painelComboBoxPermissoes = new JPanel();
-		painelComboBoxPermissoes.setLayout(new FlowLayout(FlowLayout.RIGHT));
+		JPanel painelComboBoxPermissoes = new JPanel(new BorderLayout());
+
+		// Painel dos botões gerenciadores de DiretóriosF
+		JPanel painelBotoesGruposGerDir = new JPanel();
+		painelBotoesGruposGerDir.setLayout(new FlowLayout(FlowLayout.LEFT));
+		JButton botaoAddDir = new JButton("+");
+		botaoAddDir.setToolTipText("Adicionar Diretório");
+		botaoAddDir.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				String diretorio = JOptionPane.showInputDialog(SvnAclGUI.this.getFrame(), "Diretório",
+						"Adicionar Diretório", JOptionPane.PLAIN_MESSAGE);
+				boolean adicionaDir = getGerenciadorDePermissoes().adicionaDir(diretorio);
+				if (adicionaDir) {
+					gerenciador.atualizaArquivo();
+					listaDiretoriosListener.atualizaPermissoes(getDiretorioSelecionado());
+				} else {
+					JOptionPane.showMessageDialog(getFrame(), "Não foi possível adicionar diretório: " + "\""
+							+ diretorio + "\"\nVerfique se o diretório já existe", "Erro", JOptionPane.ERROR_MESSAGE);
+				}
+
+			}
+		});
+		JButton botaoRemDir = new JButton("-");
+		botaoRemDir.setToolTipText("Remover Diretório");
+		botaoRemDir.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				if (getDiretorioSelecionado().equals("")) {
+					JOptionPane.showMessageDialog(getFrame(), "Selecione um diretório", "Remover",
+							JOptionPane.ERROR_MESSAGE);
+				} else {
+					getGerenciadorDePermissoes().removeDir(getDiretorioSelecionado());
+					gerenciador.atualizaArquivo();
+					listaDiretoriosListener.atualizaPermissoes(getDiretorioSelecionado());
+					setDiretorioSelecionado("");
+				}
+			}
+		});
+
+		JPanel painelComboBoxPermissoesGerPerm = new JPanel();
+		painelComboBoxPermissoesGerPerm.setLayout(new FlowLayout(FlowLayout.RIGHT));
 		JButton botaoAdicionar = new JButton("Adicionar");
 		botaoAdicionar.addActionListener(new ActionListener() {
 
@@ -611,9 +703,15 @@ public class SvnAclGUI {
 				}
 			}
 		});
-		painelComboBoxPermissoes.add(botaoAdicionar);
-		painelComboBoxPermissoes.add(botaoAlterar);
-		painelComboBoxPermissoes.add(botaoRemover);
+		
+		painelBotoesGruposGerDir.add(botaoAddDir);
+		painelBotoesGruposGerDir.add(botaoRemDir);
+		
+		painelComboBoxPermissoesGerPerm.add(botaoAdicionar);
+		painelComboBoxPermissoesGerPerm.add(botaoAlterar);
+		painelComboBoxPermissoesGerPerm.add(botaoRemover);
+		painelComboBoxPermissoes.add(painelBotoesGruposGerDir, BorderLayout.WEST);
+		painelComboBoxPermissoes.add(painelComboBoxPermissoesGerPerm, BorderLayout.EAST);
 		jPanelPrincipalPermissoes.add(painelComboBoxPermissoes, BorderLayout.SOUTH);
 	}
 
@@ -815,7 +913,8 @@ public class SvnAclGUI {
 	 * 
 	 * Setar grupo selecionado
 	 * 
-	 * @param grupoSelecionado grupo selecionado
+	 * @param grupoSelecionado
+	 *            grupo selecionado
 	 */
 	public void setGrupoSelecionado(String grupoSelecionado) {
 		this.grupoSelecionado = grupoSelecionado;
@@ -832,7 +931,8 @@ public class SvnAclGUI {
 	 * 
 	 * Setar diretório selecionado
 	 * 
-	 * @param diretorioSelecionado diretorio selecionado
+	 * @param diretorioSelecionado
+	 *            diretorio selecionado
 	 */
 	public void setDiretorioSelecionado(String diretorioSelecionado) {
 		this.diretorioSelecionado = diretorioSelecionado;
@@ -849,7 +949,8 @@ public class SvnAclGUI {
 	 * 
 	 * Setar permissões selecionada
 	 * 
-	 * @param permissoesSelecionada permissoes selecionada
+	 * @param permissoesSelecionada
+	 *            permissoes selecionada
 	 */
 	public void setPermissoesSelecionada(String permissoesSelecionada) {
 		this.permissoesSelecionada = permissoesSelecionada;
@@ -866,7 +967,8 @@ public class SvnAclGUI {
 	 * 
 	 * Setar usuário selecionado
 	 * 
-	 * @param usuarioSelecionado usuário selecionado
+	 * @param usuarioSelecionado
+	 *            usuário selecionado
 	 */
 	public void setUsuarioSelecionado(String usuarioSelecionado) {
 		this.usuarioSelecionado = usuarioSelecionado;
@@ -904,7 +1006,8 @@ public class SvnAclGUI {
 	 * 
 	 * Setar lista de usuários do Grupo
 	 * 
-	 * @param listaUsuariosGrupo lista usuarios grupo
+	 * @param listaUsuariosGrupo
+	 *            lista usuarios grupo
 	 */
 	public void setUsuariosDoGrupo(List<String> listaUsuariosGrupo) {
 		this.listaUsuariosGrupo = listaUsuariosGrupo;
@@ -914,7 +1017,8 @@ public class SvnAclGUI {
 	 * 
 	 * Setar lista de permissão do Diretório
 	 * 
-	 * @param listaPermissaoDiretorio lista permissão diretorio
+	 * @param listaPermissaoDiretorio
+	 *            lista permissão diretorio
 	 */
 	public void setPermissoesDoDiretorio(List<String> listaPermissaoDiretorio) {
 		this.listaPermissaoDiretorio = listaPermissaoDiretorio;

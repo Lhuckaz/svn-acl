@@ -667,18 +667,21 @@ public class GerenciadorDePermissoes {
 								&& !line.trim().equals("")) {
 						}
 						if (!(line == null)) {
-							if ((line = leitor.readLine()).equals("")) {
-							} else {
-								fileWriter.write(line + "\n");
-								// Continua para não adicionar duas vezes
-								continue;
+							if ((line = leitor.readLine()) != null) {
+								if (line.equals("")) {
+								} else {
+									fileWriter.write(line + "\n");
+									continue;
+								}
 							}
 						} else {
 							// Se a linha for nula não escreve nada
 							continue;
 						}
 					}
-					fileWriter.write(line + "\n");
+					if (!(line == null)) {
+						fileWriter.write(line + "\n");
+					}
 				}
 				return true;
 			} catch (IOException e) {

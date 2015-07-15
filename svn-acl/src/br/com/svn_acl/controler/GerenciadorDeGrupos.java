@@ -331,7 +331,7 @@ public class GerenciadorDeGrupos {
 			while ((line = leitor.readLine()) != null) {
 				// Se chegar nas permissoes programa para de ler para nao
 				// confundir usuarios com grupos
-				if (line.startsWith("@")) {
+				if (line.startsWith("@") || line.matches("^.*.+:.*")) {
 					break;
 				}
 				if (line.matches("\\w{1,}\\s{0,}=\\s{0,}.{0,}")) {
@@ -590,9 +590,11 @@ public class GerenciadorDeGrupos {
 				if (retornaGrupoDaLinha(line).equals(grupo) || line.startsWith("@" + grupo)) {
 					// nao escreve a linha que está vazia se estiver após do
 					// grupo
-					if ((line = leitor.readLine()).equals("")) {
-					} else {
-						fileWriter.write(line + "\n");
+					if ((line = leitor.readLine()) != null) {
+						if (line.equals("")) {
+						} else {
+							fileWriter.write(line + "\n");
+						}
 					}
 				} else {
 					fileWriter.write(line + "\n");
@@ -623,8 +625,44 @@ public class GerenciadorDeGrupos {
 			System.out.println("Grupo já existe");
 			return false;
 		}
+		if (grupo.equals("")) {
+			System.out.println("Grupo \"" + grupo + "\" não pode ser adicionado");
+			return false;
+		}
 		List<String> listarGrupos = listarGrupos();
-		String ultimoGrupo = listarGrupos.get(listarGrupos.size() - 1);
+		String ultimoGrupo = "";
+		try {
+			ultimoGrupo = listarGrupos.get(listarGrupos.size() - 1);
+		} catch (ArrayIndexOutOfBoundsException e) {
+			// Caso não tenha nenhum grupo
+			try {
+				fileReader = new FileReader(file);
+				fileWriter = new FileWriter(new File(Gerenciador.getCaminhoSaidaOculto(false)));
+				leitor = new BufferedReader(fileReader);
+				String line = "";
+				boolean firtline = true;
+				while ((line = leitor.readLine()) != null) {
+					if (firtline) {
+						fileWriter.write(line + "\n\n" + grupo + " =\n");
+						firtline = false;
+					} else {
+						fileWriter.write(line + "\n");
+					}
+				}
+				return true;
+			} catch (IOException ex) {
+				e.printStackTrace();
+				return false;
+			} finally {
+				try {
+					fileWriter.close();
+					fileReader.close();
+					leitor.close();
+				} catch (IOException ex) {
+					e.printStackTrace();
+				}
+			}
+		}
 		try {
 			fileReader = new FileReader(file);
 			fileWriter = new FileWriter(new File(Gerenciador.getCaminhoSaidaOculto(false)));
