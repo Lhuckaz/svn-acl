@@ -129,6 +129,16 @@ public class SvnAclGUI {
 	private List<String> listaUsuariosGrupo;
 	private List<String> listaPermissaoDiretorio;
 
+	private JButton botaoRemGroup;
+	private JButton botaoAddGroup;
+	private JButton botaoRemoverUser;
+	private JButton botaoAdicionarUser;
+	private JButton botaoAddDir;
+	private JButton botaoRemDir;
+	private JButton botaoAlterar;
+	private JButton botaoAdicionar;
+	private JButton botaoRemover;
+
 	public static List<String> allUser;
 
 	public SvnAclGUI() {
@@ -215,6 +225,16 @@ public class SvnAclGUI {
 		jMenuItemCommit.setEnabled(true);
 		jMenuItemTransferir.setEnabled(true);
 		jMenuItemSalvar.setEnabled(true);
+
+		botaoRemGroup.setEnabled(true);
+		botaoAddGroup.setEnabled(true);
+		botaoRemoverUser.setEnabled(true);
+		botaoAdicionarUser.setEnabled(true);
+		botaoAddDir.setEnabled(true);
+		botaoRemDir.setEnabled(true);
+		botaoAlterar.setEnabled(true);
+		botaoAdicionar.setEnabled(true);
+		botaoRemover.setEnabled(true);
 	}
 
 	/**
@@ -341,7 +361,8 @@ public class SvnAclGUI {
 		// Painel dos botões gerenciadores de Grupos
 		JPanel painelBotoesGruposGerGrupos = new JPanel();
 		painelBotoesGruposGerGrupos.setLayout(new FlowLayout(FlowLayout.LEFT));
-		JButton botaoAddGroup = new JButton("+");
+		botaoAddGroup = new JButton("+");
+		botaoAddGroup.setEnabled(false);
 		botaoAddGroup.setToolTipText("Adicionar Grupo");
 		botaoAddGroup.addActionListener(new ActionListener() {
 
@@ -349,19 +370,24 @@ public class SvnAclGUI {
 			public void actionPerformed(ActionEvent e) {
 				String grupo = JOptionPane.showInputDialog(SvnAclGUI.this.getFrame(), "Grupo", "Adicionar Grupo",
 						JOptionPane.PLAIN_MESSAGE);
-				boolean adicionaGrupo = getGerenciadorDeGrupos().adicionaGrupo(grupo);
-				if (adicionaGrupo) {
-					gerenciador.atualizaArquivo();
-					listaGrupoListener.atualizaUsuarios(getGrupoSelecionado());
-				} else {
-					JOptionPane.showMessageDialog(SvnAclGUI.this.getFrame(), "Não foi possível adicionar grupo: "
-							+ "\"" + grupo + "\"\nVerfique se o grupo já existe", "Erro", JOptionPane.ERROR_MESSAGE);
+				try {
+					boolean adicionaGrupo = getGerenciadorDeGrupos().adicionaGrupo(grupo);
+					if (adicionaGrupo) {
+						gerenciador.atualizaArquivo();
+						listaGrupoListener.atualizaUsuarios(getGrupoSelecionado());
+					} else {
+						JOptionPane.showMessageDialog(SvnAclGUI.this.getFrame(), "Não foi possível adicionar grupo: "
+								+ "\"" + grupo + "\"\nVerfique se o grupo já existe", "Erro", JOptionPane.ERROR_MESSAGE);
+					}
+				} catch (NullPointerException ex) {
+					return;
 				}
 
 			}
 		});
-		JButton botaoRemGroup = new JButton("-");
+		botaoRemGroup = new JButton("-");
 		botaoRemGroup.setToolTipText("Remover Grupo");
+		botaoRemGroup.setEnabled(false);
 		botaoRemGroup.addActionListener(new ActionListener() {
 
 			@Override
@@ -384,8 +410,9 @@ public class SvnAclGUI {
 		usuarioParaAdicionar = new JTextField(25);
 		usuarioParaAdicionar.setDocument(new DocumentTamanhoJTextField(50));
 		usuarioParaAdicionar.setPreferredSize(new Dimension(0, 20));
-		JButton botaoAdicionar = new JButton("Adicionar");
-		botaoAdicionar.addActionListener(new ActionListener() {
+		botaoAdicionarUser = new JButton("Adicionar");
+		botaoAdicionarUser.setEnabled(false);
+		botaoAdicionarUser.addActionListener(new ActionListener() {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -491,9 +518,8 @@ public class SvnAclGUI {
 							adicionaUsuario(usuarioParaAdicionar);
 						} else {
 							int confirmar = JOptionPane.showConfirmDialog(getFrame(), "Usuário: \""
-									+ usuarioParaAdicionar
-									+ "\" NÃO existe no AD\nDeseja adicionar assim mesmo ?", "Adicionar",
-									JOptionPane.YES_NO_OPTION);
+									+ usuarioParaAdicionar + "\" NÃO existe no AD\nDeseja adicionar assim mesmo ?",
+									"Adicionar", JOptionPane.YES_NO_OPTION);
 							if (confirmar == 0)
 								adicionaUsuario(usuarioParaAdicionar);
 						}
@@ -525,8 +551,9 @@ public class SvnAclGUI {
 				listaGrupoListener.atualizaUsuarios(getGrupoSelecionado());
 			}
 		});
-		JButton botaoRemover = new JButton("Remover");
-		botaoRemover.addActionListener(new ActionListener() {
+		botaoRemoverUser = new JButton("Remover");
+		botaoRemoverUser.setEnabled(false);
+		botaoRemoverUser.addActionListener(new ActionListener() {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -549,8 +576,8 @@ public class SvnAclGUI {
 		painelBotoesGruposGerGrupos.add(botaoRemGroup);
 
 		painelBotoesGruposGerUsers.add(usuarioParaAdicionar);
-		painelBotoesGruposGerUsers.add(botaoAdicionar);
-		painelBotoesGruposGerUsers.add(botaoRemover);
+		painelBotoesGruposGerUsers.add(botaoAdicionarUser);
+		painelBotoesGruposGerUsers.add(botaoRemoverUser);
 		painelBotoesGrupos.add(painelBotoesGruposGerUsers, BorderLayout.EAST);
 		painelBotoesGrupos.add(painelBotoesGruposGerGrupos, BorderLayout.WEST);
 		jPanelPrincipalGrupos.add(painelBotoesGrupos, BorderLayout.SOUTH);
@@ -607,14 +634,22 @@ public class SvnAclGUI {
 		// Painel dos botões gerenciadores de DiretóriosF
 		JPanel painelBotoesGruposGerDir = new JPanel();
 		painelBotoesGruposGerDir.setLayout(new FlowLayout(FlowLayout.LEFT));
-		JButton botaoAddDir = new JButton("+");
+		botaoAddDir = new JButton("+");
 		botaoAddDir.setToolTipText("Adicionar Diretório");
+		botaoAddDir.setEnabled(false);
 		botaoAddDir.addActionListener(new ActionListener() {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				String diretorio = JOptionPane.showInputDialog(SvnAclGUI.this.getFrame(), "Diretório",
-						"Adicionar Diretório", JOptionPane.PLAIN_MESSAGE);
+				String diretorio;
+				try {
+					diretorio = JOptionPane.showInputDialog(SvnAclGUI.this.getFrame(), "Diretório",
+							"Adicionar Diretório", JOptionPane.PLAIN_MESSAGE);
+					if (diretorio == null)
+						return;
+				} catch (NullPointerException ex) {
+					return;
+				}
 				boolean adicionaDir = getGerenciadorDePermissoes().adicionaDir(diretorio);
 				if (adicionaDir) {
 					gerenciador.atualizaArquivo();
@@ -626,8 +661,9 @@ public class SvnAclGUI {
 
 			}
 		});
-		JButton botaoRemDir = new JButton("-");
+		botaoRemDir = new JButton("-");
 		botaoRemDir.setToolTipText("Remover Diretório");
+		botaoRemDir.setEnabled(false);
 		botaoRemDir.addActionListener(new ActionListener() {
 
 			@Override
@@ -646,7 +682,8 @@ public class SvnAclGUI {
 
 		JPanel painelComboBoxPermissoesGerPerm = new JPanel();
 		painelComboBoxPermissoesGerPerm.setLayout(new FlowLayout(FlowLayout.RIGHT));
-		JButton botaoAdicionar = new JButton("Adicionar");
+		botaoAdicionar = new JButton("Adicionar");
+		botaoAdicionar.setEnabled(false);
 		botaoAdicionar.addActionListener(new ActionListener() {
 
 			@Override
@@ -665,7 +702,8 @@ public class SvnAclGUI {
 
 			}
 		});
-		JButton botaoAlterar = new JButton("Alterar Permissões");
+		botaoAlterar = new JButton("Alterar Permissões");
+		botaoAlterar.setEnabled(false);
 		botaoAlterar.addActionListener(new ActionListener() {
 
 			@Override
@@ -688,7 +726,8 @@ public class SvnAclGUI {
 				}
 			}
 		});
-		JButton botaoRemover = new JButton("Remover");
+		botaoRemover = new JButton("Remover");
+		botaoRemover.setEnabled(false);
 		botaoRemover.addActionListener(new ActionListener() {
 
 			@Override

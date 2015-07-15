@@ -1,1 +1,4 @@
 /bin/
+/private.key
+/public.key
+/allusers.txt
