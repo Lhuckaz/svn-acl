@@ -9,4 +9,4 @@ Novidades
  5. Instalador
  6. Bugs corrigidos
 
-[Baixar 1.1](https://github.com/Lhuckaz/svn-acl/blob/master/svn-acl-1.1.exe?raw=true)
+[Baixar 1.1](https://github.com/Lhuckaz/svn-acl/blob/v.1.1/svn-acl-1.1.exe?raw=true)
