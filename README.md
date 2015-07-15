@@ -1,4 +1,4 @@
 # svn-acl
-Interface Grafica para Manipular Usuarios do SVN
+Interface Grafica para Manipular Usuários do ACL do SVN
 
-[Baixar](https://github.com/Lhuckaz/svn-acl/blob/master/svn-acl-1.0.exe?raw=true)
+[Baixar 1.0](https://github.com/Lhuckaz/svn-acl/blob/master/svn-acl-1.0.exe?raw=true)
