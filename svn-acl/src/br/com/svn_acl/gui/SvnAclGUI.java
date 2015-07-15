@@ -872,7 +872,7 @@ public class SvnAclGUI {
 	/**
 	 * 
 	 * Caso a conexão com o AD não for bem sucedida adiciona a varival
-	 * <code>allUser<code> os usuarios que estão no arquivo <i>"allusers.txt"</i> preenchido na ultima conexão com o AD
+	 * <code>allUser</code> os usuarios que estão no arquivo <i>"allusers.txt"</i> preenchido na ultima conexão com o AD
 	 * 
 	 * @return retorna todos os usuarios encontrados no arquivo
 	 */

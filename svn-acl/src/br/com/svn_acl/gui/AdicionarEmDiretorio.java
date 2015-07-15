@@ -42,12 +42,13 @@ public class AdicionarEmDiretorio extends JDialog implements ActionListener {
 
 	/**
 	 * 
-	 * Construtor da classe {@link AdicionarEmDiretorio} monta a interface gráfica do
-	 * {@link JDialog}
+	 * Construtor da classe {@link AdicionarEmDiretorio} monta a interface
+	 * gráfica do {@link JDialog}
 	 * 
 	 * @param svnAclGUI
 	 *            interface principal
 	 * @param diretorio
+	 *            diretório
 	 */
 	public AdicionarEmDiretorio(SvnAclGUI svnAclGUI, String diretorio) {
 		super(svnAclGUI.getFrame(), "Adicionar em Diretorio", true);

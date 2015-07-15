@@ -38,7 +38,7 @@ public class GerenciadorDeGrupos {
 	 * 
 	 * @param grupo
 	 *            nome do grupo
-	 * @return returna <code>true<code> se o grupo existe
+	 * @return returna <code>true</code> se o grupo existe
 	 */
 	public boolean grupoExiste(String grupo) {
 		boolean contem = false;
@@ -82,7 +82,7 @@ public class GerenciadorDeGrupos {
 	 * 
 	 * @param usuario
 	 *            nome do usuário
-	 * @return retorna <code>true<code> se o grupo existe
+	 * @return retorna <code>true</code> se o grupo existe
 	 */
 	public boolean usuarioExiste(String usuario) {
 		boolean contem = false;
@@ -134,7 +134,7 @@ public class GerenciadorDeGrupos {
 	 *            nome do grupo
 	 * @param usuario
 	 *            nome do usuario
-	 * @return retorna se <code>true<code> se o usuario existe
+	 * @return retorna se <code>true</code> se o usuario existe
 	 */
 	public boolean procuraSeUsuarioPartDoGrupo(String grupo, String usuario) {
 		if (!grupoExiste(grupo)) {
@@ -419,7 +419,7 @@ public class GerenciadorDeGrupos {
 	/**
 	 * Remove o usuario de todos os grupos e suas permissões
 	 * 
-	 * @param usuario
+	 * @param usuario usuário
 	 */
 	public void removeUsuarioDeTodosOsGrupos(String usuario) {
 		List<String> listaGruposDoUsuario = listaGruposDoUsuario(usuario);

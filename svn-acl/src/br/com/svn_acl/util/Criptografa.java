@@ -27,8 +27,8 @@ public class Criptografa {
 
 	/**
 	 * * Gera a chave que contém um par de chave Privada e Pública usando 1025
-	 * bytes. <BR>* Armazena o conjunto de chaves nos arquivos private.key e
-	 * public.key
+	 * bytes. <BR>
+	 * * Armazena o conjunto de chaves nos arquivos private.key e public.key
 	 */
 	public static void geraChave() {
 		try {
@@ -59,7 +59,11 @@ public class Criptografa {
 		}
 	}
 
-	/** * Verifica se o par de chaves Pública e Privada já foram geradas. */
+	/**
+	 * Verifica se o par de chaves Pública e Privada já foram geradas.
+	 * 
+	 * @return retorna <code>true</code> se chaves existirem
+	 */
 	public static boolean verificaSeExisteChavesNoSO() {
 		File chavePrivada = new File(PATH_CHAVE_PRIVADA);
 		File chavePublica = new File(PATH_CHAVE_PUBLICA);
@@ -69,7 +73,16 @@ public class Criptografa {
 		return false;
 	}
 
-	/** * Criptografa o texto puro usando chave pública. */
+	/**
+	 * 
+	 * Criptografa o texto puro usando chave pública.
+	 *
+	 * @param texto
+	 *            texto
+	 * @param chave
+	 *            chave
+	 * @return retorna texto criptografa
+	 */
 	public static byte[] criptografa(String texto, PublicKey chave) {
 		byte[] cipherText = null;
 		try {
@@ -83,7 +96,15 @@ public class Criptografa {
 		return cipherText;
 	}
 
-	/** * Decriptografa o texto puro usando chave privada. */
+	/**
+	 * Decriptografa o texto puro usando chave privada.
+	 * 
+	 * @param texto
+	 *            texto
+	 * @param chave
+	 *            chave
+	 * @return retorna texto decriptografa
+	 */
 	public static String decriptografa(byte[] texto, PrivateKey chave) {
 		byte[] dectyptedText = null;
 		try {

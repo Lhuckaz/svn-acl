@@ -61,6 +61,7 @@ public class Diretorios {
 	
 	/**
 	 * 
+	 * @param user usuário
 	 * @param nome do arquivo exportado
 	 */
 	public static void setFileExportNameAndUser(String nome, String user) {

@@ -125,7 +125,7 @@ public class Util {
 	 * 
 	 * Retira o arquivo no final da url
 	 * 
-	 * @param url
+	 * @param url endereço
 	 * @return retorna a url sem o arquivo
 	 */
 	public static String validaURL(String url) {
