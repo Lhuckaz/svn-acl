@@ -487,7 +487,16 @@ public class SvnAclGUI {
 								adicionaUsuario(usuarioParaAdicionar);
 						}
 					} else {
-						adicionaUsuario(usuarioParaAdicionar);
+						if (contains) {
+							adicionaUsuario(usuarioParaAdicionar);
+						} else {
+							int confirmar = JOptionPane.showConfirmDialog(getFrame(), "Usuário: \""
+									+ usuarioParaAdicionar
+									+ "\" NÃO existe no AD\nDeseja adicionar assim mesmo ?", "Adicionar",
+									JOptionPane.YES_NO_OPTION);
+							if (confirmar == 0)
+								adicionaUsuario(usuarioParaAdicionar);
+						}
 					}
 				}
 			}
@@ -703,10 +712,10 @@ public class SvnAclGUI {
 				}
 			}
 		});
-		
+
 		painelBotoesGruposGerDir.add(botaoAddDir);
 		painelBotoesGruposGerDir.add(botaoRemDir);
-		
+
 		painelComboBoxPermissoesGerPerm.add(botaoAdicionar);
 		painelComboBoxPermissoesGerPerm.add(botaoAlterar);
 		painelComboBoxPermissoesGerPerm.add(botaoRemover);
