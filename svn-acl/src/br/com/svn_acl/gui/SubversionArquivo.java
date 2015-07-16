@@ -260,6 +260,9 @@ public class SubversionArquivo extends JDialog {
 
 					// Seta o valor na url atual
 					Diretorios.setUrl(url);
+					
+					// Seta o valor na do nome do arquivo e usuario
+					Diretorios.setFileExportNameAndUser(arquivo, user);
 				} catch (SVNAuthenticationException ex) {
 					message = "Usuário ou senha inválidos";
 				} catch (SVNCancelException ex) {
