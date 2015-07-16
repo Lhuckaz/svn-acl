@@ -62,6 +62,7 @@ public class ActiveDirectory {
 		} catch (Exception e) {
 			throw new FileNotFoundException();
 		}
+		
 		String domainController = propertiesSystem.getProperty("domain.ldap");
 		String username = propertiesSystem.getProperty("username.ldap");
 		String password = AdConfigura.recuperaSenha();
