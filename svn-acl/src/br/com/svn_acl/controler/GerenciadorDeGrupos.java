@@ -12,6 +12,12 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 
+/**
+ * Classe responsável por gerenciar os grupos
+ * 
+ * @author Lhuckaz
+ *
+ */
 public class GerenciadorDeGrupos {
 
 	private FileReader fileReader = null;
@@ -27,6 +33,13 @@ public class GerenciadorDeGrupos {
 		this.file = file;
 	}
 
+	/**
+	 * Acessa o arquivo e verifica se o grupo existe
+	 * 
+	 * @param grupo
+	 *            nome do grupo
+	 * @return returna <code>true</code> se o grupo existe
+	 */
 	public boolean grupoExiste(String grupo) {
 		boolean contem = false;
 		if (grupo.equals("")) {
@@ -63,6 +76,14 @@ public class GerenciadorDeGrupos {
 		return false;
 	}
 
+	/**
+	 * 
+	 * Acessa o arquivo e verifica se o usuario existe
+	 * 
+	 * @param usuario
+	 *            nome do usuário
+	 * @return retorna <code>true</code> se o grupo existe
+	 */
 	public boolean usuarioExiste(String usuario) {
 		boolean contem = false;
 		Collection<String> todosOsUsuarios = new HashSet<>();
@@ -107,6 +128,14 @@ public class GerenciadorDeGrupos {
 		return false;
 	}
 
+	/**
+	 * 
+	 * @param grupo
+	 *            nome do grupo
+	 * @param usuario
+	 *            nome do usuario
+	 * @return retorna se <code>true</code> se o usuario existe
+	 */
 	public boolean procuraSeUsuarioPartDoGrupo(String grupo, String usuario) {
 		if (!grupoExiste(grupo)) {
 			return false;
@@ -136,6 +165,14 @@ public class GerenciadorDeGrupos {
 		return false;
 	}
 
+	/**
+	 * 
+	 * Acessa o arquivo e retorna e lista de usuario de um grupo
+	 * 
+	 * @param grupo
+	 *            nome do grupo
+	 * @return retorna a lista de usuarios do grupo
+	 */
 	public List<String> listaUsuariosGrupo(String grupo) {
 		String[] split = {};
 		try {
@@ -171,6 +208,16 @@ public class GerenciadorDeGrupos {
 		return Arrays.asList(split);
 	}
 
+	/**
+	 * 
+	 * Acessa o arquivo e adiciona um usuario no grupo
+	 * 
+	 * @param grupo
+	 *            nome do grupo
+	 * @param usuario
+	 *            nome do usuario
+	 * @return returna <code>true</code> se o usuário foi adicionado
+	 */
 	public boolean adicionaUsuarioNoGrupo(String grupo, String usuario) {
 		if (!grupoExiste(grupo)) {
 			return false;
@@ -205,6 +252,16 @@ public class GerenciadorDeGrupos {
 		return false;
 	}
 
+	/**
+	 * 
+	 * Acessa o arquivo e remove um usuario do grupo
+	 * 
+	 * @param grupo
+	 *            nome do grupo
+	 * @param usuario
+	 *            nome do usuario
+	 * @return returna <code>true</code> se o usuário foi removido
+	 */
 	public boolean removeUsuarioDoGrupo(String grupo, String usuario) {
 		if (!grupoExiste(grupo)) {
 			return false;
@@ -260,6 +317,10 @@ public class GerenciadorDeGrupos {
 		return true;
 	}
 
+	/**
+	 * 
+	 * @return retorna a lista de grupos
+	 */
 	public List<String> listarGrupos() {
 		List<String> grupos = new ArrayList<>();
 		String[] split = {};
@@ -270,7 +331,7 @@ public class GerenciadorDeGrupos {
 			while ((line = leitor.readLine()) != null) {
 				// Se chegar nas permissoes programa para de ler para nao
 				// confundir usuarios com grupos
-				if (line.startsWith("@")) {
+				if (line.startsWith("@") || line.matches("^.*.+:.*")) {
 					break;
 				}
 				if (line.matches("\\w{1,}\\s{0,}=\\s{0,}.{0,}")) {
@@ -294,6 +355,10 @@ public class GerenciadorDeGrupos {
 		return grupos;
 	}
 
+	/**
+	 * 
+	 * @return retorna a lista de usuários
+	 */
 	public List<String> listarUsuarios() {
 		Collection<String> todosOsUsuarios = new HashSet<>();
 		try {
@@ -330,6 +395,12 @@ public class GerenciadorDeGrupos {
 		return todos;
 	}
 
+	/**
+	 * 
+	 * @param usuario
+	 *            nome do usuario
+	 * @return retorna lista de grupos que contém o usuario
+	 */
 	public List<String> listaGruposDoUsuario(String usuario) {
 		List<String> grupos = new ArrayList<>();
 		boolean existe = false;
@@ -345,6 +416,11 @@ public class GerenciadorDeGrupos {
 		return grupos;
 	}
 
+	/**
+	 * Remove o usuario de todos os grupos e suas permissões
+	 * 
+	 * @param usuario usuário
+	 */
 	public void removeUsuarioDeTodosOsGrupos(String usuario) {
 		List<String> listaGruposDoUsuario = listaGruposDoUsuario(usuario);
 		try {
@@ -385,6 +461,13 @@ public class GerenciadorDeGrupos {
 		}
 	}
 
+	/**
+	 * Comando para auxiliar. Lista usuários de uma linha do arquivo
+	 * 
+	 * @param line
+	 *            linha do arquivo
+	 * @return retorna os usuários
+	 */
 	private List<String> listaUsuariosDaLinha(String line) {
 		String[] split = {};
 		if (line.startsWith("@")) {
@@ -399,6 +482,14 @@ public class GerenciadorDeGrupos {
 		return Arrays.asList(split);
 	}
 
+	/**
+	 * 
+	 * Comando para auxiliar. Retorna grupo de uma linha do arquivo
+	 * 
+	 * @param line
+	 *            linha do arquivo
+	 * @return retorna o grupo
+	 */
 	private String retornaGrupoDaLinha(String line) {
 		if (line.startsWith("@")) {
 			return "";
@@ -416,6 +507,15 @@ public class GerenciadorDeGrupos {
 		return "";
 	}
 
+	/**
+	 * Comando para auxiliar o metodo
+	 * {@link #adicionaUsuarioNosGrupos(List, String) adicionaUsuarioNosGrupos}.
+	 * Remove grupos inexistente
+	 * 
+	 * @param grupos
+	 *            lista de grupos
+	 * @return retorna uma nova lista sem os grupo que nao existem
+	 */
 	private List<String> removeGruposInexistentes(List<String> grupos) {
 		ArrayList<String> deletarGrupoInexistentes = new ArrayList<>();
 		for (String grupo : grupos) {
@@ -430,6 +530,15 @@ public class GerenciadorDeGrupos {
 
 	}
 
+	/**
+	 * 
+	 * Adiciona o usuário em uma lista de grupos
+	 * 
+	 * @param gruposAdd
+	 *            lista de grupo
+	 * @param usuario
+	 *            nome do usuário
+	 */
 	public void adicionaUsuarioNosGrupos(List<String> gruposAdd, String usuario) {
 		// verificar se grupo existe
 		ArrayList<String> grupos = new ArrayList<>(removeGruposInexistentes(gruposAdd));
@@ -464,6 +573,12 @@ public class GerenciadorDeGrupos {
 		}
 	}
 
+	/**
+	 * Remove o grupo e suas permissões
+	 * 
+	 * @param grupo
+	 *            nome do grupo
+	 */
 	public void removeGrupoEPermissoes(String grupo) {
 		try {
 			fileReader = new FileReader(file);
@@ -471,14 +586,98 @@ public class GerenciadorDeGrupos {
 			leitor = new BufferedReader(fileReader);
 			String line = "";
 			while ((line = leitor.readLine()) != null) {
+				// nao escreve a linha que contêm o grupo
 				if (retornaGrupoDaLinha(line).equals(grupo) || line.startsWith("@" + grupo)) {
-					// nao escreve
+					// nao escreve a linha que está vazia se estiver após do
+					// grupo
+					if ((line = leitor.readLine()) != null) {
+						if (line.equals("")) {
+						} else {
+							fileWriter.write(line + "\n");
+						}
+					}
 				} else {
 					fileWriter.write(line + "\n");
 				}
 			}
 		} catch (IOException e) {
 			e.printStackTrace();
+		} finally {
+			try {
+				fileWriter.close();
+				fileReader.close();
+				leitor.close();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
+	}
+
+	/**
+	 * Adiciona o grupo
+	 * 
+	 * @param grupo
+	 *            nome do grupo
+	 * @return retorna <code>true</code> se grupo foi adicionado
+	 */
+	public boolean adicionaGrupo(String grupo) {
+		if (grupoExiste(grupo)) {
+			System.out.println("Grupo já existe");
+			return false;
+		}
+		if (grupo.equals("")) {
+			System.out.println("Grupo \"" + grupo + "\" não pode ser adicionado");
+			return false;
+		}
+		List<String> listarGrupos = listarGrupos();
+		String ultimoGrupo = "";
+		try {
+			ultimoGrupo = listarGrupos.get(listarGrupos.size() - 1);
+		} catch (ArrayIndexOutOfBoundsException e) {
+			// Caso não tenha nenhum grupo
+			try {
+				fileReader = new FileReader(file);
+				fileWriter = new FileWriter(new File(Gerenciador.getCaminhoSaidaOculto(false)));
+				leitor = new BufferedReader(fileReader);
+				String line = "";
+				boolean firtline = true;
+				while ((line = leitor.readLine()) != null) {
+					if (firtline) {
+						fileWriter.write(line + "\n\n" + grupo + " =\n");
+						firtline = false;
+					} else {
+						fileWriter.write(line + "\n");
+					}
+				}
+				return true;
+			} catch (IOException ex) {
+				e.printStackTrace();
+				return false;
+			} finally {
+				try {
+					fileWriter.close();
+					fileReader.close();
+					leitor.close();
+				} catch (IOException ex) {
+					e.printStackTrace();
+				}
+			}
+		}
+		try {
+			fileReader = new FileReader(file);
+			fileWriter = new FileWriter(new File(Gerenciador.getCaminhoSaidaOculto(false)));
+			leitor = new BufferedReader(fileReader);
+			String line = "";
+			while ((line = leitor.readLine()) != null) {
+				fileWriter.write(line + "\n");
+				if (line.startsWith(ultimoGrupo)) {
+					fileWriter.write("\n" + grupo + " =\n");
+				}
+			}
+			return true;
+		} catch (IOException e) {
+			e.printStackTrace();
+			return false;
 		} finally {
 			try {
 				fileWriter.close();

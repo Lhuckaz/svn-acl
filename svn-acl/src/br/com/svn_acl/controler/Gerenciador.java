@@ -6,18 +6,22 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 
+/**
+ * Classe responsável por gerenciar os arquivos de sincronização e saída. 
+ * 
+ * @author Lhuckaz
+ *
+ */
 public class Gerenciador {
 
 	private static final String ARQUIVO_SINCRONIZACAO = "~svn-sync.acl";
 	private static final String ARQUIVO_SAIDA = "~svn-saida.acl";
 
 	private static File arquivo;
-	// private static String caminhoParenteArquivo;
+	private static String caminhoSaidaOculto;
 
 	private File arquivoOculto;
 	private String caminhoArquivoOculto;
-
-	private static String caminhoSaidaOculto;
 
 	private GerenciadorDeGrupos gerenciadorDeGrupos;
 	private GerenciadorDePermissoes gerenciadorDePermissoes;
@@ -25,7 +29,13 @@ public class Gerenciador {
 	private FileWriter fileWriter;
 	private BufferedReader leitor;
 
+	/**
+	 * Construtor da classe {@link Gerenciador}
+	 * 
+	 * @param arquivo recebe o arquivo que irá ser gerenciado pelo programa
+	 */
 	public Gerenciador(String arquivo) {
+		// Apagar arquivos caso existam ao iniciar o programa
 		apagaArquivosDeGerenciamento();
 		String adicionaArquivoParaSincronizar = adicionaArquivoParaSincronizar(arquivo);
 		gerenciadorDeGrupos = new GerenciadorDeGrupos(adicionaArquivoParaSincronizar);
@@ -33,20 +43,40 @@ public class Gerenciador {
 		atualizaArquivo();
 	}
 
+	/**
+	 * 
+	 * @return gerenciadorDeGrupos
+	 */
 	public GerenciadorDeGrupos getGerenciadorDeGrupos() {
 		return gerenciadorDeGrupos;
 	}
 
+	/**
+	 * 
+	 * @return gerenciadorDePermissoes
+	 */
 	public GerenciadorDePermissoes getGerenciadorDePermissoes() {
 		return gerenciadorDePermissoes;
 	}
 
+	/**
+	 * 
+	 * @param saida ao pegar o caminho do arquivo de saida o metodo o apaga para as classes {@link GerenciadorDeGrupos} e {@link GerenciadorDePermissoes} criar um outro arquivo com as modificações
+	 * @return retorna o caminho do arquivo de saída
+	 */
 	public static String getCaminhoSaidaOculto(boolean saida) {
 		if (saida == false)
 			apagaArquivoSaida(arquivo.getAbsolutePath());
 		return caminhoSaidaOculto;
 	}
 
+	/**
+	 * 
+	 * Recebe o arquivo que irá ser lido para os arquivos de gerenciamento de sincronização e saída
+	 * 
+	 * @param arquivo arquivo que irá ser lido 
+	 * @return retorno caminho de arquivo de sincronização
+	 */
 	private String adicionaArquivoParaSincronizar(String arquivo) {
 		apagaArquivoSincronizacao(arquivo);
 		try {
@@ -97,6 +127,11 @@ public class Gerenciador {
 		return arquivoOculto.getAbsolutePath();
 	}
 
+	/**
+	 * Oculta os arquivos com o comando do Windows <strong>attrib +H +S "&lt;dir&gt;"</strong>
+	 * 
+	 * @param dir o caminho do arquivo para ser ocultado
+	 */
 	private void setHidden(String dir) {
 		try {
 			// Setar o arquivo como oculto
@@ -106,6 +141,9 @@ public class Gerenciador {
 		}
 	}
 
+	/**
+	 * Apaga arquivo de sincronização
+	 */
 	private void apagaArquivoSincronizacao(String caminho) {
 		// Arquivo criado no diretorio em que esta o arquivo ao qual foi aberto,
 		// nao e mais usado
@@ -120,10 +158,14 @@ public class Gerenciador {
 		}
 	}
 
+	/**
+	 * Copia o conteúdo do arquivo de sincronização para o de saída
+	 */
 	private static void apagaArquivoSaida(String caminho) {
 		// Arquivo criado no diretorio em que esta o arquivo ao qual foi aberto,
-		// nao e mais usado
+		// nao e mais usado ..\svn.acl
 		arquivo = new File(caminho);
+		
 		// caminhoParenteArquivo = arquivo.getParent();
 		// caminhoSaidaOculto = caminhoParenteArquivo + "\\" + ARQUIVO_SAIDA;
 		caminhoSaidaOculto = ARQUIVO_SAIDA;
@@ -133,6 +175,9 @@ public class Gerenciador {
 		}
 	}
 
+	/**
+	 * Copia o conteúdo do arquivo de sincronização para o de saída
+	 */
 	public void atualizaArquivo() {
 		String caminho = arquivo.getAbsolutePath();
 
@@ -165,6 +210,9 @@ public class Gerenciador {
 		setHidden(caminhoSaidaOculto);
 	}
 
+	/**
+	 *  Apaga arquivo de sincronização e de saída 
+	 */
 	public void apagaArquivosDeGerenciamento() {
 		if (arquivo != null) {
 			String caminhoArquivo = arquivo.getAbsolutePath();

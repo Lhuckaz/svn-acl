@@ -8,6 +8,13 @@ import javax.swing.event.ListSelectionListener;
 
 import br.com.svn_acl.gui.SvnAclGUI;
 
+/**
+ * 
+ * Classe ouvinte das mudanças da {@link JList} para alterar os grupos
+ * 
+ * @author Lhuckaz
+ *
+ */
 public class ListaGrupoListener implements ListSelectionListener {
 
 	private SvnAclGUI svnAclGUI;
@@ -28,6 +35,13 @@ public class ListaGrupoListener implements ListSelectionListener {
 		}
 	}
 
+	/**
+	 * 
+	 * Atualiza os usuários quando o grupo é alterado
+	 * 
+	 * @param grupoSelecionado
+	 *            grupo selecionado
+	 */
 	public void atualizaUsuarios(String grupoSelecionado) {
 		List<String> listaUsuariosGrupo = svnAclGUI.getGerenciadorDeGrupos().listaUsuariosGrupo(grupoSelecionado);
 		svnAclGUI.setUsuariosDoGrupo(listaUsuariosGrupo);
