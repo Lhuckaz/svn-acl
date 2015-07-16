@@ -262,7 +262,7 @@ public class SubversionArquivo extends JDialog {
 					message = "URL Invalida";
 				} catch (NullPointerException ex) {
 					message = "Sem comentários";
-				}catch (Exception ex) {
+				} catch (Exception ex) {
 					message = "Erro Fatal";
 				}
 
