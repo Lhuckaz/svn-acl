@@ -260,7 +260,9 @@ public class SubversionArquivo extends JDialog {
 					message = "Arquivo não existe";
 				} catch (SVNException ex) {
 					message = "URL Invalida";
-				} catch (Exception ex) {
+				} catch (NullPointerException ex) {
+					message = "Sem comentários";
+				}catch (Exception ex) {
 					message = "Erro Fatal";
 				}
 
