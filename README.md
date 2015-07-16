@@ -8,5 +8,7 @@ Novidades
  4. Integração com AD, para lista de usuários que podem ser adicionados
  5. Instalador
  6. Bugs corrigidos
+ 
+[Javadoc](https://rawgit.com/Lhuckaz/svn-acl/v.1.1/svn-acl/doc/index.html)
 
 [Baixar 1.1](https://github.com/Lhuckaz/svn-acl/blob/v.1.1/svn-acl-1.1.exe?raw=true)
