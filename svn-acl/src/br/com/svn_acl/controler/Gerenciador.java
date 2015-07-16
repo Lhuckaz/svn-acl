@@ -73,7 +73,7 @@ public class Gerenciador {
 
 	/**
 	 * 
-	 * Recebe o arquivo que irá ser lido para os arquivos de gerenciamento de sincronização e saida
+	 * Recebe o arquivo que irá ser lido para os arquivos de gerenciamento de sincronização e saída
 	 * 
 	 * @param arquivo arquivo que irá ser lido 
 	 * @return retorno caminho de arquivo de sincronização
@@ -160,7 +160,7 @@ public class Gerenciador {
 	}
 
 	/**
-	 * Copia o conteudo do arquivo de sincronização para o de saida
+	 * Copia o conteúdo do arquivo de sincronização para o de saída
 	 */
 	private static void apagaArquivoSaida(String caminho) {
 		// Arquivo criado no diretorio em que esta o arquivo ao qual foi aberto,
