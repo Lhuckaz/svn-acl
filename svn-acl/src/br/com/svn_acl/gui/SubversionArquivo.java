@@ -247,6 +247,12 @@ public class SubversionArquivo extends JDialog {
 
 					String arquivo = Diretorios.retornaFileExportName();
 
+					// Se retornaFileExportName for nulo pega o nome do arquivo
+					// da propria url
+					if (arquivo == null) {
+						arquivo = Util.getNomeArquivoURL(url);
+					}
+
 					// Retira o nome do arquivo da url
 					url = Util.validaURL(url);
 
