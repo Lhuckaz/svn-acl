@@ -1,4 +1,15 @@
 # svn-acl
 Interface Grafica para Manipular Usuários do ACL do SVN
 
-[Baixar 1.0](https://github.com/Lhuckaz/svn-acl/blob/v1.0/svn-acl-1.0.exe?raw=true)
+Novidades
+
+adicionar em lotes
+função pesquisa
+usuario que nao existe com permissao
+ctrl + z
+abrir com...
+validar diretorio
+deseja sair todo trabalho será perdido
+ok nas configuracoes do AD caso nao tenha nada fecha
+Tecla enter ao preencher as informacoes envia
+Executar como admin
