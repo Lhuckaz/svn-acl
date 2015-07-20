@@ -111,8 +111,7 @@ public class Gerenciador {
 		// nao e mais usado
 		arquivo = new File(caminho);
 		// caminhoParenteArquivo = arquivo.getParent();
-		// caminhoArquivoOculto = caminhoParenteArquivo + "\\" +
-		// ARQUIVO_SINCRONIZACAO;
+		// caminhoArquivoOculto = caminhoParenteArquivo + "\\" + ARQUIVO_SINCRONIZACAO;
 		caminhoArquivoOculto = ARQUIVO_SINCRONIZACAO;
 		arquivoOculto = new File(caminhoArquivoOculto);
 		if (arquivoOculto.exists()) {
