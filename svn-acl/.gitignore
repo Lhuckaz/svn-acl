@@ -1,4 +1,7 @@
 /bin/
 /private.key
 /public.key
+<<<<<<< HEAD
 /allusers.txt
+=======
+>>>>>>> branch 'v.2.0' of https://github.com/Lhuckaz/svn-acl
