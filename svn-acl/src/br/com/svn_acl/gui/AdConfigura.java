@@ -168,6 +168,7 @@ public class AdConfigura extends JDialog {
 			// JOptionPane pedindo para preencher todos os campos, se estiver
 			// completo ele tenta conectar no AD
 			if (dominio.equals("") && user.equals("") && password.equals("")) {
+				Util.gravaAtributosAd("", "", "");
 				setVisible(false);
 			} else if (dominio.equals("") || user.equals("") || password.equals("")) {
 				JOptionPane.showMessageDialog(svnAclGUI.getFrame(), "Preencha todos os campos", "AD",
