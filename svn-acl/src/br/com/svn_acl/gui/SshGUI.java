@@ -61,6 +61,7 @@ public class SshGUI extends JDialog {
 		this.svnAclGUI = svnAclGUI;
 		this.setTitle(titulo);
 		this.setModal(true);
+		AcaoSsh acaoSsh = new AcaoSsh(this, titulo);
 		JPanel principal = new JPanel();
 
 		final String[] labels = { "Porta: ", "Host: ", "Usuário: ", "Senha: ", "Diretorio: " };
@@ -74,6 +75,7 @@ public class SshGUI extends JDialog {
 		port = new JTextField(4);
 		((AbstractDocument) port.getDocument()).setDocumentFilter(new DocumentFilterOnlyNumbers());
 		port.setText(Util.getNumberPort());
+		port.addActionListener(acaoSsh);
 		lPort.setLabelFor(port);
 		ports.add(port, BorderLayout.WEST);
 		p.add(ports);
@@ -82,6 +84,7 @@ public class SshGUI extends JDialog {
 		p.add(l);
 		host = new JTextField(50);
 		host.setText(Util.getHostName());
+		host.addActionListener(acaoSsh);
 		l.setLabelFor(host);
 		p.add(host);
 
@@ -90,6 +93,7 @@ public class SshGUI extends JDialog {
 		p.add(l1);
 		user = new JTextField(20);
 		user.setText(Util.getUserNameSsh());
+		user.addActionListener(acaoSsh);
 		l1.setLabelFor(user);
 		users.add(user, BorderLayout.WEST);
 		p.add(users);
@@ -98,6 +102,7 @@ public class SshGUI extends JDialog {
 		JLabel l2 = new JLabel(labels[3], JLabel.TRAILING);
 		p.add(l2);
 		password = new JPasswordField(20);
+		password.addActionListener(acaoSsh);
 		l2.setLabelFor(password);
 		passwords.add(password, BorderLayout.WEST);
 		p.add(passwords);
@@ -106,13 +111,14 @@ public class SshGUI extends JDialog {
 		p.add(l3);
 		dir = new JTextField(10);
 		dir.setText(Util.getDirSsh());
+		dir.addActionListener(acaoSsh);
 		l3.setLabelFor(dir);
 		p.add(dir);
 
 		JPanel botoes = new JPanel(new BorderLayout());
 		p.add(new JLabel());
 		JButton button = new JButton("OK");
-		button.addActionListener(new AcaoSsh(this, titulo));
+		button.addActionListener(acaoSsh);
 		botoes.add(button, BorderLayout.EAST);
 		p.add(botoes);
 

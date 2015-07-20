@@ -58,6 +58,8 @@ public class SubversionArquivo extends JDialog {
 	public SubversionArquivo(SvnAclGUI svnAclGUI, String titulo) {
 		super(svnAclGUI.getFrame(), titulo, true);
 		this.svnAclGUI = svnAclGUI;
+		
+		Acao acao = new Acao(this, titulo);
 
 		JPanel principal = new JPanel(new BorderLayout());
 
@@ -83,6 +85,7 @@ public class SubversionArquivo extends JDialog {
 				url.setText(Diretorios.retornaUrl() + "/" + Diretorios.retornaFileExportName());
 			}
 		}
+		url.addActionListener(acao);
 		l.setLabelFor(url);
 		p.add(url);
 
@@ -91,6 +94,7 @@ public class SubversionArquivo extends JDialog {
 		p.add(l1);
 		user = new JTextField(20);
 		user.setText(Util.getUserNameSvn());
+		user.addActionListener(acao);
 		l1.setLabelFor(user);
 		users.add(user, BorderLayout.WEST);
 		p.add(users);
@@ -99,6 +103,7 @@ public class SubversionArquivo extends JDialog {
 		JLabel l2 = new JLabel(labels[2], JLabel.TRAILING);
 		p.add(l2);
 		password = new JPasswordField(20);
+		password.addActionListener(acao);
 		l2.setLabelFor(password);
 		passwords.add(password, BorderLayout.WEST);
 		p.add(passwords);
@@ -128,7 +133,7 @@ public class SubversionArquivo extends JDialog {
 		JButton button = new JButton("OK");
 		p.add(new JLabel());
 		botoes.add(button, BorderLayout.EAST);
-		button.addActionListener(new Acao(this, titulo));
+		button.addActionListener(acao);
 		p.add(botoes);
 
 		// Coloca para fora do painel.

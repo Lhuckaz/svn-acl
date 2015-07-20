@@ -793,7 +793,7 @@ public class SvnAclGUI {
 		} catch (AuthenticationException e) {
 			message = "Usuario ou senhas invalidos";
 		} catch (ConnectException e) {
-			message = "Conexão com AD falhou";
+			message = "Conexão com AD falhou.\nVerifique o Domínio";
 			option = JOptionPane.INFORMATION_MESSAGE;
 		} catch (FileNotFoundException e) {
 			message = "Verifique arquivo system.properties";
@@ -872,7 +872,8 @@ public class SvnAclGUI {
 	/**
 	 * 
 	 * Caso a conexão com o AD não for bem sucedida adiciona a varival
-	 * <code>allUser</code> os usuarios que estão no arquivo <i>"allusers.txt"</i> preenchido na ultima conexão com o AD
+	 * <code>allUser</code> os usuarios que estão no arquivo
+	 * <i>"allusers.txt"</i> preenchido na ultima conexão com o AD
 	 * 
 	 * @return retorna todos os usuarios encontrados no arquivo
 	 */

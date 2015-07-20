@@ -15,6 +15,7 @@ import java.util.Properties;
 import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
@@ -36,22 +37,25 @@ import br.com.svn_acl.util.Util;
 @SuppressWarnings("serial")
 public class AdConfigura extends JDialog {
 
+	private SvnAclGUI svnAclGUI;
 	JTextField dominio;
 	JTextField user;
 	JTextField password;
-	String dominioString = "";
-	String userString = "";
-	String passwordString = "";
+	private String dominioString = "";
+	private String userString = "";
 
 	/**
 	 * 
-	 * Construtor da classe {@link AdConfigura} monta a interface com {@link SpringLayout}
+	 * Construtor da classe {@link AdConfigura} monta a interface com
+	 * {@link SpringLayout}
 	 * 
 	 * @param svnAclGUI
 	 *            interface principal
 	 */
 	public AdConfigura(SvnAclGUI svnAclGUI) {
 		super(svnAclGUI.getFrame(), "Configurações", true);
+		this.svnAclGUI = svnAclGUI;
+		Configura configura = new Configura(this);
 
 		carregaProperties();
 
@@ -66,6 +70,7 @@ public class AdConfigura extends JDialog {
 		p.add(l);
 		dominio = new JTextField(50);
 		dominio.setText(dominioString);
+		dominio.addActionListener(configura);
 		l.setLabelFor(dominio);
 		p.add(dominio);
 
@@ -74,6 +79,7 @@ public class AdConfigura extends JDialog {
 		p.add(l1);
 		user = new JTextField(20);
 		user.setText(userString);
+		user.addActionListener(configura);
 		l1.setLabelFor(user);
 		users.add(user, BorderLayout.WEST);
 		p.add(users);
@@ -83,6 +89,7 @@ public class AdConfigura extends JDialog {
 		p.add(l2);
 		password = new JPasswordField(20);
 		password.setText(recuperaSenha());
+		password.addActionListener(configura);
 		l2.setLabelFor(password);
 		passwords.add(password, BorderLayout.WEST);
 		p.add(passwords);
@@ -90,7 +97,7 @@ public class AdConfigura extends JDialog {
 		JPanel botoes = new JPanel(new BorderLayout());
 		p.add(new JLabel());
 		JButton button = new JButton("OK");
-		button.addActionListener(new Configura(this));
+		button.addActionListener(configura);
 		botoes.add(button, BorderLayout.EAST);
 		p.add(botoes);
 
@@ -127,7 +134,6 @@ public class AdConfigura extends JDialog {
 			properties.load(fileInputStream);
 			dominioString = properties.getProperty("domain.ldap");
 			userString = properties.getProperty("username.ldap");
-			passwordString = properties.getProperty("password.ldap");
 
 			fileInputStream.close();
 		} catch (IOException e) {
@@ -157,10 +163,21 @@ public class AdConfigura extends JDialog {
 			String user = adConfigura.user.getText();
 			String password = adConfigura.password.getText();
 
-			Util.gravaAtributosAd(dominio, user, password);
-			boolean verificaUsuariosAD = SvnAclGUI.verificaUsuariosAD();
-			if (verificaUsuariosAD)
+			// Na tela de configurações de AD se caso não for preenchido nenhum
+			// valor, a tela e fechada, se iver algum preenchido ele lança um
+			// JOptionPane pedindo para preencher todos os campos, se estiver
+			// completo ele tenta conectar no AD
+			if (dominio.equals("") && user.equals("") && password.equals("")) {
 				setVisible(false);
+			} else if (dominio.equals("") || user.equals("") || password.equals("")) {
+				JOptionPane.showMessageDialog(svnAclGUI.getFrame(), "Preencha todos os campos", "AD",
+						JOptionPane.INFORMATION_MESSAGE);
+			} else {
+				Util.gravaAtributosAd(dominio, user, password);
+				boolean verificaUsuariosAD = SvnAclGUI.verificaUsuariosAD();
+				if (verificaUsuariosAD)
+					setVisible(false);
+			}
 		}
 
 	}
