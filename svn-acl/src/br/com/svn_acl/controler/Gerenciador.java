@@ -6,6 +6,8 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 
+import br.com.svn_acl.gui.SvnAclGUI;
+
 /**
  * Classe responsável por gerenciar os arquivos de sincronização e saída. 
  * 
@@ -208,6 +210,9 @@ public class Gerenciador {
 		// Esconde o arquivo de saida apos alteracao das classes de
 		// Gerenciamento
 		setHidden(caminhoSaidaOculto);
+		
+		// Abrir, Exportar, Importar e alterações
+		SvnAclGUI.arquivoSalvo = false;
 	}
 
 	/**

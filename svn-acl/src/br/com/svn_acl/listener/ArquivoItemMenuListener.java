@@ -100,6 +100,8 @@ public class ArquivoItemMenuListener implements ActionListener {
 				verificaSeExisteESalva(selectedFile.getAbsoluteFile());
 			}
 		}
+		// Salvar, Commit e Transferir
+		SvnAclGUI.arquivoSalvo = true;
 	}
 
 	/**

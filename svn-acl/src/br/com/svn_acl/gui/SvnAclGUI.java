@@ -131,6 +131,7 @@ public class SvnAclGUI {
 
 	private JButton botaoRemGroup;
 	private JButton botaoAddGroup;
+	private JButton botaoAdicionarUserLotes;
 	private JButton botaoRemoverUser;
 	private JButton botaoAdicionarUser;
 	private JButton botaoAddDir;
@@ -140,6 +141,9 @@ public class SvnAclGUI {
 	private JButton botaoRemover;
 
 	public static List<String> allUser;
+	// Ao iniciar com true para poder fechar o arquivo sem mensagem de
+	// fechamento quando ainda nao se abriu nenhum arquivo
+	public static boolean arquivoSalvo = true;
 
 	public SvnAclGUI() {
 		prepareGUI();
@@ -228,6 +232,7 @@ public class SvnAclGUI {
 
 		botaoRemGroup.setEnabled(true);
 		botaoAddGroup.setEnabled(true);
+		botaoAdicionarUserLotes.setEnabled(true);
 		botaoRemoverUser.setEnabled(true);
 		botaoAdicionarUser.setEnabled(true);
 		botaoAddDir.setEnabled(true);
@@ -235,6 +240,8 @@ public class SvnAclGUI {
 		botaoAlterar.setEnabled(true);
 		botaoAdicionar.setEnabled(true);
 		botaoRemover.setEnabled(true);
+		// Abrir, Exportar, Importar e alterações
+		arquivoSalvo = false;
 	}
 
 	/**
@@ -551,6 +558,26 @@ public class SvnAclGUI {
 				listaGrupoListener.atualizaUsuarios(getGrupoSelecionado());
 			}
 		});
+		botaoAdicionarUserLotes = new JButton("Adicionar usuários em lotes");
+		botaoAdicionarUserLotes.setEnabled(false);
+		botaoAdicionarUserLotes.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				if (getGrupoSelecionado().equals("")) {
+					JOptionPane.showMessageDialog(getFrame(), "Selecione um grupo", "Adicionar em Lotes",
+							JOptionPane.ERROR_MESSAGE);
+				} else {
+					AdicionarUsuarioEmLotes adicionarUsuarioEmLotes = new AdicionarUsuarioEmLotes(SvnAclGUI.this);
+					if (adicionarUsuarioEmLotes.add && adicionarUsuarioEmLotes.getUsuariosSelecionados() != null) {
+						ArrayList<String> usuariosSelecionados = adicionarUsuarioEmLotes.getUsuariosSelecionados();
+						// TODO Adicionar os usuarios
+						System.out.println(usuariosSelecionados);
+					}
+				}
+			}
+
+		});
 		botaoRemoverUser = new JButton("Remover");
 		botaoRemoverUser.setEnabled(false);
 		botaoRemoverUser.addActionListener(new ActionListener() {
@@ -577,6 +604,7 @@ public class SvnAclGUI {
 
 		painelBotoesGruposGerUsers.add(usuarioParaAdicionar);
 		painelBotoesGruposGerUsers.add(botaoAdicionarUser);
+		painelBotoesGruposGerUsers.add(botaoAdicionarUserLotes);
 		painelBotoesGruposGerUsers.add(botaoRemoverUser);
 		painelBotoesGrupos.add(painelBotoesGruposGerUsers, BorderLayout.EAST);
 		painelBotoesGrupos.add(painelBotoesGruposGerGrupos, BorderLayout.WEST);
@@ -642,6 +670,7 @@ public class SvnAclGUI {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				String diretorio;
+				String message = "";
 				try {
 					diretorio = JOptionPane.showInputDialog(SvnAclGUI.this.getFrame(), "Diretório",
 							"Adicionar Diretório", JOptionPane.PLAIN_MESSAGE);
@@ -650,13 +679,24 @@ public class SvnAclGUI {
 				} catch (NullPointerException ex) {
 					return;
 				}
-				boolean adicionaDir = getGerenciadorDePermissoes().adicionaDir(diretorio);
+				boolean adicionaDir = false;
+				try {
+					adicionaDir = getGerenciadorDePermissoes().adicionaDir(diretorio);
+				} catch (ArrayIndexOutOfBoundsException ex) {
+					message = "Diretorio já existe";
+				} catch (NullPointerException ex) {
+					message = "Diretório inválido";
+				} catch (IOException ex) {
+					message = "Erro ao ler o arquivo";
+				} catch (Exception ex) {
+					message = "Erro";
+				}
 				if (adicionaDir) {
 					gerenciador.atualizaArquivo();
 					listaDiretoriosListener.atualizaPermissoes(getDiretorioSelecionado());
 				} else {
 					JOptionPane.showMessageDialog(getFrame(), "Não foi possível adicionar diretório: " + "\""
-							+ diretorio + "\"\nVerfique se o diretório já existe", "Erro", JOptionPane.ERROR_MESSAGE);
+							+ diretorio + "\"\n" + message, "Erro", JOptionPane.ERROR_MESSAGE);
 				}
 
 			}
@@ -1141,10 +1181,23 @@ public class SvnAclGUI {
 	 */
 	private void adicionarEventoFinal() {
 		frame.addWindowListener(new WindowAdapter() {
+
 			@Override
 			public void windowClosing(WindowEvent windowEvent) {
-				// Adicionado if para fechar programa mesmo quando nenhum
-				// arquivo for aberto
+				// Quando arquivo for modificado ou aberto por algum meio ela
+				// dar um alerta se deseja realmente fechar
+				boolean arquivoSalvo = SvnAclGUI.arquivoSalvo;
+				if (arquivoSalvo) {
+					apagaArquivosEFecha();
+				} else {
+					if (JOptionPane.showConfirmDialog(frame, "Deseja sair ?\nAlterações não salvas serão perdidas!",
+							"Saindo", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE) == JOptionPane.YES_OPTION) {
+						apagaArquivosEFecha();
+					}
+				}
+			}
+
+			private void apagaArquivosEFecha() {
 				if (gerenciador != null)
 					gerenciador.apagaArquivosDeGerenciamento();
 				System.exit(0);

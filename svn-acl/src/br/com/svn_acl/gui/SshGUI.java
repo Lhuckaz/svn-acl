@@ -178,6 +178,8 @@ public class SshGUI extends JDialog {
 				try {
 					transferindo = ssh.transfere(host, user, password, Util.validaURL(dir), porta, file);
 					Util.setAtributosSsh(host, user, dir, porta);
+					// Salvar, Commit e Transferir
+					SvnAclGUI.arquivoSalvo = true;
 				} catch (JSchException ex) {
 					String messageEx = ex.getMessage();
 					if (messageEx.equals("Auth fail"))
@@ -218,6 +220,8 @@ public class SshGUI extends JDialog {
 					svnAclGUI.carregaArquivo(Util.FILE);
 					fileExport.delete();
 					Util.setAtributosSsh(host, user, dir, porta);
+					// Abrir, Exportar, Importar e alterações
+					SvnAclGUI.arquivoSalvo = false;
 				} catch (JSchException ex) {
 					String messageEx = ex.getMessage();
 					if (messageEx.equals("Auth fail"))
