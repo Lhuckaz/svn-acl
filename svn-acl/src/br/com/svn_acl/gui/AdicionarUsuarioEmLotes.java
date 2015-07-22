@@ -21,9 +21,11 @@ public class AdicionarUsuarioEmLotes extends JDialog implements ListSelectionLis
 
 	private ArrayList<String> usuarios;
 	protected boolean add;
+	private SvnAclGUI svnAclGUI;
 
 	public AdicionarUsuarioEmLotes(SvnAclGUI svnAclGUI) {
 		super(svnAclGUI.getFrame());
+		this.svnAclGUI = svnAclGUI;
 		this.setModal(true);
 		Dimension dimensao = new Dimension(300, 300);
 
@@ -62,11 +64,20 @@ public class AdicionarUsuarioEmLotes extends JDialog implements ListSelectionLis
 	}
 
 	private void carregaListaDeUsuarios(DefaultListModel<String> modeloUsuariosLotes) {
-		// TODO
-		ArrayList<String> suaArrayList = (ArrayList<String>) SvnAclGUI.allUser;
-		Collections.sort(suaArrayList);
-		for (int i = 0; i < suaArrayList.size(); i++)
-			modeloUsuariosLotes.addElement(suaArrayList.get(i));
+		// Se caso nao existir usuarios no AD adicionar ja existentes
+		if (SvnAclGUI.allUser.size() != 0) {
+			ArrayList<String> todosUsuarios = (ArrayList<String>) SvnAclGUI.allUser;
+			Collections.sort(todosUsuarios, String.CASE_INSENSITIVE_ORDER);
+			for (String usuarios : todosUsuarios) {
+				modeloUsuariosLotes.addElement(usuarios);
+			}
+		} else {
+			ArrayList<String> todosUsuarios = (ArrayList<String>) svnAclGUI.getGerenciadorDeGrupos().listarUsuarios();
+			Collections.sort(todosUsuarios, String.CASE_INSENSITIVE_ORDER);
+			for (String usuarios : todosUsuarios) {
+				modeloUsuariosLotes.addElement(usuarios);
+			}
+		}
 	}
 
 	@Override
@@ -84,6 +95,6 @@ public class AdicionarUsuarioEmLotes extends JDialog implements ListSelectionLis
 
 	public ArrayList<String> getUsuariosSelecionados() {
 		return usuarios;
-		
+
 	}
 }

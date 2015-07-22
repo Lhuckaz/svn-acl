@@ -37,6 +37,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTabbedPane;
+import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.KeyStroke;
 import javax.swing.ListSelectionModel;
@@ -77,6 +78,7 @@ public class SvnAclGUI {
 	private JMenu jMenuSubversion;
 	private JMenu jMenuSsh;
 	private JMenu jMenuAd;
+	private JMenuItem jMenuItemNovo;
 	private JMenuItem jMenuItemAbrir;
 	private JMenuItem jMenuItemSalvar;
 	private JMenuItem jMenuItemExport;
@@ -117,7 +119,8 @@ public class SvnAclGUI {
 	private ListaPermissoesListener listaPermissoesListener;
 
 	private String grupoSelecionado = "";
-	private String usuarioSelecionado = "";
+	// Remover usuários em lote
+	private ArrayList<String> usuariosSelecionados;
 	private String diretorioSelecionado = "";
 	private String permissoesSelecionada = "";
 
@@ -145,8 +148,15 @@ public class SvnAclGUI {
 	// fechamento quando ainda nao se abriu nenhum arquivo
 	public static boolean arquivoSalvo = true;
 
-	public SvnAclGUI() {
+	public SvnAclGUI(String... argumentos) {
+		String arquivo = null;
+		try {
+			arquivo = argumentos[0];
+		} catch (ArrayIndexOutOfBoundsException e) {
+			// abrir arquivo vazio
+		}
 		prepareGUI();
+		carregaArquivo(arquivo);
 	}
 
 	/**
@@ -216,32 +226,35 @@ public class SvnAclGUI {
 	 *            nome do arquivo a carregar
 	 */
 	public void carregaArquivo(String arquivo) {
-		gerenciador = new Gerenciador(arquivo);
+		// Nao executar quando parametro for nulo
+		if (arquivo != null) {
+			gerenciador = new Gerenciador(arquivo);
 
-		if (!carregadoArquivo) {
-			adicionarGrupos();
-			adicionarDiretorios();
-			carregadoArquivo = true;
-		} else {
-			atualizaGrupos();
-			atualizaDiretorios();
+			if (!carregadoArquivo) {
+				adicionarGrupos();
+				adicionarDiretorios();
+				carregadoArquivo = true;
+			} else {
+				atualizaGrupos();
+				atualizaDiretorios();
+			}
+			jMenuItemCommit.setEnabled(true);
+			jMenuItemTransferir.setEnabled(true);
+			jMenuItemSalvar.setEnabled(true);
+
+			botaoRemGroup.setEnabled(true);
+			botaoAddGroup.setEnabled(true);
+			botaoAdicionarUserLotes.setEnabled(true);
+			botaoRemoverUser.setEnabled(true);
+			botaoAdicionarUser.setEnabled(true);
+			botaoAddDir.setEnabled(true);
+			botaoRemDir.setEnabled(true);
+			botaoAlterar.setEnabled(true);
+			botaoAdicionar.setEnabled(true);
+			botaoRemover.setEnabled(true);
+			// Abrir, Exportar, Importar e alterações
+			arquivoSalvo = false;
 		}
-		jMenuItemCommit.setEnabled(true);
-		jMenuItemTransferir.setEnabled(true);
-		jMenuItemSalvar.setEnabled(true);
-
-		botaoRemGroup.setEnabled(true);
-		botaoAddGroup.setEnabled(true);
-		botaoAdicionarUserLotes.setEnabled(true);
-		botaoRemoverUser.setEnabled(true);
-		botaoAdicionarUser.setEnabled(true);
-		botaoAddDir.setEnabled(true);
-		botaoRemDir.setEnabled(true);
-		botaoAlterar.setEnabled(true);
-		botaoAdicionar.setEnabled(true);
-		botaoRemover.setEnabled(true);
-		// Abrir, Exportar, Importar e alterações
-		arquivoSalvo = false;
 	}
 
 	/**
@@ -263,6 +276,10 @@ public class SvnAclGUI {
 
 		jMenuBar = new JMenuBar();
 		jMenuArquivos = new JMenu("Arquivo");
+		jMenuItemNovo = new JMenuItem("Novo");
+		jMenuItemNovo.addActionListener(arquivoItemMenuListener);
+		jMenuItemNovo.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_N, Toolkit.getDefaultToolkit()
+				.getMenuShortcutKeyMask()));
 		jMenuItemAbrir = new JMenuItem("Abrir");
 		jMenuItemAbrir.addActionListener(arquivoItemMenuListener);
 		jMenuItemAbrir.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_O, Toolkit.getDefaultToolkit()
@@ -272,6 +289,7 @@ public class SvnAclGUI {
 		jMenuItemSalvar.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_S, Toolkit.getDefaultToolkit()
 				.getMenuShortcutKeyMask()));
 		jMenuItemSalvar.setEnabled(false);
+		jMenuArquivos.add(jMenuItemNovo);
 		jMenuArquivos.add(jMenuItemAbrir);
 		jMenuArquivos.add(jMenuItemSalvar);
 
@@ -339,7 +357,8 @@ public class SvnAclGUI {
 		jPanelUsuarios = new JPanel(new FlowLayout(FlowLayout.LEFT));
 		modeloUsuarios = new DefaultListModel<>();
 		listaUsuarios = new JList<>(modeloUsuarios);
-		listaUsuarios.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+		// Remover em lote v.2.0
+		// listaUsuarios.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		listaUsuarios.addListSelectionListener(listaUsuariosListener);
 		jScrollUsuarios = new JScrollPane(listaUsuarios);
 		// Definir tamanho to JScrollPane
@@ -562,8 +581,12 @@ public class SvnAclGUI {
 		botaoAdicionarUserLotes.setEnabled(false);
 		botaoAdicionarUserLotes.addActionListener(new ActionListener() {
 
+			StringBuilder naoAdicionados;
+			boolean contenNaoAdicionados;
+
 			@Override
 			public void actionPerformed(ActionEvent e) {
+				naoAdicionados = new StringBuilder();
 				if (getGrupoSelecionado().equals("")) {
 					JOptionPane.showMessageDialog(getFrame(), "Selecione um grupo", "Adicionar em Lotes",
 							JOptionPane.ERROR_MESSAGE);
@@ -571,10 +594,51 @@ public class SvnAclGUI {
 					AdicionarUsuarioEmLotes adicionarUsuarioEmLotes = new AdicionarUsuarioEmLotes(SvnAclGUI.this);
 					if (adicionarUsuarioEmLotes.add && adicionarUsuarioEmLotes.getUsuariosSelecionados() != null) {
 						ArrayList<String> usuariosSelecionados = adicionarUsuarioEmLotes.getUsuariosSelecionados();
-						// TODO Adicionar os usuarios
-						System.out.println(usuariosSelecionados);
+						for (String usuario : usuariosSelecionados) {
+							adicionaUsuarioLotes(usuario);
+						}
+
+						// Se existe usuarios que não foram adicionados exibe um
+						// alerta
+						if (contenNaoAdicionados) {
+							JTextArea jTextArea = new JTextArea("Não foi possivel adicionar usuários abaixo ao grupo "
+									+ getGrupoSelecionado() + ": \n\n" + naoAdicionados
+									+ "\nVerifique se o usuários já participam do grupo!");
+							jTextArea.setEditable(false);
+							// Quebra de linha automatica
+							jTextArea.setLineWrap(true);
+							// Nao quebra linha no meio da palvra
+							jTextArea.setWrapStyleWord(true);
+							JScrollPane usuariosNaoAdicionados = new JScrollPane(jTextArea);
+							usuariosNaoAdicionados.setPreferredSize(new Dimension(500, 300));
+							JOptionPane.showMessageDialog(getFrame(), usuariosNaoAdicionados, "Não adicionados",
+									JOptionPane.ERROR_MESSAGE);
+						}
+						// Setar valor com false para quando for adicionar
+						// outros usuarios se nao conter não adicionados nao
+						// apresentar o JOptionPane
+						contenNaoAdicionados = false;
+
 					}
 				}
+			}
+
+			/**
+			 * 
+			 * Adiciona o usuário ao {@link JList JList}
+			 * 
+			 * @param usuarioParaAdicionar
+			 *            nome do usuário
+			 */
+			private void adicionaUsuarioLotes(String usuarioParaAdicionar) {
+				boolean adicionou = getGerenciadorDeGrupos().adicionaUsuarioNoGrupo(getGrupoSelecionado(),
+						usuarioParaAdicionar);
+				if (!adicionou) {
+					naoAdicionados.append(usuarioParaAdicionar + "\n");
+					contenNaoAdicionados = true;
+				}
+				gerenciador.atualizaArquivo();
+				listaGrupoListener.atualizaUsuarios(getGrupoSelecionado());
 			}
 
 		});
@@ -587,12 +651,14 @@ public class SvnAclGUI {
 				if (getGrupoSelecionado().equals("")) {
 					JOptionPane.showMessageDialog(getFrame(), "Selecione um grupo", "Remover",
 							JOptionPane.ERROR_MESSAGE);
-				} else if (getUsuarioSelecionado().equals("")) {
+				} else if (getUsuariosSelecionados().size() == 0) {
 					JOptionPane.showMessageDialog(getFrame(), "Selecione um usuário", "Remover",
 							JOptionPane.ERROR_MESSAGE);
 				} else {
-					getGerenciadorDeGrupos().removeUsuarioDoGrupo(getGrupoSelecionado(), getUsuarioSelecionado());
-					gerenciador.atualizaArquivo();
+					for (String usuarios : usuariosSelecionados) {
+						getGerenciadorDeGrupos().removeUsuarioDoGrupo(getGrupoSelecionado(), usuarios);
+						gerenciador.atualizaArquivo();
+					}
 					listaGrupoListener.atualizaUsuarios(getGrupoSelecionado());
 				}
 
@@ -948,6 +1014,13 @@ public class SvnAclGUI {
 	public JFrame getFrame() {
 		return frame;
 	}
+	
+	/**
+	 * @return jMenuItemNovo
+	 */
+	public JMenuItem getJMenuItemNovo() {
+		return jMenuItemNovo;
+	}
 
 	/**
 	 * @return jMenuItemAbrir
@@ -1046,21 +1119,21 @@ public class SvnAclGUI {
 	}
 
 	/**
-	 * @return usuarioSelecionado
+	 * @return usuariosSelecionados
 	 */
-	public String getUsuarioSelecionado() {
-		return usuarioSelecionado;
+	public ArrayList<String> getUsuariosSelecionados() {
+		return usuariosSelecionados;
 	}
 
 	/**
 	 * 
-	 * Setar usuário selecionado
+	 * Setar usuários selecionados
 	 * 
-	 * @param usuarioSelecionado
-	 *            usuário selecionado
+	 * @param usuariosSelecionados
+	 *            usuários selecionados
 	 */
-	public void setUsuarioSelecionado(String usuarioSelecionado) {
-		this.usuarioSelecionado = usuarioSelecionado;
+	public void setUsuariosSelecionados(ArrayList<String> usuariosSelecionados) {
+		this.usuariosSelecionados = usuariosSelecionados;
 	}
 
 	/**

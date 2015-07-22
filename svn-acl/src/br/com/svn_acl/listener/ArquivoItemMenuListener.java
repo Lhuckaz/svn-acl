@@ -52,6 +52,11 @@ public class ArquivoItemMenuListener implements ActionListener {
 		chooser.setFileFilter(filter);
 
 		Object open = e.getSource();
+		// MenuItem novo
+		if (open == svnAclGUI.getJMenuItemNovo()) {
+			carregarArquivoNovo();
+		}
+
 		// MenuItem abrir
 		if (open == svnAclGUI.getJMenuItemAbrir()) {
 			abrirArquivoChooser();
@@ -61,6 +66,28 @@ public class ArquivoItemMenuListener implements ActionListener {
 		if (open == svnAclGUI.getJMenuItemSalvar()) {
 			abrirSalvarChooser();
 		}
+	}
+
+	/**
+	 * Carrega um arquivo novo
+	 */
+	private void carregarArquivoNovo() {
+		File file = new File("svn.acl");
+		if (file.exists()) {
+			file.delete();
+		}
+
+		try {
+			file.createNewFile();
+			FileWriter fileWriter = new FileWriter(file);
+			fileWriter.write("[groups]\n");
+			fileWriter.close();
+			svnAclGUI.carregaArquivo(file.getAbsolutePath());
+			file.delete();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+
 	}
 
 	/**

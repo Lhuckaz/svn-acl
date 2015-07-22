@@ -16,12 +16,13 @@ import br.com.svn_acl.gui.SvnAclGUI;
 public class Main {
 
 	public static void main(String[] args) {
+		final String[] argumentos = args;
 		try {
 			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
 
 			SwingUtilities.invokeLater(new Runnable() {
 				public void run() {
-					new SvnAclGUI();
+					new SvnAclGUI(argumentos);
 				}
 			});
 		} catch (Exception e) {
