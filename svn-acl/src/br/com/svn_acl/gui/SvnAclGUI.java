@@ -415,7 +415,7 @@ public class SvnAclGUI {
 				String grupo = JOptionPane.showInputDialog(SvnAclGUI.this.getFrame(), "Grupo", "Adicionar Grupo",
 						JOptionPane.PLAIN_MESSAGE);
 				try {
-					boolean adicionaGrupo = getGerenciadorDeGrupos().adicionaGrupo(grupo);
+					boolean adicionaGrupo = getGerenciadorDeGrupos().adicionaGrupo(Util.removeSinaisDiacriticos(grupo));
 					if (adicionaGrupo) {
 						gerenciador.atualizaArquivo();
 						listaGrupoListener.atualizaUsuarios(getGrupoSelecionado());

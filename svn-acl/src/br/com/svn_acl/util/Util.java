@@ -5,6 +5,8 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.ObjectInputStream;
 import java.security.PublicKey;
+import java.text.Normalizer;
+import java.text.Normalizer.Form;
 import java.util.Arrays;
 import java.util.Properties;
 
@@ -125,7 +127,8 @@ public class Util {
 	 * 
 	 * Retira o arquivo no final da url
 	 * 
-	 * @param url endereço
+	 * @param url
+	 *            endereço
 	 * @return retorna a url sem o arquivo
 	 */
 	public static String validaURL(String url) {
@@ -351,5 +354,16 @@ public class Util {
 			JOptionPane.showMessageDialog(null, "Verifique arquivo system.properties", "Erro",
 					JOptionPane.INFORMATION_MESSAGE);
 		}
+	}
+
+	/**
+	 * <i>removeDiacriticalMarks</i> <BR>
+	 * Remove sinais diacritícos, ou seja, remove todos os acentos
+	 * 
+	 * @param string palavra
+	 * @return retorna palavra sem acentos
+	 */
+	public static String removeSinaisDiacriticos(String string) {
+		return Normalizer.normalize(string, Form.NFD).replaceAll("\\p{InCombiningDiacriticalMarks}+", "");
 	}
 }
