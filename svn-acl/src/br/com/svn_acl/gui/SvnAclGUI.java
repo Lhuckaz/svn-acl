@@ -169,7 +169,7 @@ public class SvnAclGUI {
 
 		adicionaMenu();
 
-		dimensao = new Dimension(600, 550);
+		redimensionando();
 
 		tabPainel = new JTabbedPane();
 		jPanelPrincipalGrupos = new JPanel(new BorderLayout());
@@ -332,6 +332,24 @@ public class SvnAclGUI {
 		jMenuBar.add(jMenuAd);
 
 		frame.setJMenuBar(jMenuBar);
+	}
+
+	/**
+	 * Redimenciona componentes da tela para diferentes resoluções
+	 */
+	private void redimensionando() {
+		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+		dimensao = new Dimension(650, 600);
+
+		if (screenSize.width <= 800) {
+			dimensao.setSize(380, 450);
+		} else if (screenSize.width <= 1024) {
+			dimensao.setSize(500, 600);
+		} else if (screenSize.width <= 1280) {
+			dimensao.setSize(620, 850);
+		} else if (screenSize.width >= 1920) {
+			dimensao.setSize(950, 850);
+		}
 	}
 
 	/**
@@ -1014,7 +1032,7 @@ public class SvnAclGUI {
 	public JFrame getFrame() {
 		return frame;
 	}
-	
+
 	/**
 	 * @return jMenuItemNovo
 	 */
