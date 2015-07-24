@@ -367,7 +367,7 @@ public class ArquivoItemMenuListener implements ActionListener {
 			display = new Display();
 			shell = new Shell(display);
 			FileDialog dialog = new FileDialog(shell);
-			String[] filterNames = new String[] { "ACL Files (*.acl)", "All Files" };
+			String[] filterNames = new String[] { "Arquivo ACL (*.acl)", "Todos os arquivos" };
 			dialog.setFilterNames(filterNames);
 			String[] filterExtensions = new String[] { "*.acl", "*" };
 			dialog.setFilterExtensions(filterExtensions);
@@ -413,7 +413,7 @@ public class ArquivoItemMenuListener implements ActionListener {
 			FileDialog dialog = new FileDialog(shell, SWT.SAVE);
 			dialog.setFileName(Diretorios.retornaArquivoParaSalvar());
 
-			String[] filterNames = new String[] { "ACL Files (*.acl)", "All Files" };
+			String[] filterNames = new String[] { "Arquivo ACL (*.acl)", "Todos os arquivos" };
 			dialog.setFilterNames(filterNames);
 			String[] filterExtensions = new String[] { "*.acl", "*" };
 			dialog.setFilterExtensions(filterExtensions);
