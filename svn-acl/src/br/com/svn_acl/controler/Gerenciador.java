@@ -211,7 +211,7 @@ public class Gerenciador {
 		// Gerenciamento
 		setHidden(caminhoSaidaOculto);
 		
-		// Abrir, Exportar, Importar e alterações
+		// Abrir, Checkout, Importar e alterações
 		SvnAclGUI.arquivoSalvo = false;
 	}
 

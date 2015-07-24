@@ -25,7 +25,7 @@ import org.tmatesoft.svn.core.SVNCancelException;
 import org.tmatesoft.svn.core.SVNException;
 
 import br.com.svn_acl.svn.Commit;
-import br.com.svn_acl.svn.Export;
+import br.com.svn_acl.svn.Checkout;
 import br.com.svn_acl.util.Diretorios;
 import br.com.svn_acl.util.SpringUtilities;
 import br.com.svn_acl.util.Util;
@@ -72,17 +72,17 @@ public class SubversionArquivo extends JDialog {
 		p.add(l);
 		url = new JTextField(50);
 
-		if (titulo.equals("Exportar")) {
-			if (Diretorios.retornaFileExportName() == null) {
+		if (titulo.equals("Checkout")) {
+			if (Diretorios.retornaFileCheckoutName() == null) {
 				url.setText(Util.enderecoPadraoComArquivo());
 			} else {
-				url.setText(Diretorios.retornaUrl() + "/" + Diretorios.retornaFileExportName());
+				url.setText(Diretorios.retornaUrl() + "/" + Diretorios.retornaFileCheckoutName());
 			}
 		} else {
 			if (Diretorios.retornaUrl() == null || !Util.validaString(Diretorios.retornaUrl())) {
 				url.setText(Util.enderecoPadraoComArquivo());
 			} else {
-				url.setText(Diretorios.retornaUrl() + "/" + Diretorios.retornaFileExportName());
+				url.setText(Diretorios.retornaUrl() + "/" + Diretorios.retornaFileCheckoutName());
 			}
 		}
 		url.addActionListener(acao);
@@ -108,12 +108,12 @@ public class SubversionArquivo extends JDialog {
 		passwords.add(password, BorderLayout.WEST);
 		p.add(passwords);
 
-		// Retira um campo para a tela "Exportar" para nao adicionar o
+		// Retira um campo para a tela "Checkout" para nao adicionar o
 		// Comentario
 		labelsLength--;
 
-		// Caso seja a tela Exportar nao adiciona o campo Comentario
-		if (!titulo.equals("Exportar")) {
+		// Caso seja a tela Checkout nao adiciona o campo Comentario
+		if (!titulo.equals("Checkout")) {
 			JLabel l3 = new JLabel(labels[3], JLabel.TRAILING);
 			p.add(l3);
 			comentario = new JTextArea(5, 20);
@@ -199,13 +199,13 @@ public class SubversionArquivo extends JDialog {
 		@Override
 		public void actionPerformed(ActionEvent e) {
 			File file = null;
-			// Tela com título e funções diferentes "Exportar" ou "Commit"
-			if (titulo.equals("Exportar")) {
+			// Tela com título e funções diferentes "Checkout" ou "Commit"
+			if (titulo.equals("Checkout")) {
 				String url = subversionArquivo.url.getText();
 				String user = subversionArquivo.user.getText();
 				String password = subversionArquivo.password.getText();
 
-				Export export = new Export();
+				Checkout export = new Checkout();
 				boolean exportando = false;
 				String message = "";
 
@@ -213,7 +213,7 @@ public class SubversionArquivo extends JDialog {
 					exportando = export.exportando(url, user, password);
 					// Retira o nome do arquivo da url
 					Diretorios.setUrl(Util.validaURL(url));
-					// Abrir, Exportar, Importar e alterações
+					// Abrir, Checkout, Importar e alterações
 					SvnAclGUI.arquivoSalvo = false;
 				} catch (SVNAuthenticationException ex) {
 					message = "Usuario ou senha invalidos";
@@ -230,13 +230,13 @@ public class SubversionArquivo extends JDialog {
 					String arquivo = Util.getNomeArquivoURL(url);
 					file = new File(arquivo);
 					// Salva o nome da URL e do User no properties
-					Diretorios.setFileExportNameAndUser(arquivo, user);
+					Diretorios.setFileCheckoutNameAndUser(arquivo, user);
 
 					svnAclGUI.carregaArquivo(arquivo);
 					file.delete();
 					subversionArquivo.setVisible(false);
 				} else {
-					JOptionPane.showMessageDialog(svnAclGUI.getFrame(), message, "Export", JOptionPane.ERROR_MESSAGE);
+					JOptionPane.showMessageDialog(svnAclGUI.getFrame(), message, "Checkout", JOptionPane.ERROR_MESSAGE);
 				}
 
 			} else {
@@ -252,9 +252,9 @@ public class SubversionArquivo extends JDialog {
 					File fileSaida = new File("~svn-saida.acl");
 					byte[] bytes = getBytes(fileSaida);
 
-					String arquivo = Diretorios.retornaFileExportName();
+					String arquivo = Diretorios.retornaFileCheckoutName();
 
-					// Se retornaFileExportName for nulo pega o nome do arquivo
+					// Se retornaFileCheckoutName for nulo pega o nome do arquivo
 					// da propria url
 					if (arquivo == null) {
 						arquivo = Util.getNomeArquivoURL(url);
@@ -272,7 +272,7 @@ public class SubversionArquivo extends JDialog {
 					SvnAclGUI.arquivoSalvo = true;
 					
 					// Seta o valor na do nome do arquivo e usuario
-					Diretorios.setFileExportNameAndUser(arquivo, user);
+					Diretorios.setFileCheckoutNameAndUser(arquivo, user);
 				} catch (SVNAuthenticationException ex) {
 					message = "Usuário ou senha inválidos";
 				} catch (SVNCancelException ex) {

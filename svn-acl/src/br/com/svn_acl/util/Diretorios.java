@@ -16,7 +16,7 @@ import javax.swing.JOptionPane;
 public class Diretorios {
 	
 	private static String diretorioCorrente = retornaUserDocuments();
-	private static String fileExportName;
+	private static String fileCheckoutName;
 	private static String endereco;
 
 	/**
@@ -64,8 +64,8 @@ public class Diretorios {
 	 * @param user usuário
 	 * @param nome do arquivo exportado
 	 */
-	public static void setFileExportNameAndUser(String nome, String user) {
-		fileExportName = nome;
+	public static void setFileCheckoutNameAndUser(String nome, String user) {
+		fileCheckoutName = nome;
 		setURLNoProperties();
 		Util.setUserSvn(user);
 	}
@@ -77,7 +77,7 @@ public class Diretorios {
 		try {
 			FileInputStream fileInputStream = new FileInputStream(Util.ARQUIVO_PROPERTIES);
 			Util.propertiesSystem.load(new FileInputStream(Util.ARQUIVO_PROPERTIES));
-			Util.propertiesSystem.setProperty("url.svn.file", endereco + "/" + fileExportName);
+			Util.propertiesSystem.setProperty("url.svn.file", endereco + "/" + fileCheckoutName);
 			File file = new File(Util.ARQUIVO_PROPERTIES);
 			FileOutputStream fos = new FileOutputStream(file);
 			Util.propertiesSystem.store(fos, "Alteracao de URL");
@@ -93,8 +93,8 @@ public class Diretorios {
 	 * 
 	 * @return retorna nome do arquivo exportado
 	 */
-	public static String retornaFileExportName() {
-		return fileExportName;
+	public static String retornaFileCheckoutName() {
+		return fileCheckoutName;
 	}
 
 	/**

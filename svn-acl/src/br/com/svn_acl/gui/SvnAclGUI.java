@@ -81,7 +81,7 @@ public class SvnAclGUI {
 	private JMenuItem jMenuItemNovo;
 	private JMenuItem jMenuItemAbrir;
 	private JMenuItem jMenuItemSalvar;
-	private JMenuItem jMenuItemExport;
+	private JMenuItem jMenuItemCheckout;
 	private JMenuItem jMenuItemCommit;
 	private JMenuItem jMenuItemImportar;
 	private JMenuItem jMenuItemTransferir;
@@ -252,7 +252,7 @@ public class SvnAclGUI {
 			botaoAlterar.setEnabled(true);
 			botaoAdicionar.setEnabled(true);
 			botaoRemover.setEnabled(true);
-			// Abrir, Exportar, Importar e alterações
+			// Abrir, Checkout, Importar e alterações
 			arquivoSalvo = false;
 		}
 	}
@@ -294,16 +294,16 @@ public class SvnAclGUI {
 		jMenuArquivos.add(jMenuItemSalvar);
 
 		jMenuSubversion = new JMenu("Subversion");
-		jMenuItemExport = new JMenuItem("Export");
-		jMenuItemExport.addActionListener(subversionItemMenuListener);
-		jMenuItemExport.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_E, Toolkit.getDefaultToolkit()
+		jMenuItemCheckout = new JMenuItem("Checkout");
+		jMenuItemCheckout.addActionListener(subversionItemMenuListener);
+		jMenuItemCheckout.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_E, Toolkit.getDefaultToolkit()
 				.getMenuShortcutKeyMask()));
 		jMenuItemCommit = new JMenuItem("Commit");
 		jMenuItemCommit.addActionListener(subversionItemMenuListener);
 		jMenuItemCommit.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_I, Toolkit.getDefaultToolkit()
 				.getMenuShortcutKeyMask()));
 		jMenuItemCommit.setEnabled(false);
-		jMenuSubversion.add(jMenuItemExport);
+		jMenuSubversion.add(jMenuItemCheckout);
 		jMenuSubversion.add(jMenuItemCommit);
 
 		jMenuSsh = new JMenu("SSH");
@@ -1069,10 +1069,10 @@ public class SvnAclGUI {
 	}
 
 	/**
-	 * @return jMenuItemExport
+	 * @return jMenuItemCheckout
 	 */
-	public JMenuItem getJMenuItemExport() {
-		return jMenuItemExport;
+	public JMenuItem getJMenuItemCheckout() {
+		return jMenuItemCheckout;
 	}
 
 	/**

@@ -26,7 +26,7 @@ import br.com.svn_acl.util.Util;
  * @author Lhuckaz
  *
  */
-public class Export {
+public class Checkout {
 
 	/**
 	 * 

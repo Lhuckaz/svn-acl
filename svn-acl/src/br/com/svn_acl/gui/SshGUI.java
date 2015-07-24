@@ -216,11 +216,11 @@ public class SshGUI extends JDialog {
 
 				try {
 					importando = ssh.importar(host, user, password, dir, porta);
-					File fileExport = new File(Util.getNomeArquivoURL(dir));
+					File fileCheckout = new File(Util.getNomeArquivoURL(dir));
 					svnAclGUI.carregaArquivo(Util.FILE);
-					fileExport.delete();
+					fileCheckout.delete();
 					Util.setAtributosSsh(host, user, dir, porta);
-					// Abrir, Exportar, Importar e alterações
+					// Abrir, Checkout, Importar e alterações
 					SvnAclGUI.arquivoSalvo = false;
 				} catch (JSchException ex) {
 					String messageEx = ex.getMessage();
