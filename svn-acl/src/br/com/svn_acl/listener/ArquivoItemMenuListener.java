@@ -92,6 +92,7 @@ public class ArquivoItemMenuListener implements ActionListener {
 	private void abrirArquivoChooser() {
 		Display display = null;
 		Shell shell = null;
+		
 		try {
 			display = new Display();
 			shell = new Shell(display);
@@ -142,6 +143,7 @@ public class ArquivoItemMenuListener implements ActionListener {
 	private void abrirSalvarChooser() {
 		Display display = null;
 		Shell shell = null;
+		
 		try {
 			display = new Display();
 			shell = new Shell(display);
