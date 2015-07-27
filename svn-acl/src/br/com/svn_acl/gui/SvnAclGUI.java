@@ -53,6 +53,7 @@ import br.com.svn_acl.listener.ListaDiretoriosListener;
 import br.com.svn_acl.listener.ListaGrupoListener;
 import br.com.svn_acl.listener.ListaPermissoesListener;
 import br.com.svn_acl.listener.ListaUsuariosListener;
+import br.com.svn_acl.listener.PesquisaMenuItem;
 import br.com.svn_acl.listener.SshItemMenuListener;
 import br.com.svn_acl.listener.SubversionItemMenuListener;
 import br.com.svn_acl.util.DocumentTamanhoJTextField;
@@ -78,14 +79,18 @@ public class SvnAclGUI {
 	private JMenu jMenuSubversion;
 	private JMenu jMenuSsh;
 	private JMenu jMenuAd;
+	private JMenu jMenuPesquisa;
 	private JMenuItem jMenuItemNovo;
 	private JMenuItem jMenuItemAbrir;
 	private JMenuItem jMenuItemSalvar;
+	private JMenuItem jMenuItemSair;
 	private JMenuItem jMenuItemCheckout;
 	private JMenuItem jMenuItemCommit;
 	private JMenuItem jMenuItemImportar;
 	private JMenuItem jMenuItemTransferir;
 	private JMenuItem jMenuItemAdSettings;
+	private JMenuItem jMenuItemGruposDoUser;
+	private JMenuItem jMenuItemPermDoGrupo;
 
 	private JPanel jPanelPrincipalGrupos;
 	private JPanel jPanelPrincipalListGrupos;
@@ -273,6 +278,7 @@ public class SvnAclGUI {
 		SubversionItemMenuListener subversionItemMenuListener = new SubversionItemMenuListener(this);
 		SshItemMenuListener sshItemMenuListener = new SshItemMenuListener(this);
 		AdItemMenuListener adItemMenuListener = new AdItemMenuListener(this);
+		PesquisaMenuItem pesquisaMenuItem = new PesquisaMenuItem(this);
 
 		jMenuBar = new JMenuBar();
 		jMenuArquivos = new JMenu("Arquivo");
@@ -289,9 +295,39 @@ public class SvnAclGUI {
 		jMenuItemSalvar.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_S, Toolkit.getDefaultToolkit()
 				.getMenuShortcutKeyMask()));
 		jMenuItemSalvar.setEnabled(false);
+		jMenuItemSair = new JMenuItem("Sair");
+		jMenuItemSair.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// TODO (Repeat) Quando arquivo for modificado ou aberto por
+				// algum meio ela dar um alerta se deseja realmente fechar
+				boolean arquivoSalvo = SvnAclGUI.arquivoSalvo;
+				if (arquivoSalvo) {
+					apagaArquivosEFecha();
+				} else {
+					if (JOptionPane.showConfirmDialog(frame, "Deseja sair ?\nAlterações não salvas serão perdidas!",
+							"Saindo", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE) == JOptionPane.YES_OPTION) {
+						apagaArquivosEFecha();
+					}
+				}
+			}
+
+			private void apagaArquivosEFecha() {
+				if (gerenciador != null)
+					gerenciador.apagaArquivosDeGerenciamento();
+				System.exit(0);
+
+			}
+			
+		});
+		jMenuItemSair.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_Q, Toolkit.getDefaultToolkit()
+				.getMenuShortcutKeyMask()));
 		jMenuArquivos.add(jMenuItemNovo);
 		jMenuArquivos.add(jMenuItemAbrir);
 		jMenuArquivos.add(jMenuItemSalvar);
+		jMenuArquivos.addSeparator();
+		jMenuArquivos.add(jMenuItemSair);
 
 		jMenuSubversion = new JMenu("Subversion");
 		jMenuItemCheckout = new JMenuItem("Checkout");
@@ -326,10 +362,25 @@ public class SvnAclGUI {
 		jMenuItemAdSettings.addActionListener(adItemMenuListener);
 		jMenuAd.add(jMenuItemAdSettings);
 
+		jMenuPesquisa = new JMenu("Pesquisa");
+		jMenuItemGruposDoUser = new JMenuItem("Grupos do usuário");
+		jMenuItemGruposDoUser.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_G, Toolkit.getDefaultToolkit()
+				.getMenuShortcutKeyMask()));
+		jMenuItemGruposDoUser.setToolTipText("Exibe os grupos que o usuário participa");
+		jMenuItemGruposDoUser.addActionListener(pesquisaMenuItem);
+		jMenuItemPermDoGrupo = new JMenuItem("Diretórios e permissões do grupo ou usuário");
+		jMenuItemPermDoGrupo.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_P, Toolkit.getDefaultToolkit()
+				.getMenuShortcutKeyMask()));
+		jMenuItemPermDoGrupo.setToolTipText("Exibe os diretórios e as permissões do grupo ou usuário");
+		jMenuItemPermDoGrupo.addActionListener(pesquisaMenuItem);
+		jMenuPesquisa.add(jMenuItemGruposDoUser);
+		jMenuPesquisa.add(jMenuItemPermDoGrupo);
+
 		jMenuBar.add(jMenuArquivos);
 		jMenuBar.add(jMenuSubversion);
 		jMenuBar.add(jMenuSsh);
 		jMenuBar.add(jMenuAd);
+		jMenuBar.add(jMenuPesquisa);
 
 		frame.setJMenuBar(jMenuBar);
 	}
@@ -1080,6 +1131,20 @@ public class SvnAclGUI {
 	 */
 	public JMenuItem getJMenuItemCommit() {
 		return jMenuItemCommit;
+	}
+
+	/**
+	 * @return jMenuItemGruposDoUser
+	 */
+	public JMenuItem getJMenuItemGruposDoUser() {
+		return jMenuItemGruposDoUser;
+	}
+	
+	/**
+	 * @return jMenuItemPermDoGrupo
+	 */
+	public JMenuItem getjMenuItemPermDoGrupo() {
+		return jMenuItemPermDoGrupo;
 	}
 
 	/**
