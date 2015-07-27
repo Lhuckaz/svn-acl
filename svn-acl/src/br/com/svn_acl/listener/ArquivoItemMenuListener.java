@@ -99,7 +99,7 @@ public class ArquivoItemMenuListener implements ActionListener {
 			Image imgTrayIcon = new Image(display, stream);
 			shell.setImage(imgTrayIcon);
 			FileDialog dialog = new FileDialog(shell);
-			String[] filterNames = new String[] { "ACL Files (*.acl)", "All Files" };
+			String[] filterNames = new String[] { "Arquivo ACL (*.acl)", "Todos os arquivos" };
 			dialog.setFilterNames(filterNames);
 			String[] filterExtensions = new String[] { "*.acl", "*" };
 			dialog.setFilterExtensions(filterExtensions);
@@ -152,7 +152,7 @@ public class ArquivoItemMenuListener implements ActionListener {
 			dialog.setFileName(Diretorios.retornaArquivoParaSalvar());
 			dialog.setFileName(Util.getFileOpen());
 
-			String[] filterNames = new String[] { "ACL Files (*.acl)", "All Files" };
+			String[] filterNames = new String[] { "Arquivo ACL (*.acl)", "Todos os arquivos" };
 			dialog.setFilterNames(filterNames);
 			String[] filterExtensions = new String[] { "*.acl", "*" };
 			dialog.setFilterExtensions(filterExtensions);
