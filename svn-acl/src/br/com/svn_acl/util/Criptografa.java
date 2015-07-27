@@ -1,15 +1,16 @@
 package br.com.svn_acl.util;
 
+import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileOutputStream;
-import java.io.ObjectOutputStream;
-import java.io.OutputStream;
-import java.security.KeyPair;
-import java.security.KeyPairGenerator;
-import java.security.PrivateKey;
-import java.security.PublicKey;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.security.GeneralSecurityException;
 
 import javax.crypto.Cipher;
+import javax.crypto.KeyGenerator;
+import javax.crypto.SecretKey;
+import javax.crypto.spec.SecretKeySpec;
 
 /**
  * 
@@ -19,102 +20,93 @@ import javax.crypto.Cipher;
  *
  */
 public class Criptografa {
-	public static final String ALGORITHM = "RSA";
-	/** * Local da chave privada no sistema de arquivos. */
-	public static final String PATH_CHAVE_PRIVADA = "private.key";
-	/** * Local da chave pública no sistema de arquivos. */
-	public static final String PATH_CHAVE_PUBLICA = "public.key";
 
-	/**
-	 * * Gera a chave que contém um par de chave Privada e Pública usando 1025
-	 * bytes. <BR>
-	 * * Armazena o conjunto de chaves nos arquivos private.key e public.key
-	 */
-	public static void geraChave() {
+	public static final String AES = "AES";
+	public static final String KEY_FILE = "private.key";
+
+	public static String criptografa(String texto) {
 		try {
-			final KeyPairGenerator keyGen = KeyPairGenerator.getInstance(ALGORITHM);
-			keyGen.initialize(1024);
-			final KeyPair key = keyGen.generateKeyPair();
-			File chavePrivadaFile = new File(PATH_CHAVE_PRIVADA);
-			File chavePublicaFile = new File(PATH_CHAVE_PUBLICA);
-
-			if (chavePrivadaFile.getParentFile() != null) {
-				chavePrivadaFile.getParentFile().mkdirs();
-			}
-			chavePrivadaFile.createNewFile();
-			if (chavePublicaFile.getParentFile() != null) {
-				chavePublicaFile.getParentFile().mkdirs();
-			}
-			chavePublicaFile.createNewFile();
-
-			OutputStream chavePublicaOS = new ObjectOutputStream(new FileOutputStream(chavePublicaFile));
-			((ObjectOutputStream) chavePublicaOS).writeObject(key.getPublic());
-			chavePublicaOS.close();
-			// Salva a Chave Privada no arquivo Object
-			OutputStream chavePrivadaOS = new ObjectOutputStream(new FileOutputStream(chavePrivadaFile));
-			((ObjectOutputStream) chavePrivadaOS).writeObject(key.getPrivate());
-			chavePrivadaOS.close();
-		} catch (Exception e) {
+			return encrypt(texto);
+		} catch (GeneralSecurityException | IOException e) {
+			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		return "";
 	}
 
-	/**
-	 * Verifica se o par de chaves Pública e Privada já foram geradas.
-	 * 
-	 * @return retorna <code>true</code> se chaves existirem
-	 */
-	public static boolean verificaSeExisteChavesNoSO() {
-		File chavePrivada = new File(PATH_CHAVE_PRIVADA);
-		File chavePublica = new File(PATH_CHAVE_PUBLICA);
-		if (chavePrivada.exists() && chavePublica.exists()) {
-			return true;
-		}
-		return false;
-	}
-
-	/**
-	 * 
-	 * Criptografa o texto puro usando chave pública.
-	 *
-	 * @param texto
-	 *            texto
-	 * @param chave
-	 *            chave
-	 * @return retorna texto criptografa
-	 */
-	public static byte[] criptografa(String texto, PublicKey chave) {
-		byte[] cipherText = null;
+	public static String decriptografa(String texto) {
 		try {
-			final Cipher cipher = Cipher.getInstance(ALGORITHM);
-
-			cipher.init(Cipher.ENCRYPT_MODE, chave);
-			cipherText = cipher.doFinal(texto.getBytes());
-		} catch (Exception e) {
+			return decrypt(texto);
+		} catch (IOException | GeneralSecurityException e) {
+			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		return cipherText;
+		return "";
 	}
 
-	/**
-	 * Decriptografa o texto puro usando chave privada.
-	 * 
-	 * @param texto
-	 *            texto
-	 * @param chave
-	 *            chave
-	 * @return retorna texto decriptografa
-	 */
-	public static String decriptografa(byte[] texto, PrivateKey chave) {
-		byte[] dectyptedText = null;
-		try {
-			final Cipher cipher = Cipher.getInstance(ALGORITHM);
-			cipher.init(Cipher.DECRYPT_MODE, chave);
-			dectyptedText = cipher.doFinal(texto);
-		} catch (Exception ex) {
-			ex.printStackTrace();
+	private static String decrypt(String texto) throws IOException, GeneralSecurityException {
+		File keyFile = new File(KEY_FILE);
+		SecretKeySpec sks = getSecretKeySpec(keyFile);
+		Cipher cipher = Cipher.getInstance(AES);
+		cipher.init(Cipher.DECRYPT_MODE, sks);
+		byte[] decrypted = cipher.doFinal(hexStringToByteArray(texto));
+		return new String(decrypted);
+	}
+
+	private static String encrypt(String texto) throws GeneralSecurityException, IOException {
+		File keyFile = new File(KEY_FILE);
+		if (!keyFile.exists()) {
+			KeyGenerator keyGen = KeyGenerator.getInstance(AES);
+			keyGen.init(128);
+			SecretKey sk = keyGen.generateKey();
+			FileWriter fw = new FileWriter(keyFile);
+			fw.write(byteArrayToHexString(sk.getEncoded()));
+			fw.flush();
+			fw.close();
 		}
-		return new String(dectyptedText);
+
+		SecretKeySpec sks = getSecretKeySpec(keyFile);
+		Cipher cipher = Cipher.getInstance(AES);
+		cipher.init(Cipher.ENCRYPT_MODE, sks, cipher.getParameters());
+		byte[] encrypted = cipher.doFinal(texto.getBytes());
+		return byteArrayToHexString(encrypted);
+	}
+
+	private static SecretKeySpec getSecretKeySpec(File keyFile) throws IOException {
+		byte[] key = readKeyFile(keyFile);
+		SecretKeySpec sks = new SecretKeySpec(key, AES);
+		return sks;
+	}
+
+	private static byte[] readKeyFile(File keyFile) throws IOException {
+		FileReader fr = new FileReader(keyFile);
+		BufferedReader leitor = new BufferedReader(fr);
+		String keyValue = leitor.readLine();
+		fr.close();
+		leitor.close();
+		return hexStringToByteArray(keyValue);
+	}
+
+	private static byte[] hexStringToByteArray(String s) {
+		byte[] b = new byte[s.length() / 2];
+		for (int i = 0; i < b.length; i++) {
+			int index = i * 2;
+			int v = Integer.parseInt(s.substring(index, index + 2), 16);
+			b[i] = (byte) v;
+		}
+		return b;
+	}
+
+	private static String byteArrayToHexString(byte[] b) {
+		StringBuffer sb = new StringBuffer(b.length * 2);
+		for (int i = 0; i < b.length; i++) {
+			int v = b[i] & 0xff;
+			if (v < 16) {
+				sb.append('0');
+			}
+			sb.append(Integer.toHexString(v));
+		}
+		return sb.toString().toUpperCase();
 	}
 
 }

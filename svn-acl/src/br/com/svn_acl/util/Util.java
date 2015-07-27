@@ -3,8 +3,6 @@ package br.com.svn_acl.util;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
-import java.io.ObjectInputStream;
-import java.security.PublicKey;
 import java.text.Normalizer;
 import java.text.Normalizer.Form;
 import java.util.Arrays;
@@ -305,27 +303,17 @@ public class Util {
 	 */
 	public static void gravaAtributosAd(String dominio, String user, String password) {
 		try {
-			if (!Criptografa.verificaSeExisteChavesNoSO()) {
-				Criptografa.geraChave();
-			}
-
 			FileInputStream fis = new FileInputStream(ARQUIVO_PROPERTIES);
 			propertiesSystem.load(fis);
 			fis.close();
 
-			FileInputStream fileInputStream = new FileInputStream(Criptografa.PATH_CHAVE_PUBLICA);
-			ObjectInputStream ois = new ObjectInputStream(fileInputStream);
-			final PublicKey chavePublica = (PublicKey) ois.readObject();
-
-			final byte[] textoCriptografado = Criptografa.criptografa(password, chavePublica);
+			final String textoCriptografado = Criptografa.criptografa(password);
 			propertiesSystem.setProperty("domain.ldap", dominio);
 			propertiesSystem.setProperty("username.ldap", user);
-			propertiesSystem.setProperty("password.ldap", Arrays.toString(textoCriptografado).replace(" ", ""));
+			propertiesSystem.setProperty("password.ldap", textoCriptografado);
 			File file = new File(ARQUIVO_PROPERTIES);
 			FileOutputStream fos = new FileOutputStream(file);
 			propertiesSystem.store(fos, "Alteracao de senha AD");
-			fileInputStream.close();
-			ois.close();
 			fos.close();
 			file = null;
 		} catch (Exception e) {

@@ -8,8 +8,6 @@ import java.awt.event.WindowEvent;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.security.PrivateKey;
 import java.util.Properties;
 
 import javax.swing.JButton;
@@ -194,10 +192,7 @@ public class AdConfigura extends JDialog {
 			fileInputStream.close();
 			String password = Util.propertiesSystem.getProperty("password.ldap");
 
-			ObjectInputStream inputStream = new ObjectInputStream(new FileInputStream(Criptografa.PATH_CHAVE_PRIVADA));
-			final PrivateKey chavePrivada = (PrivateKey) inputStream.readObject();
-			inputStream.close();
-			return Criptografa.decriptografa(Util.stringArrayToByte(password), chavePrivada);
+			return Criptografa.decriptografa(password);
 		} catch (Exception e) {
 			return "";
 		}
