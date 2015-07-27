@@ -26,6 +26,7 @@ public class Util {
 	 */
 	public final static String ARQUIVO_PROPERTIES = "system.properties";
 	public static Properties propertiesSystem = new Properties();
+	private static String fileOpen;
 	/**
 	 * Nome do arquivo svn-acl
 	 */
@@ -360,10 +361,31 @@ public class Util {
 	 * <i>removeDiacriticalMarks</i> <BR>
 	 * Remove sinais diacritícos, ou seja, remove todos os acentos
 	 * 
-	 * @param string palavra
+	 * @param string
+	 *            palavra
 	 * @return retorna palavra sem acentos
 	 */
 	public static String removeSinaisDiacriticos(String string) {
 		return Normalizer.normalize(string, Form.NFD).replaceAll("\\p{InCombiningDiacriticalMarks}+", "");
+	}
+
+	/**
+	 * Salvar nome do arquivo que foi aberto
+	 * 
+	 * @param string
+	 *            nome do arquivo
+	 */
+	public static void setFileOpen(String nomeArquivo) {
+		fileOpen = nomeArquivo;
+	}
+
+	/**
+	 * 
+	 * @return retorna nome de arquivo que foi aberto pelo programa
+	 */
+	public static String getFileOpen() {
+		if (fileOpen == null)
+			return Diretorios.retornaArquivoParaSalvar();
+		return fileOpen;
 	}
 }
