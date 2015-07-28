@@ -18,6 +18,7 @@ import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+import javax.swing.ListSelectionModel;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
@@ -106,10 +107,12 @@ public class DirEPermDoGrupoOuUser extends JDialog implements ActionListener {
 		DefaultListModel<String> modeloGrupos = new DefaultListModel<>();
 		listaGrupos = new JList<>(modeloGrupos);
 		listaGrupos.addListSelectionListener(new ListaGrupos());
+		listaGrupos.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 
 		DefaultListModel<String> modeloPermissoes = new DefaultListModel<>();
 		listaPermissoes = new JList<>(modeloPermissoes);
 		listaPermissoes.addListSelectionListener(new ListaPermissoes());
+		listaPermissoes.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 
 		JScrollPane jScrollPaneGrupos = new JScrollPane(listaGrupos);
 		JScrollPane jScrollPanePermissoes = new JScrollPane(listaPermissoes);

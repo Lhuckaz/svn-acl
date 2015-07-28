@@ -257,6 +257,8 @@ public class SvnAclGUI {
 			botaoAlterar.setEnabled(true);
 			botaoAdicionar.setEnabled(true);
 			botaoRemover.setEnabled(true);
+			jMenuItemPermDoGrupo.setEnabled(true);
+			jMenuItemGruposDoUser.setEnabled(true);
 			// Abrir, Checkout, Importar e alterações
 			arquivoSalvo = false;
 		}
@@ -300,7 +302,7 @@ public class SvnAclGUI {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				// TODO (Repeat) Quando arquivo for modificado ou aberto por
+				// TODO (Repeat WindowListener) Quando arquivo for modificado ou aberto por
 				// algum meio ela dar um alerta se deseja realmente fechar
 				boolean arquivoSalvo = SvnAclGUI.arquivoSalvo;
 				if (arquivoSalvo) {
@@ -368,11 +370,13 @@ public class SvnAclGUI {
 				.getMenuShortcutKeyMask()));
 		jMenuItemGruposDoUser.setToolTipText("Exibe os grupos que o usuário participa");
 		jMenuItemGruposDoUser.addActionListener(pesquisaMenuItem);
+		jMenuItemGruposDoUser.setEnabled(false);
 		jMenuItemPermDoGrupo = new JMenuItem("Diretórios e permissões do grupo ou usuário");
-		jMenuItemPermDoGrupo.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_P, Toolkit.getDefaultToolkit()
+		jMenuItemPermDoGrupo.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_D, Toolkit.getDefaultToolkit()
 				.getMenuShortcutKeyMask()));
 		jMenuItemPermDoGrupo.setToolTipText("Exibe os diretórios e as permissões do grupo ou usuário");
 		jMenuItemPermDoGrupo.addActionListener(pesquisaMenuItem);
+		jMenuItemPermDoGrupo.setEnabled(false);
 		jMenuPesquisa.add(jMenuItemGruposDoUser);
 		jMenuPesquisa.add(jMenuItemPermDoGrupo);
 
