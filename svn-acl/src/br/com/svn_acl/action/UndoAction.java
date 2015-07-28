@@ -6,11 +6,30 @@ import javax.swing.AbstractAction;
 
 import br.com.svn_acl.gui.SvnAclGUI;
 
+/**
+ * 
+ * Classe responsável pela ação da tecla Ctrl + Z para retornar a ação realiza
+ * pelo usuário
+ * 
+ * @author Lhuckaz
+ *
+ */
 @SuppressWarnings("serial")
 public class UndoAction extends AbstractAction {
 
 	private SvnAclGUI svnAclGUI;
 
+	/**
+	 * 
+	 * Construtor da classe {@link UndoAction}
+	 * 
+	 * @param svnAclGUI
+	 *            interface principal
+	 * @param text
+	 *            texto
+	 * @param desc
+	 *            descrição
+	 */
 	public UndoAction(SvnAclGUI svnAclGUI, String text, String desc) {
 		super(text);
 		this.svnAclGUI = svnAclGUI;
@@ -19,7 +38,6 @@ public class UndoAction extends AbstractAction {
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		System.out.println("control Z");
 		svnAclGUI.retornaArquivo();
 		SvnAclGUI.habilitaAvanco();
 		setEnabled(false);

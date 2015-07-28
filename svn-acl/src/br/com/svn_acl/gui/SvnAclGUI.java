@@ -324,6 +324,9 @@ public class SvnAclGUI {
 				}
 			}
 
+			/**
+			 * Apaga e fecha o programa
+			 */
 			private void apagaArquivosEFecha() {
 				if (gerenciador != null)
 					gerenciador.apagaArquivosDeGerenciamento();
@@ -951,6 +954,9 @@ public class SvnAclGUI {
 		jPanelPrincipalPermissoes.add(painelComboBoxPermissoes, BorderLayout.SOUTH);
 	}
 
+	/**
+	 * Adiciona as ações dos botões control Z e control Y ao frame principal
+	 */
 	private void adicionaAcoesUndoRedo() {
 		undo = new UndoAction(this, "Undo", "control Z");
 		redo = new RedoAction(this, "Redo", "control Y");
@@ -1357,24 +1363,36 @@ public class SvnAclGUI {
 		}
 	}
 
+	/**
+	 * Retorna a ação acionada por control Z e atualiza
+	 */
 	public void retornaArquivo() {
-		gerenciador.retornaArquivo();
-		gerenciador.atualizaArquivo();
-		listaGrupoListener.atualizaUsuarios(getGrupoSelecionado());
-		listaDiretoriosListener.atualizaPermissoes(getDiretorioSelecionado());
-	}
-	
-	public void avancaArquivo() {
-		gerenciador.retornaArquivo();
+		gerenciador.alterarArquivo();
 		gerenciador.atualizaArquivo();
 		listaGrupoListener.atualizaUsuarios(getGrupoSelecionado());
 		listaDiretoriosListener.atualizaPermissoes(getDiretorioSelecionado());
 	}
 
+	/**
+	 * Retorna a ação do control Z sendo acionada por control Y e atualiza
+	 */
+	public void avancaArquivo() {
+		gerenciador.alterarArquivo();
+		gerenciador.atualizaArquivo();
+		listaGrupoListener.atualizaUsuarios(getGrupoSelecionado());
+		listaDiretoriosListener.atualizaPermissoes(getDiretorioSelecionado());
+	}
+
+	/**
+	 * Habilita a combinação das teclas control + Z
+	 */
 	public static void habilitaRetorno() {
 		undo.setEnabled(true);
 	}
-	
+
+	/**
+	 * Habilita a combinação das teclas control + Y
+	 */
 	public static void habilitaAvanco() {
 		redo.setEnabled(true);
 	}
@@ -1401,6 +1419,9 @@ public class SvnAclGUI {
 				}
 			}
 
+			/**
+			 * Apaga e fecha o programa
+			 */
 			private void apagaArquivosEFecha() {
 				if (gerenciador != null)
 					gerenciador.apagaArquivosDeGerenciamento();

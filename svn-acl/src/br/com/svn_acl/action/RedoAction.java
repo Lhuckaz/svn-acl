@@ -6,11 +6,30 @@ import javax.swing.AbstractAction;
 
 import br.com.svn_acl.gui.SvnAclGUI;
 
+/**
+ * 
+ * Classe responsável pela ação da tecla Ctrl + Y para avançar uma ação
+ * realizada pelo usuário
+ * 
+ * @author Lhuckaz
+ *
+ */
 @SuppressWarnings("serial")
 public class RedoAction extends AbstractAction {
 
 	private SvnAclGUI svnAclGUI;
 
+	/**
+	 * 
+	 * Construtor da classe {@link RedoAction}
+	 * 
+	 * @param svnAclGUI
+	 *            interface principal
+	 * @param text
+	 *            texto
+	 * @param desc
+	 *            descrição
+	 */
 	public RedoAction(SvnAclGUI svnAclGUI, String text, String desc) {
 		super(text);
 		this.svnAclGUI = svnAclGUI;
@@ -19,7 +38,6 @@ public class RedoAction extends AbstractAction {
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		System.out.println("control Y");
 		svnAclGUI.avancaArquivo();
 		SvnAclGUI.habilitaRetorno();
 		setEnabled(false);

@@ -16,6 +16,7 @@ import javax.swing.JComboBox;
 import javax.swing.JDialog;
 import javax.swing.JLabel;
 import javax.swing.JList;
+import javax.swing.JMenuItem;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.ListSelectionModel;
@@ -24,6 +25,15 @@ import javax.swing.event.ListSelectionListener;
 
 import br.com.svn_acl.util.Util;
 
+/**
+ * Interface gráfica extends {@link JDialog} implements {@link ActionListener}
+ * ouvinte do {@link JMenuItem} "Diretórios e permissões do grupo ou usuário" da
+ * interface principal {@link SvnAclGUI} para pesquisar os diretórios e
+ * permissões do grupo ou usuário
+ * 
+ * @author Lhuckaz
+ *
+ */
 @SuppressWarnings("serial")
 public class DirEPermDoGrupoOuUser extends JDialog implements ActionListener {
 
@@ -37,6 +47,12 @@ public class DirEPermDoGrupoOuUser extends JDialog implements ActionListener {
 	private JLabel grupo;
 	private JLabel usuario;
 
+	/**
+	 * Contrutor da classe {@link DirEPermDoGrupoOuUser}
+	 * 
+	 * @param svnAclGUI
+	 *            interface principal
+	 */
 	public DirEPermDoGrupoOuUser(SvnAclGUI svnAclGUI) {
 		super(svnAclGUI.getFrame(), "Diretórios e permissões do grupo ou usuário", true);
 		this.svnAclGUI = svnAclGUI;
@@ -152,6 +168,14 @@ public class DirEPermDoGrupoOuUser extends JDialog implements ActionListener {
 		}
 	}
 
+	/**
+	 * 
+	 * Atualiza os lista de diretórios e permissoes no {@link JDialog} conforme
+	 * qual elemento for escolhido
+	 * 
+	 * @param selecionado
+	 *            grupo ou usuário selecionado
+	 */
 	void atualizaListas(String selecionado) {
 		((DefaultListModel<String>) listaGrupos.getModel()).removeAllElements();
 		((DefaultListModel<String>) listaPermissoes.getModel()).removeAllElements();
@@ -166,6 +190,13 @@ public class DirEPermDoGrupoOuUser extends JDialog implements ActionListener {
 		}
 	}
 
+	/**
+	 * 
+	 * Classe responsável por atualizar as listas
+	 * 
+	 * @author Lhuckaz
+	 *
+	 */
 	private class ListaGrupos implements ListSelectionListener {
 		@Override
 		public void valueChanged(ListSelectionEvent e) {
@@ -175,6 +206,13 @@ public class DirEPermDoGrupoOuUser extends JDialog implements ActionListener {
 		}
 	}
 
+	/**
+	 * 
+	 * Classe responsável por atualizar as listas
+	 * 
+	 * @author Lhuckaz
+	 *
+	 */
 	private class ListaPermissoes implements ListSelectionListener {
 		@Override
 		public void valueChanged(ListSelectionEvent e) {

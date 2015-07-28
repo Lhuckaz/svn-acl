@@ -13,9 +13,20 @@ import javax.swing.JDialog;
 import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+import javax.swing.JTabbedPane;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
+/**
+ * 
+ * Interface gráfica extends {@link JDialog} implements
+ * {@link ListSelectionListener} ouvinte do {@link JButton}
+ * "Adicionar usuários em lotes" no {@link JTabbedPane} "Grupos" da interface
+ * principal {@link SvnAclGUI} para adicionar diversos usuários de uma seleção
+ * 
+ * @author Lhuckaz
+ *
+ */
 @SuppressWarnings("serial")
 public class AdicionarUsuarioEmLotes extends JDialog implements ListSelectionListener {
 
@@ -63,6 +74,14 @@ public class AdicionarUsuarioEmLotes extends JDialog implements ListSelectionLis
 		setVisible(true);
 	}
 
+	/**
+	 * 
+	 * Adiciona os usuários na {@link JList} para seleção de adicionar os
+	 * usuários em lotes
+	 * 
+	 * @param modeloUsuariosLotes
+	 *            modelo da {@link JList}
+	 */
 	private void carregaListaDeUsuarios(DefaultListModel<String> modeloUsuariosLotes) {
 		// Se caso nao existir usuarios no AD adicionar ja existentes
 		if (SvnAclGUI.allUser.size() != 0) {
@@ -93,6 +112,10 @@ public class AdicionarUsuarioEmLotes extends JDialog implements ListSelectionLis
 		}
 	}
 
+	/**
+	 * 
+	 * @return retorna os usuarios que foram selecionados
+	 */
 	public ArrayList<String> getUsuariosSelecionados() {
 		return usuarios;
 

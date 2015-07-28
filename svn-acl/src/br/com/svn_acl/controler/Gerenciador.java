@@ -25,7 +25,7 @@ public class Gerenciador {
 
 	private File arquivoOculto;
 	private String caminhoArquivoOculto;
-	
+
 	private File arquivoRetorno;
 	private String caminhoArquivoRetorno;
 
@@ -68,11 +68,12 @@ public class Gerenciador {
 
 	/**
 	 * 
+	 * Ao pegar o caminho do arquivo de saida o metodo o apaga para as classes
+	 * {@link GerenciadorDeGrupos} e {@link GerenciadorDePermissoes} criar um
+	 * outro arquivo com as modificações
+	 * 
 	 * @param saida
-	 *            ao pegar o caminho do arquivo de saida o metodo o apaga para
-	 *            as classes {@link GerenciadorDeGrupos} e
-	 *            {@link GerenciadorDePermissoes} criar um outro arquivo com as
-	 *            modificações
+	 *            <code>true</code> se não for apagar o arquivo
 	 * @return retorna o caminho do arquivo de saída
 	 */
 	public static String getCaminhoSaidaOculto(boolean saida) {
@@ -158,6 +159,9 @@ public class Gerenciador {
 
 	/**
 	 * Apaga arquivo de sincronização
+	 * 
+	 * @param caminho
+	 *            caminho do arquivo
 	 */
 	private void apagaArquivoSincronizacao(String caminho) {
 		// Arquivo criado no diretorio em que esta o arquivo ao qual foi aberto,
@@ -174,7 +178,10 @@ public class Gerenciador {
 	}
 
 	/**
-	 * Copia o conteúdo do arquivo de sincronização para o de saída
+	 * Apaga o arquivo de saída
+	 * 
+	 * @param caminho
+	 *            caminho do arquivo
 	 */
 	private static void apagaArquivoSaida(String caminho) {
 		// Arquivo criado no diretorio em que esta o arquivo ao qual foi aberto,
@@ -189,7 +196,13 @@ public class Gerenciador {
 			paraApagar.delete();
 		}
 	}
-	
+
+	/**
+	 * Apaga arquivo de retorno
+	 * 
+	 * @param caminho
+	 *            caminho do arquivo
+	 */
 	private void apagaArquivoRetornar(String caminho) {
 
 		arquivo = new File(caminho);
@@ -202,7 +215,8 @@ public class Gerenciador {
 	}
 
 	/**
-	 * Copia o conteúdo do arquivo de sincronização para o de saída
+	 * Copia o conteúdo do arquivo de sincronização para o de saída e deixa um
+	 * backup da alteração anterior no arquivo de retorno
 	 */
 	public void atualizaArquivo() {
 		String caminho = arquivo.getAbsolutePath();
@@ -262,8 +276,11 @@ public class Gerenciador {
 		// Abrir, Checkout, Importar e alterações
 		SvnAclGUI.arquivoSalvo = false;
 	}
-	
-	public void retornaArquivo() {
+
+	/**
+	 * Desfaz ou refaz a alteração do usuário
+	 */
+	public void alterarArquivo() {
 		String caminho = arquivo.getAbsolutePath();
 
 		apagaArquivoSaida(caminho);
@@ -288,8 +305,6 @@ public class Gerenciador {
 			}
 		}
 
-		//setHidden(caminhoArquivoRetorno);
-		//setHidden(caminhoArquivoOculto);
 		// Esconde o arquivo de saida apos alteracao das classes de
 		// Gerenciamento
 		setHidden(caminhoSaidaOculto);

@@ -12,13 +12,28 @@ import javax.swing.JComboBox;
 import javax.swing.JDialog;
 import javax.swing.JLabel;
 import javax.swing.JList;
+import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 
+/**
+ * Interface gráfica extends {@link JDialog} ouvinte do {@link JMenuItem}
+ * "Grupos do usuário" da interface principal {@link SvnAclGUI} para pesquisar
+ * os todos os grupos da determinado usuário
+ * 
+ * @author Lhuckaz
+ *
+ */
 @SuppressWarnings("serial")
 public class GruposDoUser extends JDialog {
 
+	/**
+	 * Contrutor da classe {@link GruposDoUser}
+	 * 
+	 * @param svnAclGUI
+	 *            interface principal
+	 */
 	public GruposDoUser(final SvnAclGUI svnAclGUI) {
 		super(svnAclGUI.getFrame(), "Grupos do usuário", true);
 
@@ -33,7 +48,7 @@ public class GruposDoUser extends JDialog {
 			JOptionPane.showMessageDialog(svnAclGUI.getFrame(), "Sem grupos", "Sem grupos",
 					JOptionPane.INFORMATION_MESSAGE);
 		}
-		
+
 		DefaultListModel<String> modeloGrupos = new DefaultListModel<>();
 		final JList<String> listaGrupos = new JList<>(modeloGrupos);
 

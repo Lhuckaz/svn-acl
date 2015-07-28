@@ -44,7 +44,7 @@ public class Ssh {
 	 *            diretório
 	 * @return retorna <code>true</code> se conexão foi bem sucedida
 	 * @throws Exception
-	 *             lança casso ocorra algum erro de conexão
+	 *             lança caso ocorra algum erro de conexão
 	 */
 	public boolean transfere(String host, String user, String password, String dir) throws Exception {
 		return transfere(host, user, password, dir, Util.getNumberPortDefault(), Util.FILE);
@@ -68,7 +68,7 @@ public class Ssh {
 	 *            nome do arquivo para ser salvo
 	 * @return retorna <code>true</code> se conexão foi bem sucedida
 	 * @throws Exception
-	 *             lança casso ocorra algum erro de conexão
+	 *             lança caso ocorra algum erro de conexão
 	 */
 	public boolean transfere(String host, String user, String password, String dir, int porta, String file)
 			throws Exception {
@@ -140,7 +140,7 @@ public class Ssh {
 	 * @param porta
 	 *            número da porta
 	 * @return retorna <code>true</code> se conexão foi bem sucedida
-	 * @throws Exception lança casso ocorra algum erro de conexão
+	 * @throws Exception lança caso ocorra algum erro de conexão
 	 */
 	public boolean importar(String host, String user, String password, String dir, int porta) throws Exception {
 		Session session = null;
