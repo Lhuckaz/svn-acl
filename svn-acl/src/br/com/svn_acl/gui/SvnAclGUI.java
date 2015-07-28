@@ -25,6 +25,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.naming.AuthenticationException;
+import javax.swing.Action;
 import javax.swing.BorderFactory;
 import javax.swing.DefaultListModel;
 import javax.swing.JButton;
@@ -43,6 +44,8 @@ import javax.swing.KeyStroke;
 import javax.swing.ListSelectionModel;
 import javax.swing.border.Border;
 
+import br.com.svn_acl.action.RedoAction;
+import br.com.svn_acl.action.UndoAction;
 import br.com.svn_acl.ad.ActiveDirectory;
 import br.com.svn_acl.controler.Gerenciador;
 import br.com.svn_acl.controler.GerenciadorDeGrupos;
@@ -153,6 +156,9 @@ public class SvnAclGUI {
 	// fechamento quando ainda nao se abriu nenhum arquivo
 	public static boolean arquivoSalvo = true;
 
+	private static UndoAction undo;
+	private static RedoAction redo;
+
 	public SvnAclGUI(String... argumentos) {
 		String arquivo = null;
 		try {
@@ -204,6 +210,8 @@ public class SvnAclGUI {
 		adicionaOpcoesEmPermissoes();
 
 		adicionaPainelsATabPainel();
+
+		adicionaAcoesUndoRedo();
 
 		frame.add(tabPainel);
 
@@ -302,7 +310,8 @@ public class SvnAclGUI {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				// TODO (Repeat WindowListener) Quando arquivo for modificado ou aberto por
+				// TODO (Repeat WindowListener) Quando arquivo for modificado ou
+				// aberto por
 				// algum meio ela dar um alerta se deseja realmente fechar
 				boolean arquivoSalvo = SvnAclGUI.arquivoSalvo;
 				if (arquivoSalvo) {
@@ -321,7 +330,7 @@ public class SvnAclGUI {
 				System.exit(0);
 
 			}
-			
+
 		});
 		jMenuItemSair.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_Q, Toolkit.getDefaultToolkit()
 				.getMenuShortcutKeyMask()));
@@ -942,6 +951,19 @@ public class SvnAclGUI {
 		jPanelPrincipalPermissoes.add(painelComboBoxPermissoes, BorderLayout.SOUTH);
 	}
 
+	private void adicionaAcoesUndoRedo() {
+		undo = new UndoAction(this, "Undo", "control Z");
+		redo = new RedoAction(this, "Redo", "control Y");
+
+		tabPainel.getInputMap(JPanel.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke("control Z"),
+				undo.getValue(Action.NAME));
+		tabPainel.getActionMap().put(undo.getValue(Action.NAME), undo);
+
+		tabPainel.getInputMap(JPanel.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke("control Y"),
+				redo.getValue(Action.NAME));
+		tabPainel.getActionMap().put(redo.getValue(Action.NAME), redo);
+	}
+
 	/**
 	 * Adiciona os {@link JPanel}'s "Grupos" e "Permissões" na
 	 * {@link JTabbedPane}
@@ -1143,7 +1165,7 @@ public class SvnAclGUI {
 	public JMenuItem getJMenuItemGruposDoUser() {
 		return jMenuItemGruposDoUser;
 	}
-	
+
 	/**
 	 * @return jMenuItemPermDoGrupo
 	 */
@@ -1333,6 +1355,28 @@ public class SvnAclGUI {
 		for (String usuarios : listaPermissaoDiretorio) {
 			((DefaultListModel<String>) listaPermissoes.getModel()).addElement(usuarios);
 		}
+	}
+
+	public void retornaArquivo() {
+		gerenciador.retornaArquivo();
+		gerenciador.atualizaArquivo();
+		listaGrupoListener.atualizaUsuarios(getGrupoSelecionado());
+		listaDiretoriosListener.atualizaPermissoes(getDiretorioSelecionado());
+	}
+	
+	public void avancaArquivo() {
+		gerenciador.retornaArquivo();
+		gerenciador.atualizaArquivo();
+		listaGrupoListener.atualizaUsuarios(getGrupoSelecionado());
+		listaDiretoriosListener.atualizaPermissoes(getDiretorioSelecionado());
+	}
+
+	public static void habilitaRetorno() {
+		undo.setEnabled(true);
+	}
+	
+	public static void habilitaAvanco() {
+		redo.setEnabled(true);
 	}
 
 	/**
