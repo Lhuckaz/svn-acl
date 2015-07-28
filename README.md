@@ -9,4 +9,6 @@ Novidades
  6. Valida diretório adicionado
  7. Não fechar o programa quando você não salvou ou transferiu o arquivo modificado
  
-Baixar Em breve...
+[Javadoc](https://rawgit.com/Lhuckaz/svn-acl/v.2.0/svn-acl/doc/index.html)
+
+[Baixar 1.1](https://github.com/Lhuckaz/svn-acl/blob/v.2.0/svn-acl-2.0.exe?raw=true)
