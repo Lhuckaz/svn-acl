@@ -59,6 +59,22 @@ public class Util {
 		else
 			return "w";
 	}
+	
+	/**
+	 * Retorna nome das permissões
+	 * 
+	 * @param permissoes
+	 *            permissões
+	 * @return retorna o valor nomeado "LEITURA", "LEITURA/ESCRITA" ou "ESCRITA"
+	 */
+	public static String getPermissaoNomeadas(String permissoes) {
+		if (permissoes.equals("r"))
+			return "LEITURA";
+		else if (permissoes.equals("rw"))
+			return "LEITURA/ESCRITA";
+		else
+			return "ESCRITA";
+	}
 
 	/**
 	 * 
