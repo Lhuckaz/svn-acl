@@ -3,8 +3,8 @@ package br.com.svn_acl.util;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
-import java.io.ObjectInputStream;
-import java.security.PublicKey;
+import java.text.Normalizer;
+import java.text.Normalizer.Form;
 import java.util.Arrays;
 import java.util.Properties;
 
@@ -24,6 +24,7 @@ public class Util {
 	 */
 	public final static String ARQUIVO_PROPERTIES = "system.properties";
 	public static Properties propertiesSystem = new Properties();
+	private static String fileOpen;
 	/**
 	 * Nome do arquivo svn-acl
 	 */
@@ -57,6 +58,22 @@ public class Util {
 			return "rw";
 		else
 			return "w";
+	}
+	
+	/**
+	 * Retorna nome das permissões
+	 * 
+	 * @param permissoes
+	 *            permissões
+	 * @return retorna o valor nomeado "LEITURA", "LEITURA/ESCRITA" ou "ESCRITA"
+	 */
+	public static String getPermissaoNomeadas(String permissoes) {
+		if (permissoes.equals("r"))
+			return "LEITURA";
+		else if (permissoes.equals("rw"))
+			return "LEITURA/ESCRITA";
+		else
+			return "ESCRITA";
 	}
 
 	/**
@@ -125,7 +142,8 @@ public class Util {
 	 * 
 	 * Retira o arquivo no final da url
 	 * 
-	 * @param url endereço
+	 * @param url
+	 *            endereço
 	 * @return retorna a url sem o arquivo
 	 */
 	public static String validaURL(String url) {
@@ -301,27 +319,17 @@ public class Util {
 	 */
 	public static void gravaAtributosAd(String dominio, String user, String password) {
 		try {
-			if (!Criptografa.verificaSeExisteChavesNoSO()) {
-				Criptografa.geraChave();
-			}
-
 			FileInputStream fis = new FileInputStream(ARQUIVO_PROPERTIES);
 			propertiesSystem.load(fis);
 			fis.close();
 
-			FileInputStream fileInputStream = new FileInputStream(Criptografa.PATH_CHAVE_PUBLICA);
-			ObjectInputStream ois = new ObjectInputStream(fileInputStream);
-			final PublicKey chavePublica = (PublicKey) ois.readObject();
-
-			final byte[] textoCriptografado = Criptografa.criptografa(password, chavePublica);
+			final String textoCriptografado = Criptografa.criptografa(password);
 			propertiesSystem.setProperty("domain.ldap", dominio);
 			propertiesSystem.setProperty("username.ldap", user);
-			propertiesSystem.setProperty("password.ldap", Arrays.toString(textoCriptografado).replace(" ", ""));
+			propertiesSystem.setProperty("password.ldap", textoCriptografado);
 			File file = new File(ARQUIVO_PROPERTIES);
 			FileOutputStream fos = new FileOutputStream(file);
 			propertiesSystem.store(fos, "Alteracao de senha AD");
-			fileInputStream.close();
-			ois.close();
 			fos.close();
 			file = null;
 		} catch (Exception e) {
@@ -351,5 +359,37 @@ public class Util {
 			JOptionPane.showMessageDialog(null, "Verifique arquivo system.properties", "Erro",
 					JOptionPane.INFORMATION_MESSAGE);
 		}
+	}
+
+	/**
+	 * <i>removeDiacriticalMarks</i> <BR>
+	 * Remove sinais diacritícos, ou seja, remove todos os acentos
+	 * 
+	 * @param string
+	 *            palavra
+	 * @return retorna palavra sem acentos
+	 */
+	public static String removeSinaisDiacriticos(String string) {
+		return Normalizer.normalize(string, Form.NFD).replaceAll("\\p{InCombiningDiacriticalMarks}+", "");
+	}
+
+	/**
+	 * Salvar nome do arquivo que foi aberto
+	 * 
+	 * @param string
+	 *            nome do arquivo
+	 */
+	public static void setFileOpen(String nomeArquivo) {
+		fileOpen = nomeArquivo;
+	}
+
+	/**
+	 * 
+	 * @return retorna nome de arquivo que foi aberto pelo programa
+	 */
+	public static String getFileOpen() {
+		if (fileOpen == null)
+			return Diretorios.retornaArquivoParaSalvar();
+		return fileOpen;
 	}
 }

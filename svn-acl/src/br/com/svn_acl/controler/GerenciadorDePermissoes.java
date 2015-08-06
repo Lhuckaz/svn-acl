@@ -706,11 +706,20 @@ public class GerenciadorDePermissoes {
 	 * @param diretorio
 	 *            caminho do diretório
 	 * @return retorna <code>true</code> se diretório foi adicionado
+	 * @throws IOException lança exception caso der erro na leitura do arquivo
 	 */
-	public boolean adicionaDir(String diretorio) {
+	public boolean adicionaDir(String diretorio) throws IOException {
+		boolean diretorioValido = false;
+		try {
+			diretorioValido = diretorio.contains(":/");
+		} catch (NullPointerException e) {
+			// Irá retornar false caso parâmetro seja nulo
+		}
 		if (verificaSeDiretorioExiste(diretorio)) {
 			System.out.println("Diretorio \"" + diretorio + "\" ja existe");
-			return false;
+			throw new ArrayIndexOutOfBoundsException();
+		} else if (!diretorioValido) {
+			throw new NullPointerException();
 		} else {
 			try {
 				fileReader = new FileReader(file);
@@ -724,7 +733,7 @@ public class GerenciadorDePermissoes {
 				return true;
 			} catch (IOException e) {
 				e.printStackTrace();
-				return false;
+				throw new IOException();
 			} finally {
 				try {
 					fileWriter.close();

@@ -391,7 +391,7 @@ public class GerenciadorDeGrupos {
 			}
 		}
 		ArrayList<String> todos = new ArrayList<>(todosOsUsuarios);
-		Collections.sort(todos);
+		Collections.sort(todos, String.CASE_INSENSITIVE_ORDER);
 		return todos;
 	}
 

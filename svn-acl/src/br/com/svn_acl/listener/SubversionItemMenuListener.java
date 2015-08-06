@@ -11,7 +11,7 @@ import br.com.svn_acl.gui.SvnAclGUI;
 
 /**
  * 
- * Classe ouvinte {@link JMenuItem} "Exportar" e "Commit" do {@link JMenu}
+ * Classe ouvinte {@link JMenuItem} "Checkout" e "Commit" do {@link JMenu}
  * "Subversion" da classe {@link SvnAclGUI} para abrir a classe
  * {@link SubversionArquivo} com determinadas configurações
  * 
@@ -31,7 +31,7 @@ public class SubversionItemMenuListener implements ActionListener {
 	public void actionPerformed(ActionEvent e) {
 		Object open = e.getSource();
 		// MenuItem exportar
-		if (open == svnAclGUI.getJMenuItemExport()) {
+		if (open == svnAclGUI.getJMenuItemCheckout()) {
 			export();
 		}
 
@@ -42,10 +42,10 @@ public class SubversionItemMenuListener implements ActionListener {
 	}
 
 	/**
-	 * Abre a classe {@link SubversionArquivo} com o titulo "Exportar"
+	 * Abre a classe {@link SubversionArquivo} com o titulo "Checkout"
 	 */
 	private void export() {
-		subversionArquivo = new SubversionArquivo(svnAclGUI, "Exportar");
+		subversionArquivo = new SubversionArquivo(svnAclGUI, "Checkout");
 		subversionArquivo.setVisible(true);
 	}
 

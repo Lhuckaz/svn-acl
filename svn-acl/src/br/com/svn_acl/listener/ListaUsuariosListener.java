@@ -1,5 +1,7 @@
 package br.com.svn_acl.listener;
 
+import java.util.ArrayList;
+
 import javax.swing.JList;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
@@ -21,18 +23,23 @@ public class ListaUsuariosListener implements ListSelectionListener {
 		this.svnAclGUI = svnAclGUI;
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public void valueChanged(ListSelectionEvent e) {
 		if (e.getValueIsAdjusting())
 			return;
 		JList<?> lista = (JList<?>) e.getSource();
-		String usuarioSelecionado = (String) lista.getSelectedValue();
-		if (usuarioSelecionado != null) {
-			svnAclGUI.setUsuarioSelecionado(usuarioSelecionado);
+		ArrayList<String> usuariosSelecionados = null;
+		try {
+			usuariosSelecionados = (ArrayList<String>) lista.getSelectedValuesList();
+		} catch (ClassCastException ex) {
+			// Setar usuariosSelecionados como Array vazia
+		}
+		if (usuariosSelecionados != null) {
+			svnAclGUI.setUsuariosSelecionados(usuariosSelecionados);
 		} else {
-			svnAclGUI.setUsuarioSelecionado("");
+			svnAclGUI.setUsuariosSelecionados(new ArrayList<String>());
 
 		}
 	}
-
 }

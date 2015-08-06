@@ -16,12 +16,18 @@ import br.com.svn_acl.gui.SvnAclGUI;
 public class Main {
 
 	public static void main(String[] args) {
+		final String[] argumentos = args;
 		try {
+			// Traduzindo JOptionPanes
+			UIManager.put("OptionPane.cancelButtonText", "Cancelar");
+			UIManager.put("OptionPane.noButtonText", "Não");
+			UIManager.put("OptionPane.yesButtonText", "Sim");
+
 			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
 
 			SwingUtilities.invokeLater(new Runnable() {
 				public void run() {
-					new SvnAclGUI();
+					new SvnAclGUI(argumentos);
 				}
 			});
 		} catch (Exception e) {
