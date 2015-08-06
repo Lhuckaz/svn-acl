@@ -14,16 +14,16 @@ Novidades 2.0
  
 [Javadoc 2.0](https://rawgit.com/Lhuckaz/svn-acl/v.2.0/svn-acl/doc/index.html)
 
-Instalador versão 2.0 x64
+Instalador versão 2.0 x64 (64 bits): 
 [Baixar 2.0](https://github.com/Lhuckaz/svn-acl/blob/v.2.0/svn-acl-2.0_x64.exe?raw=true)
 
-Instalador versão 2.0 x86(32 bits)
+Instalador versão 2.0 x86 (32 bits): 
 [Baixar 2.0](https://github.com/Lhuckaz/svn-acl/blob/v.2.0/svn-acl-2.0_x86.exe?raw=true)
 
-Instalador versão 1.0
+Instalador versão 1.0: 
 [Baixar 1.1](https://github.com/Lhuckaz/svn-acl/blob/v.1.1/svn-acl-1.1.exe?raw=true)
 
-Executável(Portable)
+Executável(Portable): 
 [Baixar 1.0](https://github.com/Lhuckaz/svn-acl/blob/master/svn-acl-1.0.exe?raw=true)
 
 A partir da versão 2.0, por favor instale conforme a arquitetura de seu sistema operacional, x86 ou x64
