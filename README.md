@@ -20,7 +20,7 @@ Instalador versão 2.0 x64 (64 bits):
 Instalador versão 2.0 x86 (32 bits): 
 [Baixar 2.0](https://github.com/Lhuckaz/svn-acl/blob/v.2.0/svn-acl-2.0_x86.exe?raw=true)
 
-Instalador versão 1.0: 
+Instalador versão 1.1: 
 [Baixar 1.1](https://github.com/Lhuckaz/svn-acl/blob/v.1.1/svn-acl-1.1.exe?raw=true)
 
 Executável (Portable): 
