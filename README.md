@@ -11,6 +11,6 @@ Novidades
  
 [Javadoc](https://rawgit.com/Lhuckaz/svn-acl/v.2.0/svn-acl/doc/index.html)
 
-[Baixar 2.0](https://github.com/Lhuckaz/svn-acl/blob/v.2.0/svn-acl-2.0_x64.exe?raw=true)
+[Baixar 2.0 - 64 bits](https://github.com/Lhuckaz/svn-acl/blob/v.2.0/svn-acl-2.0_x64.exe?raw=true)
 
 [Baixar 2.0 - 32 bits](https://github.com/Lhuckaz/svn-acl/blob/v.2.0/svn-acl-2.0.exe?raw=true)
