@@ -430,10 +430,16 @@ public class GerenciadorDeGrupos {
 			fileWriter = new FileWriter(new File(Gerenciador.getCaminhoSaidaOculto(false)));
 			leitor = new BufferedReader(fileReader);
 			String line = "";
+			boolean permissoes = false;
 			while ((line = leitor.readLine()) != null) {
+				if(line.contains("[")) {
+					if(!line.equals("[groups]")) {
+						permissoes = true;
+					}
+				}
 				String grupo = retornaGrupoDaLinha(line);
 				if (listaGruposDoUsuario.contains(grupo)) {
-					List<String> listaUsuarioGrupo = new ArrayList<>(listaUsuariosDaLinha(line));
+					Collection<String> listaUsuarioGrupo = new HashSet<>(listaUsuariosDaLinha(line));
 					listaUsuarioGrupo.remove(usuario);
 					StringBuffer string = new StringBuffer();
 					string.append(grupo + " =");
@@ -445,6 +451,12 @@ public class GerenciadorDeGrupos {
 				} else if (line.matches(usuario + "\\s{0,}=\\s{0,}.{0,}")) {
 					// nao faz nada, para remover caso o usuario tenha um
 					// permissao associada a ele proprio
+					
+					// Essa condicao serve para o programa nao apagar nome de
+					// grupos que contenham o mesmo nome de usuario
+					if(!permissoes){
+						fileWriter.write(line + "\n");
+					}
 				} else {
 					fileWriter.write(line + "\n");
 				}

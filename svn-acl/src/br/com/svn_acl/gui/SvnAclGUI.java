@@ -791,8 +791,8 @@ public class SvnAclGUI {
 
 		painelBotoesGruposGerUsers.add(usuarioParaAdicionar);
 		painelBotoesGruposGerUsers.add(botaoAdicionarUser);
-		painelBotoesGruposGerUsers.add(botaoAdicionarUserLotes);
 		painelBotoesGruposGerUsers.add(botaoRemoverUser);
+		painelBotoesGruposGerUsers.add(botaoAdicionarUserLotes);
 		painelBotoesGruposGerUsers.add(botaoRemoverUserAllGroups);
 		painelBotoesGrupos.add(painelBotoesGruposGerUsers, BorderLayout.EAST);
 		painelBotoesGrupos.add(painelBotoesGruposGerGrupos, BorderLayout.WEST);
