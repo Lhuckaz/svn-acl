@@ -174,6 +174,7 @@ public class GerenciadorDeGrupos {
 	 * @return retorna a lista de usuarios do grupo
 	 */
 	public List<String> listaUsuariosGrupo(String grupo) {
+		// Em caso de ArrayIndexOutOfBoundsException Verificar se esta sendo passado usuario vazio
 		String[] split = {};
 		try {
 			fileReader = new FileReader(file);
@@ -419,7 +420,8 @@ public class GerenciadorDeGrupos {
 	/**
 	 * Remove o usuario de todos os grupos e suas permissões
 	 * 
-	 * @param usuario usuário
+	 * @param usuario
+	 *            usuário
 	 */
 	public void removeUsuarioDeTodosOsGrupos(String usuario) {
 		List<String> listaGruposDoUsuario = listaGruposDoUsuario(usuario);

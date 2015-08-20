@@ -34,11 +34,11 @@ public class AdicionarUsuarioEmLotes extends JDialog implements ListSelectionLis
 	protected boolean add;
 	private SvnAclGUI svnAclGUI;
 
-	public AdicionarUsuarioEmLotes(SvnAclGUI svnAclGUI) {
-		super(svnAclGUI.getFrame());
+	public AdicionarUsuarioEmLotes(SvnAclGUI svnAclGUI, String grupoSelecionado) {
+		super(svnAclGUI.getFrame(), "Adicionar usuários no grupo " + grupoSelecionado, true);
 		this.svnAclGUI = svnAclGUI;
 		this.setModal(true);
-		Dimension dimensao = new Dimension(300, 300);
+		Dimension dimensao = new Dimension(350, 300);
 
 		JPanel jPanelPrincipalListGrupos = new JPanel(new BorderLayout());
 		JPanel jPanelDeUsuarios = new JPanel();

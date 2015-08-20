@@ -144,6 +144,7 @@ public class SvnAclGUI {
 	private JButton botaoAddGroup;
 	private JButton botaoAdicionarUserLotes;
 	private JButton botaoRemoverUser;
+	private JButton botaoRemoverUserAllGroups;
 	private JButton botaoAdicionarUser;
 	private JButton botaoAddDir;
 	private JButton botaoRemDir;
@@ -259,6 +260,7 @@ public class SvnAclGUI {
 			botaoAddGroup.setEnabled(true);
 			botaoAdicionarUserLotes.setEnabled(true);
 			botaoRemoverUser.setEnabled(true);
+			botaoRemoverUserAllGroups.setEnabled(true);
 			botaoAdicionarUser.setEnabled(true);
 			botaoAddDir.setEnabled(true);
 			botaoRemDir.setEnabled(true);
@@ -294,16 +296,16 @@ public class SvnAclGUI {
 		jMenuArquivos = new JMenu("Arquivo");
 		jMenuItemNovo = new JMenuItem("Novo");
 		jMenuItemNovo.addActionListener(arquivoItemMenuListener);
-		jMenuItemNovo.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_N, Toolkit.getDefaultToolkit()
-				.getMenuShortcutKeyMask()));
+		jMenuItemNovo.setAccelerator(
+				KeyStroke.getKeyStroke(KeyEvent.VK_N, Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()));
 		jMenuItemAbrir = new JMenuItem("Abrir");
 		jMenuItemAbrir.addActionListener(arquivoItemMenuListener);
-		jMenuItemAbrir.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_O, Toolkit.getDefaultToolkit()
-				.getMenuShortcutKeyMask()));
+		jMenuItemAbrir.setAccelerator(
+				KeyStroke.getKeyStroke(KeyEvent.VK_O, Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()));
 		jMenuItemSalvar = new JMenuItem("Salvar");
 		jMenuItemSalvar.addActionListener(arquivoItemMenuListener);
-		jMenuItemSalvar.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_S, Toolkit.getDefaultToolkit()
-				.getMenuShortcutKeyMask()));
+		jMenuItemSalvar.setAccelerator(
+				KeyStroke.getKeyStroke(KeyEvent.VK_S, Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()));
 		jMenuItemSalvar.setEnabled(false);
 		jMenuItemSair = new JMenuItem("Sair");
 		jMenuItemSair.addActionListener(new ActionListener() {
@@ -318,7 +320,8 @@ public class SvnAclGUI {
 					apagaArquivosEFecha();
 				} else {
 					if (JOptionPane.showConfirmDialog(frame, "Deseja sair ?\nAlterações não salvas serão perdidas!",
-							"Saindo", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE) == JOptionPane.YES_OPTION) {
+							"Saindo", JOptionPane.YES_NO_OPTION,
+							JOptionPane.QUESTION_MESSAGE) == JOptionPane.YES_OPTION) {
 						apagaArquivosEFecha();
 					}
 				}
@@ -335,8 +338,8 @@ public class SvnAclGUI {
 			}
 
 		});
-		jMenuItemSair.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_Q, Toolkit.getDefaultToolkit()
-				.getMenuShortcutKeyMask()));
+		jMenuItemSair.setAccelerator(
+				KeyStroke.getKeyStroke(KeyEvent.VK_Q, Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()));
 		jMenuArquivos.add(jMenuItemNovo);
 		jMenuArquivos.add(jMenuItemAbrir);
 		jMenuArquivos.add(jMenuItemSalvar);
@@ -346,12 +349,12 @@ public class SvnAclGUI {
 		jMenuSubversion = new JMenu("Subversion");
 		jMenuItemCheckout = new JMenuItem("Checkout");
 		jMenuItemCheckout.addActionListener(subversionItemMenuListener);
-		jMenuItemCheckout.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_E, Toolkit.getDefaultToolkit()
-				.getMenuShortcutKeyMask()));
+		jMenuItemCheckout.setAccelerator(
+				KeyStroke.getKeyStroke(KeyEvent.VK_E, Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()));
 		jMenuItemCommit = new JMenuItem("Commit");
 		jMenuItemCommit.addActionListener(subversionItemMenuListener);
-		jMenuItemCommit.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_I, Toolkit.getDefaultToolkit()
-				.getMenuShortcutKeyMask()));
+		jMenuItemCommit.setAccelerator(
+				KeyStroke.getKeyStroke(KeyEvent.VK_I, Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()));
 		jMenuItemCommit.setEnabled(false);
 		jMenuSubversion.add(jMenuItemCheckout);
 		jMenuSubversion.add(jMenuItemCommit);
@@ -359,11 +362,11 @@ public class SvnAclGUI {
 		jMenuSsh = new JMenu("SSH");
 		jMenuItemImportar = new JMenuItem("Importar");
 		jMenuItemImportar.addActionListener(sshItemMenuListener);
-		jMenuItemImportar.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_P, Toolkit.getDefaultToolkit()
-				.getMenuShortcutKeyMask()));
+		jMenuItemImportar.setAccelerator(
+				KeyStroke.getKeyStroke(KeyEvent.VK_P, Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()));
 		jMenuItemTransferir = new JMenuItem("Transferir");
-		jMenuItemTransferir.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_T, Toolkit.getDefaultToolkit()
-				.getMenuShortcutKeyMask()));
+		jMenuItemTransferir.setAccelerator(
+				KeyStroke.getKeyStroke(KeyEvent.VK_T, Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()));
 		jMenuItemTransferir.setEnabled(false);
 		jMenuItemTransferir.addActionListener(sshItemMenuListener);
 		jMenuSsh.add(jMenuItemImportar);
@@ -371,21 +374,21 @@ public class SvnAclGUI {
 
 		jMenuAd = new JMenu("AD");
 		jMenuItemAdSettings = new JMenuItem("Configurar LDAP");
-		jMenuItemAdSettings.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_L, Toolkit.getDefaultToolkit()
-				.getMenuShortcutKeyMask()));
+		jMenuItemAdSettings.setAccelerator(
+				KeyStroke.getKeyStroke(KeyEvent.VK_L, Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()));
 		jMenuItemAdSettings.addActionListener(adItemMenuListener);
 		jMenuAd.add(jMenuItemAdSettings);
 
 		jMenuPesquisa = new JMenu("Pesquisa");
 		jMenuItemGruposDoUser = new JMenuItem("Grupos do usuário");
-		jMenuItemGruposDoUser.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_G, Toolkit.getDefaultToolkit()
-				.getMenuShortcutKeyMask()));
+		jMenuItemGruposDoUser.setAccelerator(
+				KeyStroke.getKeyStroke(KeyEvent.VK_G, Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()));
 		jMenuItemGruposDoUser.setToolTipText("Exibe os grupos que o usuário participa");
 		jMenuItemGruposDoUser.addActionListener(pesquisaMenuItem);
 		jMenuItemGruposDoUser.setEnabled(false);
 		jMenuItemPermDoGrupo = new JMenuItem("Diretórios e permissões do grupo ou usuário");
-		jMenuItemPermDoGrupo.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_D, Toolkit.getDefaultToolkit()
-				.getMenuShortcutKeyMask()));
+		jMenuItemPermDoGrupo.setAccelerator(
+				KeyStroke.getKeyStroke(KeyEvent.VK_U, Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()));
 		jMenuItemPermDoGrupo.setToolTipText("Exibe os diretórios e as permissões do grupo ou usuário");
 		jMenuItemPermDoGrupo.addActionListener(pesquisaMenuItem);
 		jMenuItemPermDoGrupo.setEnabled(false);
@@ -487,8 +490,11 @@ public class SvnAclGUI {
 						gerenciador.atualizaArquivo();
 						listaGrupoListener.atualizaUsuarios(getGrupoSelecionado());
 					} else {
-						JOptionPane.showMessageDialog(SvnAclGUI.this.getFrame(), "Não foi possível adicionar grupo: "
-								+ "\"" + grupo + "\"\nVerfique se o grupo já existe", "Erro", JOptionPane.ERROR_MESSAGE);
+						JOptionPane
+								.showMessageDialog(SvnAclGUI.this.getFrame(),
+										"Não foi possível adicionar grupo: " + "\"" + grupo
+												+ "\"\nVerfique se o grupo já existe",
+										"Erro", JOptionPane.ERROR_MESSAGE);
 					}
 				} catch (NullPointerException ex) {
 					return;
@@ -578,8 +584,9 @@ public class SvnAclGUI {
 					if (!usuarioExiste) {
 						if (allUserEquals0) {
 							if (!usuarioExiste) {
-								int confirmar = JOptionPane.showConfirmDialog(getFrame(), "Usuário \""
-										+ usuarioParaAdicionar + "\" ainda nao existe\nDeseja adicionar assim mesmo ?",
+								int confirmar = JOptionPane.showConfirmDialog(getFrame(),
+										"Usuário \"" + usuarioParaAdicionar
+												+ "\" ainda nao existe\nDeseja adicionar assim mesmo ?",
 										"Adicionar", JOptionPane.YES_NO_OPTION);
 								if (confirmar == 0)
 									adicionaUsuario(usuarioParaAdicionar);
@@ -590,16 +597,16 @@ public class SvnAclGUI {
 							}
 						}
 						if (contains) {
-							int confirmar = JOptionPane.showConfirmDialog(getFrame(), "Usuário \""
-									+ usuarioParaAdicionar
-									+ "\" ainda nao existe\nUsuario existe no AD\nDeseja adicionar assim mesmo ?",
+							int confirmar = JOptionPane.showConfirmDialog(getFrame(),
+									"Usuário \"" + usuarioParaAdicionar
+											+ "\" ainda nao existe\nUsuario existe no AD\nDeseja adicionar assim mesmo ?",
 									"Adicionar", JOptionPane.YES_NO_OPTION);
 							if (confirmar == 0)
 								adicionaUsuario(usuarioParaAdicionar);
 						} else {
-							int confirmar = JOptionPane.showConfirmDialog(getFrame(), "Usuário \""
-									+ usuarioParaAdicionar
-									+ "\" ainda nao existe\nUsuario NÃO existe no AD\nDeseja adicionar assim mesmo ?",
+							int confirmar = JOptionPane.showConfirmDialog(getFrame(),
+									"Usuário \"" + usuarioParaAdicionar
+											+ "\" ainda nao existe\nUsuario NÃO existe no AD\nDeseja adicionar assim mesmo ?",
 									"Adicionar", JOptionPane.YES_NO_OPTION);
 							if (confirmar == 0)
 								adicionaUsuario(usuarioParaAdicionar);
@@ -610,16 +617,16 @@ public class SvnAclGUI {
 				} else {
 					if (!usuarioExiste) {
 						if (contains) {
-							int confirmar = JOptionPane.showConfirmDialog(getFrame(), "Usuário \""
-									+ usuarioParaAdicionar
-									+ "\" ainda nao existe\nUsuario existe no AD\nDeseja adicionar assim mesmo ?",
+							int confirmar = JOptionPane.showConfirmDialog(getFrame(),
+									"Usuário \"" + usuarioParaAdicionar
+											+ "\" ainda nao existe\nUsuario existe no AD\nDeseja adicionar assim mesmo ?",
 									"Adicionar", JOptionPane.YES_NO_OPTION);
 							if (confirmar == 0)
 								adicionaUsuario(usuarioParaAdicionar);
 						} else {
-							int confirmar = JOptionPane.showConfirmDialog(getFrame(), "Usuário \""
-									+ usuarioParaAdicionar
-									+ "\" ainda nao existe\nUsuario NÃO existe no AD\nDeseja adicionar assim mesmo ?",
+							int confirmar = JOptionPane.showConfirmDialog(getFrame(),
+									"Usuário \"" + usuarioParaAdicionar
+											+ "\" ainda nao existe\nUsuario NÃO existe no AD\nDeseja adicionar assim mesmo ?",
 									"Adicionar", JOptionPane.YES_NO_OPTION);
 							if (confirmar == 0)
 								adicionaUsuario(usuarioParaAdicionar);
@@ -628,8 +635,9 @@ public class SvnAclGUI {
 						if (contains) {
 							adicionaUsuario(usuarioParaAdicionar);
 						} else {
-							int confirmar = JOptionPane.showConfirmDialog(getFrame(), "Usuário: \""
-									+ usuarioParaAdicionar + "\" NÃO existe no AD\nDeseja adicionar assim mesmo ?",
+							int confirmar = JOptionPane.showConfirmDialog(getFrame(),
+									"Usuário: \"" + usuarioParaAdicionar
+											+ "\" NÃO existe no AD\nDeseja adicionar assim mesmo ?",
 									"Adicionar", JOptionPane.YES_NO_OPTION);
 							if (confirmar == 0)
 								adicionaUsuario(usuarioParaAdicionar);
@@ -676,7 +684,8 @@ public class SvnAclGUI {
 					JOptionPane.showMessageDialog(getFrame(), "Selecione um grupo", "Adicionar em Lotes",
 							JOptionPane.ERROR_MESSAGE);
 				} else {
-					AdicionarUsuarioEmLotes adicionarUsuarioEmLotes = new AdicionarUsuarioEmLotes(SvnAclGUI.this);
+					AdicionarUsuarioEmLotes adicionarUsuarioEmLotes = new AdicionarUsuarioEmLotes(SvnAclGUI.this,
+							getGrupoSelecionado());
 					if (adicionarUsuarioEmLotes.add && adicionarUsuarioEmLotes.getUsuariosSelecionados() != null) {
 						ArrayList<String> usuariosSelecionados = adicionarUsuarioEmLotes.getUsuariosSelecionados();
 						for (String usuario : usuariosSelecionados) {
@@ -750,6 +759,33 @@ public class SvnAclGUI {
 			}
 		});
 
+		botaoRemoverUserAllGroups = new JButton("Remover de todos os grupos");
+		botaoRemoverUserAllGroups.setEnabled(false);
+		botaoRemoverUserAllGroups.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				RemoverTodosUsuarioDoGrupo removerTodosUsuarioDoGrupo = new RemoverTodosUsuarioDoGrupo(SvnAclGUI.this);
+				if (removerTodosUsuarioDoGrupo.remove && removerTodosUsuarioDoGrupo.getUsuariosSelecionados() != null) {
+					ArrayList<String> usuariosSelecionados = removerTodosUsuarioDoGrupo.getUsuariosSelecionados();
+					for (String usuario : usuariosSelecionados) {
+						removeUsuariosDoGrupo(usuario);
+					}
+				}
+			}
+
+			private void removeUsuariosDoGrupo(String usuario) {
+				getGerenciadorDeGrupos().removeUsuarioDeTodosOsGrupos(usuario);
+				gerenciador.atualizaArquivo();
+				if (!getGrupoSelecionado().equals("") || !getDiretorioSelecionado().equals("")) {
+					listaGrupoListener.atualizaUsuarios(getGrupoSelecionado());
+					listaDiretoriosListener.atualizaPermissoes(getDiretorioSelecionado());
+				}
+
+			}
+
+		});
+
 		painelBotoesGruposGerGrupos.add(botaoAddGroup);
 		painelBotoesGruposGerGrupos.add(botaoRemGroup);
 
@@ -757,6 +793,7 @@ public class SvnAclGUI {
 		painelBotoesGruposGerUsers.add(botaoAdicionarUser);
 		painelBotoesGruposGerUsers.add(botaoAdicionarUserLotes);
 		painelBotoesGruposGerUsers.add(botaoRemoverUser);
+		painelBotoesGruposGerUsers.add(botaoRemoverUserAllGroups);
 		painelBotoesGrupos.add(painelBotoesGruposGerUsers, BorderLayout.EAST);
 		painelBotoesGrupos.add(painelBotoesGruposGerGrupos, BorderLayout.WEST);
 		jPanelPrincipalGrupos.add(painelBotoesGrupos, BorderLayout.SOUTH);
@@ -846,8 +883,9 @@ public class SvnAclGUI {
 					gerenciador.atualizaArquivo();
 					listaDiretoriosListener.atualizaPermissoes(getDiretorioSelecionado());
 				} else {
-					JOptionPane.showMessageDialog(getFrame(), "Não foi possível adicionar diretório: " + "\""
-							+ diretorio + "\"\n" + message, "Erro", JOptionPane.ERROR_MESSAGE);
+					JOptionPane.showMessageDialog(getFrame(),
+							"Não foi possível adicionar diretório: " + "\"" + diretorio + "\"\n" + message, "Erro",
+							JOptionPane.ERROR_MESSAGE);
 				}
 
 			}
@@ -1413,7 +1451,8 @@ public class SvnAclGUI {
 					apagaArquivosEFecha();
 				} else {
 					if (JOptionPane.showConfirmDialog(frame, "Deseja sair ?\nAlterações não salvas serão perdidas!",
-							"Saindo", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE) == JOptionPane.YES_OPTION) {
+							"Saindo", JOptionPane.YES_NO_OPTION,
+							JOptionPane.QUESTION_MESSAGE) == JOptionPane.YES_OPTION) {
 						apagaArquivosEFecha();
 					}
 				}
