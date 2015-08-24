@@ -1,5 +1,6 @@
 package br.com.svn_acl.listener;
 
+import java.util.Collections;
 import java.util.List;
 
 import javax.swing.JList;
@@ -7,6 +8,7 @@ import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
 import br.com.svn_acl.gui.SvnAclGUI;
+import br.com.svn_acl.util.NaturalOrderComparatorStringInsensitive;
 
 /**
  * 
@@ -46,7 +48,10 @@ public class ListaGrupoListener implements ListSelectionListener {
 		List<String> listaUsuariosGrupo = svnAclGUI.getGerenciadorDeGrupos().listaUsuariosGrupo(grupoSelecionado);
 		svnAclGUI.setUsuariosDoGrupo(listaUsuariosGrupo);
 		svnAclGUI.atualizaUsuarios();
-		if (!svnAclGUI.getGerenciadorDeGrupos().listarGrupos().equals(svnAclGUI.getListarGrupos())) {
+		List<String> listarGrupos = svnAclGUI.getGerenciadorDeGrupos().listarGrupos();
+		// Organiza em ordem alfabetica para comparação
+		Collections.sort(listarGrupos, new NaturalOrderComparatorStringInsensitive());
+		if (!listarGrupos.equals(svnAclGUI.getListarGrupos())) {
 			svnAclGUI.atulizaListaGrupos();
 			svnAclGUI.atualizaGrupos();
 		}

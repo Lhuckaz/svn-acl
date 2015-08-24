@@ -22,6 +22,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.net.ConnectException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import javax.naming.AuthenticationException;
@@ -60,6 +61,7 @@ import br.com.svn_acl.listener.PesquisaMenuItem;
 import br.com.svn_acl.listener.SshItemMenuListener;
 import br.com.svn_acl.listener.SubversionItemMenuListener;
 import br.com.svn_acl.util.DocumentTamanhoJTextField;
+import br.com.svn_acl.util.NaturalOrderComparatorStringInsensitive;
 import br.com.svn_acl.util.Util;
 
 /**
@@ -1293,6 +1295,8 @@ public class SvnAclGUI {
 	 * @return listarGrupos
 	 */
 	public List<String> getListarGrupos() {
+		// Organiza o nome dos grupos em ordem alfabetica
+		Collections.sort(listarGrupos, new NaturalOrderComparatorStringInsensitive());
 		return listarGrupos;
 	}
 
@@ -1300,6 +1304,8 @@ public class SvnAclGUI {
 	 * @return listarDiretorios
 	 */
 	public List<String> getListarDiretorios() {
+		// Organiza o nome dos grupos em ordem alfabetic
+		Collections.sort(listarDiretorios, new NaturalOrderComparatorStringInsensitive());
 		return listarDiretorios;
 	}
 
@@ -1386,6 +1392,7 @@ public class SvnAclGUI {
 	 */
 	public void atualizaUsuarios() {
 		((DefaultListModel<String>) listaUsuarios.getModel()).removeAllElements();
+		Collections.sort(listaUsuariosGrupo, new NaturalOrderComparatorStringInsensitive());
 		for (String usuarios : listaUsuariosGrupo) {
 			((DefaultListModel<String>) listaUsuarios.getModel()).addElement(usuarios);
 		}
@@ -1396,6 +1403,7 @@ public class SvnAclGUI {
 	 */
 	public void atualizaPermissoes() {
 		((DefaultListModel<String>) listaPermissoes.getModel()).removeAllElements();
+		Collections.sort(listaPermissaoDiretorio, new NaturalOrderComparatorStringInsensitive());
 		for (String usuarios : listaPermissaoDiretorio) {
 			((DefaultListModel<String>) listaPermissoes.getModel()).addElement(usuarios);
 		}

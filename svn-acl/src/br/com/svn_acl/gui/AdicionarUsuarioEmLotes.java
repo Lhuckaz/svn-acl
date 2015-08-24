@@ -17,6 +17,8 @@ import javax.swing.JTabbedPane;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
+import br.com.svn_acl.util.NaturalOrderComparatorStringInsensitive;
+
 /**
  * 
  * Interface gráfica extends {@link JDialog} implements
@@ -86,13 +88,13 @@ public class AdicionarUsuarioEmLotes extends JDialog implements ListSelectionLis
 		// Se caso nao existir usuarios no AD adicionar ja existentes
 		if (SvnAclGUI.allUser.size() != 0) {
 			ArrayList<String> todosUsuarios = (ArrayList<String>) SvnAclGUI.allUser;
-			Collections.sort(todosUsuarios, String.CASE_INSENSITIVE_ORDER);
+			Collections.sort(todosUsuarios, new NaturalOrderComparatorStringInsensitive());
 			for (String usuarios : todosUsuarios) {
 				modeloUsuariosLotes.addElement(usuarios);
 			}
 		} else {
 			ArrayList<String> todosUsuarios = (ArrayList<String>) svnAclGUI.getGerenciadorDeGrupos().listarUsuarios();
-			Collections.sort(todosUsuarios, String.CASE_INSENSITIVE_ORDER);
+			Collections.sort(todosUsuarios, new NaturalOrderComparatorStringInsensitive());
 			for (String usuarios : todosUsuarios) {
 				modeloUsuariosLotes.addElement(usuarios);
 			}

@@ -1,5 +1,6 @@
 package br.com.svn_acl.listener;
 
+import java.util.Collections;
 import java.util.List;
 
 import javax.swing.JList;
@@ -7,6 +8,7 @@ import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
 import br.com.svn_acl.gui.SvnAclGUI;
+import br.com.svn_acl.util.NaturalOrderComparatorStringInsensitive;
 
 /**
  * 
@@ -47,7 +49,10 @@ public class ListaDiretoriosListener implements ListSelectionListener {
 				.listaGruposEUserESuasPermissoesDeUmDiretorio(diretorioSelecionado);
 		svnAclGUI.setPermissoesDoDiretorio(listaPermissoesDiretorio);
 		svnAclGUI.atualizaPermissoes();
-		if (!svnAclGUI.getGerenciadorDePermissoes().listaDiretorios().equals(svnAclGUI.getListarDiretorios())) {
+		List<String> listaDiretorios = svnAclGUI.getGerenciadorDePermissoes().listaDiretorios();
+		// Organiza em ordem alfabetica para comparação
+		Collections.sort(listaDiretorios, new NaturalOrderComparatorStringInsensitive());
+		if (!listaDiretorios.equals(svnAclGUI.getListarDiretorios())) {
 			svnAclGUI.atualizaListaDiretorios();
 			svnAclGUI.atualizaDiretorios();
 		}

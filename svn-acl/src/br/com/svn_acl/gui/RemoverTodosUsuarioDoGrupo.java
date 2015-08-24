@@ -17,11 +17,13 @@ import javax.swing.JTabbedPane;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
+import br.com.svn_acl.util.NaturalOrderComparatorStringInsensitive;
+
 /**
  * 
  * Interface gráfica extends {@link JDialog} implements
  * {@link ListSelectionListener} ouvinte do {@link JButton}
- * "Adicionar usuários em lotes" no {@link JTabbedPane} "Grupos" da interface
+ * "Remover de todos os grupos" no {@link JTabbedPane} "Grupos" da interface
  * principal {@link SvnAclGUI} para remove usuarios de todos os grupos
  * 
  * @author Lhuckaz
@@ -84,7 +86,7 @@ public class RemoverTodosUsuarioDoGrupo extends JDialog implements ListSelection
 	 */
 	private void carregaListaDeUsuarios(DefaultListModel<String> modeloUsuariosLotes) {
 		ArrayList<String> todosUsuarios = (ArrayList<String>) svnAclGUI.getGerenciadorDeGrupos().listarUsuarios();
-		Collections.sort(todosUsuarios, String.CASE_INSENSITIVE_ORDER);
+		Collections.sort(todosUsuarios, new NaturalOrderComparatorStringInsensitive());
 		for (String usuarios : todosUsuarios) {
 			modeloUsuariosLotes.addElement(usuarios);
 

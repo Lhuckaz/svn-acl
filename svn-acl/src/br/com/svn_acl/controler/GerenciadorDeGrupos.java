@@ -12,6 +12,8 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 
+import br.com.svn_acl.util.NaturalOrderComparatorStringInsensitive;
+
 /**
  * Classe responsável por gerenciar os grupos
  * 
@@ -392,7 +394,7 @@ public class GerenciadorDeGrupos {
 			}
 		}
 		ArrayList<String> todos = new ArrayList<>(todosOsUsuarios);
-		Collections.sort(todos, String.CASE_INSENSITIVE_ORDER);
+		Collections.sort(todos, new NaturalOrderComparatorStringInsensitive());
 		return todos;
 	}
 
