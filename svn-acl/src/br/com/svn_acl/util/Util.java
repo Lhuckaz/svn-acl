@@ -376,7 +376,7 @@ public class Util {
 	/**
 	 * Salvar nome do arquivo que foi aberto
 	 * 
-	 * @param string
+	 * @param nomeArquivo
 	 *            nome do arquivo
 	 */
 	public static void setFileOpen(String nomeArquivo) {
