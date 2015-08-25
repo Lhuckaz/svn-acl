@@ -171,6 +171,8 @@ public class SvnAclGUI {
 		}
 		prepareGUI();
 		carregaArquivo(arquivo);
+		atualizaGrupos();
+		atualizaDiretorios();
 	}
 
 	/**
