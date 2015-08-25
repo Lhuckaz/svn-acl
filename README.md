@@ -13,4 +13,4 @@ Novidades
 
 [Baixar 2.0 - 64 bits](https://github.com/Lhuckaz/svn-acl/blob/v.2.0/svn-acl-2.0_x64.exe?raw=true)
 
-[Baixar 2.0 - 32 bits](https://github.com/Lhuckaz/svn-acl/blob/v.2.0/svn-acl-2.0.exe?raw=true)
+[Baixar 2.0 - 32 bits](https://github.com/Lhuckaz/svn-acl/blob/v.2.0/svn-acl-2.0_x86.exe?raw=true)
