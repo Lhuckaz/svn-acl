@@ -52,7 +52,7 @@ public class ListaGrupoListener implements ListSelectionListener {
 		// Organiza em ordem alfabetica para comparação
 		Collections.sort(listarGrupos, new NaturalOrderComparatorStringInsensitive());
 		if (!listarGrupos.equals(svnAclGUI.getListarGrupos())) {
-			svnAclGUI.atulizaListaGrupos();
+			svnAclGUI.atualizaListaGrupos();
 			svnAclGUI.atualizaGrupos();
 		}
 	}

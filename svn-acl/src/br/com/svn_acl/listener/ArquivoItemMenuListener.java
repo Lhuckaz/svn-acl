@@ -287,7 +287,7 @@ public class ArquivoItemMenuListener implements ActionListener {
 	 * chamado os métodos pois influenciam
 	 */
 	private void atualizaListas() {
-		svnAclGUI.atulizaListaGrupos();
+		svnAclGUI.atualizaListaGrupos();
 		svnAclGUI.atualizaGrupos();
 		svnAclGUI.atualizaListaDiretorios();
 		svnAclGUI.atualizaDiretorios();

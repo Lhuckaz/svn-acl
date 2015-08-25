@@ -171,8 +171,6 @@ public class SvnAclGUI {
 		}
 		prepareGUI();
 		carregaArquivo(arquivo);
-		atualizaGrupos();
-		atualizaDiretorios();
 	}
 
 	/**
@@ -275,6 +273,9 @@ public class SvnAclGUI {
 			jMenuItemGruposDoUser.setEnabled(true);
 			// Abrir, Checkout, Importar e alterações
 			arquivoSalvo = false;
+
+			atualizaGrupos();
+			atualizaDiretorios();
 		}
 	}
 
@@ -1364,7 +1365,7 @@ public class SvnAclGUI {
 	/**
 	 * Atualiza lista de grupos
 	 */
-	public void atulizaListaGrupos() {
+	public void atualizaListaGrupos() {
 		listarGrupos = getGerenciadorDeGrupos().listarGrupos();
 	}
 
@@ -1417,8 +1418,12 @@ public class SvnAclGUI {
 	public void retornaArquivo() {
 		gerenciador.alterarArquivo();
 		gerenciador.atualizaArquivo();
-		listaGrupoListener.atualizaUsuarios(getGrupoSelecionado());
-		listaDiretoriosListener.atualizaPermissoes(getDiretorioSelecionado());
+		atualizaGrupos();
+		atualizaDiretorios();
+		if (!getGrupoSelecionado().equals(""))
+			listaGrupoListener.atualizaUsuarios(getGrupoSelecionado());
+		if (!getDiretorioSelecionado().equals(""))
+			listaDiretoriosListener.atualizaPermissoes(getDiretorioSelecionado());
 	}
 
 	/**
@@ -1427,8 +1432,12 @@ public class SvnAclGUI {
 	public void avancaArquivo() {
 		gerenciador.alterarArquivo();
 		gerenciador.atualizaArquivo();
-		listaGrupoListener.atualizaUsuarios(getGrupoSelecionado());
-		listaDiretoriosListener.atualizaPermissoes(getDiretorioSelecionado());
+		atualizaGrupos();
+		atualizaDiretorios();
+		if (!getGrupoSelecionado().equals(""))
+			listaGrupoListener.atualizaUsuarios(getGrupoSelecionado());
+		if (!getDiretorioSelecionado().equals(""))
+			listaDiretoriosListener.atualizaPermissoes(getDiretorioSelecionado());
 	}
 
 	/**
