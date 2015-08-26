@@ -3,7 +3,8 @@ Interface Grafica para Manipular Usuários do ACL do SVN
 
 Novidades 2.1
  1. Remoção de usuarios de todos os grupos
- 2. Bugs corrigidos
+ 2. Organizado em ordem alfabética
+ 3. Bugs corrigidos
  
 [Javadoc 2.1](https://rawgit.com/Lhuckaz/svn-acl/v.2.1/svn-acl/doc/index.html)
 
