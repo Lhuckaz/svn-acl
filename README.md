@@ -1,5 +1,5 @@
 # svn-acl
-Interface Grafica para Manipular Usuários do ACL do SVN
+Interface Grafica para Manipular Usuários do ACL(Acess Control List) do SVN(Subversion)
 
 Ultima versão estável 2.1
 
