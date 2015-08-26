@@ -3,7 +3,7 @@ Interface Grafica para Manipular Usuários do ACL do SVN
 
 Novidades
  1. Adicionar mais de um usuário
- 2. Checkout do SVN para sua aplicação, realizar Commit
+ 2. Checkout do SVN para sua aplicação, realiza Commit
  3. Importar e Transferir através de conexão SSH
  4. Integração com AD, para lista de usuários que podem ser adicionados
  5. Instalador
