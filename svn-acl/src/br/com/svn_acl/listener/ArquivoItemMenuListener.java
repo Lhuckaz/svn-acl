@@ -197,8 +197,8 @@ public class ArquivoItemMenuListener implements ActionListener {
 	 * 
 	 * @param selectedFile
 	 *            arquivo para salvar
-	 * @param shell
-	 * @param display
+	 * @param shell shell do SWT
+	 * @param display display do SWT
 	 */
 	private void verificaSeExisteESalva(File selectedFile, Shell shell, Display display) {
 		if (selectedFile.exists()) {
@@ -219,8 +219,8 @@ public class ArquivoItemMenuListener implements ActionListener {
 	 *            resultado do {@link JOptionPane}
 	 * @param selectedFile
 	 *            arquivo para salvar
-	 * @param shell
-	 * @param display
+	 * @param shell shell do SWT
+	 * @param display display do SWT
 	 */
 	private void desejaSobrescrever(int confirmar, File selectedFile, Shell shell, Display display) {
 		if (confirmar == SALVAR) {
@@ -287,7 +287,7 @@ public class ArquivoItemMenuListener implements ActionListener {
 	 * chamado os métodos pois influenciam
 	 */
 	private void atualizaListas() {
-		svnAclGUI.atulizaListaGrupos();
+		svnAclGUI.atualizaListaGrupos();
 		svnAclGUI.atualizaGrupos();
 		svnAclGUI.atualizaListaDiretorios();
 		svnAclGUI.atualizaDiretorios();

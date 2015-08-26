@@ -17,6 +17,8 @@ import javax.swing.JTabbedPane;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
+import br.com.svn_acl.util.NaturalOrderComparatorStringInsensitive;
+
 /**
  * 
  * Interface gráfica extends {@link JDialog} implements
@@ -34,11 +36,11 @@ public class AdicionarUsuarioEmLotes extends JDialog implements ListSelectionLis
 	protected boolean add;
 	private SvnAclGUI svnAclGUI;
 
-	public AdicionarUsuarioEmLotes(SvnAclGUI svnAclGUI) {
-		super(svnAclGUI.getFrame());
+	public AdicionarUsuarioEmLotes(SvnAclGUI svnAclGUI, String grupoSelecionado) {
+		super(svnAclGUI.getFrame(), "Adicionar usuários no grupo " + grupoSelecionado, true);
 		this.svnAclGUI = svnAclGUI;
 		this.setModal(true);
-		Dimension dimensao = new Dimension(300, 300);
+		Dimension dimensao = new Dimension(350, 300);
 
 		JPanel jPanelPrincipalListGrupos = new JPanel(new BorderLayout());
 		JPanel jPanelDeUsuarios = new JPanel();
@@ -86,13 +88,13 @@ public class AdicionarUsuarioEmLotes extends JDialog implements ListSelectionLis
 		// Se caso nao existir usuarios no AD adicionar ja existentes
 		if (SvnAclGUI.allUser.size() != 0) {
 			ArrayList<String> todosUsuarios = (ArrayList<String>) SvnAclGUI.allUser;
-			Collections.sort(todosUsuarios, String.CASE_INSENSITIVE_ORDER);
+			Collections.sort(todosUsuarios, new NaturalOrderComparatorStringInsensitive());
 			for (String usuarios : todosUsuarios) {
 				modeloUsuariosLotes.addElement(usuarios);
 			}
 		} else {
 			ArrayList<String> todosUsuarios = (ArrayList<String>) svnAclGUI.getGerenciadorDeGrupos().listarUsuarios();
-			Collections.sort(todosUsuarios, String.CASE_INSENSITIVE_ORDER);
+			Collections.sort(todosUsuarios, new NaturalOrderComparatorStringInsensitive());
 			for (String usuarios : todosUsuarios) {
 				modeloUsuariosLotes.addElement(usuarios);
 			}

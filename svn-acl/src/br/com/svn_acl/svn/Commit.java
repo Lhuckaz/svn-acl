@@ -177,6 +177,16 @@ public class Commit {
 
 	/**
 	 * Esse método realiza commiter de adição de um arquivo.
+	 * 
+	 * @param editor
+	 *            editor
+	 * @param file
+	 *            arquivo
+	 * @param data
+	 *            conteudo
+	 * @return retorna {@link SVNCommitInfo}
+	 * @throws SVNException
+	 *             exceção do SVN
 	 */
 	private static SVNCommitInfo addFile(ISVNEditor editor, String file, byte[] data) throws SVNException {
 		/*
@@ -247,7 +257,16 @@ public class Commit {
 	}
 
 	/**
-	 * Esse método realiza commiter de modificações de arquivo.
+	 * 
+	 * @param editor
+	 *            {@link ISVNEditor} editor
+	 * @param filePath
+	 *            caminho do arquico
+	 * @param newData
+	 *            novo conteúdo
+	 * @return retorna {@link SVNCommitInfo}
+	 * @throws SVNException
+	 *             exceção do SVN
 	 */
 	private static SVNCommitInfo modifyFile(ISVNEditor editor, String filePath, byte[] newData) throws SVNException {
 		/*
