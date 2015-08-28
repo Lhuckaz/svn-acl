@@ -23,7 +23,7 @@ import java.util.*;
 
 /**
  * 
- * Organiza Lista de String em ordem natural, não sendo case-sensitive
+ * Organiza lista de {@link String} em ordem natural, não sendo case-sensitive
  * 
  * @author Lhuckaz
  *
