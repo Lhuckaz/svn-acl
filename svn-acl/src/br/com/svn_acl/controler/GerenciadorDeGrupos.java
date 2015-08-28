@@ -337,7 +337,7 @@ public class GerenciadorDeGrupos {
 				if (line.startsWith("@") || line.matches("^.*.+:.*")) {
 					break;
 				}
-				if (line.matches("\\w{1,}\\s{0,}=\\s{0,}.{0,}")) {
+				if (line.matches("\\w{1,}.{0,}\\s{0,}=\\s{0,}.{0,}")) {
 					split = line.split("=");
 					grupos.add(split[0].replaceAll(" ", ""));
 				}
@@ -355,6 +355,7 @@ public class GerenciadorDeGrupos {
 		if (grupos.size() == 0) {
 			System.out.println("Grupo nao foi encontrado");
 		}
+		Collections.sort(grupos, new NaturalOrderComparatorStringInsensitive());
 		return grupos;
 	}
 
@@ -512,11 +513,11 @@ public class GerenciadorDeGrupos {
 		}
 		String[] split;
 		// Regex identicar se linha e de permissoes
-		if (line.matches("\\w{1,}\\s{0,}=\\s{0,}w$") || line.matches("\\w{1,}\\s{0,}=\\s{0,}rw$")
+		if (line.matches("\\w{1,}.{0,}\\s{0,}=\\s{0,}w$") || line.matches("\\w{1,}.{0,}\\s{0,}=\\s{0,}rw$")
 				|| line.matches("\\w{1,}\\s{0,}=\\s{0,}w$")) {
 			return "";
 		}
-		if (line.matches("\\w{1,}\\s{0,}=\\s{0,}.{0,}")) {
+		if (line.matches("\\w{1,}.{0,}\\s{0,}=\\s{0,}.{0,}")) {
 			split = line.split("=");
 			return split[0].trim();
 		}

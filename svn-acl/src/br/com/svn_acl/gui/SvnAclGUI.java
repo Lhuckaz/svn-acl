@@ -522,6 +522,7 @@ public class SvnAclGUI {
 					gerenciador.atualizaArquivo();
 					listaGrupoListener.atualizaUsuarios(getGrupoSelecionado());
 					setGrupoSelecionado("");
+					atualizaDiretorios();
 				}
 			}
 		});
