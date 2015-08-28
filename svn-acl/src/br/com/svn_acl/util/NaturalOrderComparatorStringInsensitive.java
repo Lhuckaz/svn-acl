@@ -21,6 +21,13 @@ package br.com.svn_acl.util;
 
 import java.util.*;
 
+/**
+ * 
+ * Organiza lista de {@link String} em ordem natural, não sendo case-sensitive
+ * 
+ * @author Lhuckaz
+ *
+ */
 public class NaturalOrderComparatorStringInsensitive implements Comparator<String> {
 	int compareRight(String a, String b) {
 		int bias = 0;
