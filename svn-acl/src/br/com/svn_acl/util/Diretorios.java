@@ -34,7 +34,7 @@ public class Diretorios {
 	public static String retornaUserDocuments() {
 		return "\\Documents\\";
 	}
-	
+
 	/**
 	 * 
 	 * @return retorna caminho do diretorio atual
@@ -42,15 +42,16 @@ public class Diretorios {
 	public static String retornaDiretorioCorrente() {
 		return diretorioCorrente;
 	}
-	
+
 	/**
 	 * 
-	 * @param diretorio setar o valor do diretorio
+	 * @param diretorio
+	 *            setar o valor do diretorio
 	 */
 	public static void setDiretorioCorrente(String diretorio) {
 		diretorioCorrente = diretorio;
 	}
-	
+
 	/**
 	 * 
 	 * @return retorna nome do arquivo para salvar
@@ -58,18 +59,20 @@ public class Diretorios {
 	public static String retornaArquivoParaSalvar() {
 		return "svn";
 	}
-	
+
 	/**
 	 * 
-	 * @param user usuário
-	 * @param nome do arquivo exportado
+	 * @param user
+	 *            usuário
+	 * @param nome
+	 *            do arquivo exportado
 	 */
 	public static void setFileCheckoutNameAndUser(String nome, String user) {
 		fileCheckoutName = nome;
 		setURLNoProperties();
 		Util.setUserSvn(user);
 	}
-	
+
 	/**
 	 * Salva o url do svn no properties para tornar mais dinâmico
 	 */
@@ -99,7 +102,8 @@ public class Diretorios {
 
 	/**
 	 * 
-	 * @param url setar a url
+	 * @param url
+	 *            setar a url
 	 */
 	public static void setUrl(String url) {
 		endereco = url;
