@@ -1,5 +1,6 @@
 package br.com.svn_acl.listener;
 
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
@@ -45,7 +46,11 @@ public class ListaGrupoListener implements ListSelectionListener {
 	 *            grupo selecionado
 	 */
 	public void atualizaUsuarios(String grupoSelecionado) {
-		List<String> listaUsuariosGrupo = svnAclGUI.getGerenciadorDeGrupos().listaUsuariosGrupo(grupoSelecionado);
+		List<String> listaUsuariosGrupo = Arrays.asList();
+		try {
+			listaUsuariosGrupo = svnAclGUI.getGerenciadorDeGrupos().listaUsuariosGrupo(grupoSelecionado);
+		} catch (ArrayIndexOutOfBoundsException e) {
+		}
 		svnAclGUI.setUsuariosDoGrupo(listaUsuariosGrupo);
 		svnAclGUI.atualizaUsuarios();
 		List<String> listarGrupos = svnAclGUI.getGerenciadorDeGrupos().listarGrupos();
