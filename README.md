@@ -14,12 +14,12 @@ Instalador versão 2.1 x64 (64 bits):
 Instalador versão 2.1 x86 (32 bits): 
 [Baixar 2.1](https://github.com/Lhuckaz/svn-acl/blob/v.2.1/svn-acl-2.1_x86.exe?raw=true)
 
-Versão Portable:
+Versão Portable 2.1:
 
-Instalador versão 2.1 x64 (64 bits) Portable: 
-[Baixar 2.1](https://github.com/Lhuckaz/svn-acl/blob/v.2.1/svn-acl-2.1_x64-portable.exe?raw=true)
+Portable versão 2.1 x64 (64 bits): 
+[Baixar 2.1 Portable](https://github.com/Lhuckaz/svn-acl/blob/v.2.1/svn-acl-2.1_x64-portable.exe?raw=true)
 
-Instalador versão 2.1 x86 (32 bits) Portable: 
-[Baixar 2.1](https://github.com/Lhuckaz/svn-acl/blob/v.2.1/svn-acl-2.1_x86-portable.exe?raw=true)
+Portable versão 2.1 x86 (32 bits): 
+[Baixar 2.1 Portable](https://github.com/Lhuckaz/svn-acl/blob/v.2.1/svn-acl-2.1_x86-portable.exe?raw=true)
 
 A partir da versão 2.0, por favor instale conforme a arquitetura de seu sistema operacional, x86 ou x64
